@@ -1,18 +1,158 @@
 aid: skyvia
 name: Skyvia
-description: 'Skyvia is a company surfaced via the API Evangelist harvest backlog (source: marketing-integration-graph)
-  and added to the network as a stub for full-pipeline profiling.'
+description: >-
+  Skyvia is a no-code cloud data platform from Devart covering five products on one account: Data Integration
+  (import, export, replication, synchronization, data flow and control flow across 200+ cloud apps and databases),
+  Automation (trigger-driven business process automation with schedule, polling-connection and HMAC-verified webhook
+  triggers), Backup (cloud-to-cloud snapshot backup and restore), Query (an online SQL client and visual query
+  builder), and Connect (a connectivity-as-a-service layer that publishes any connected data source as an OData
+  endpoint, a SQL endpoint, or an MCP endpoint for AI agents). Skyvia also ships a public REST management API at
+  api.skyvia.com that lets you drive accounts, workspaces, agents, connections, integrations, automations, backups
+  and Connect endpoints programmatically with a scoped, expiring API token.
+image: https://skyvia.com/assets/img/meta-img/meta-image.png
 url: https://raw.githubusercontent.com/api-evangelist/skyvia/refs/heads/main/apis.yml
 x-type: company
 x-source: harvest:marketing-integration-graph
-x-tier: stub
-x-tier-reason: harvest
-specificationVersion: '0.20'
+specificationVersion: '0.21'
 created: '2026-08-12'
 modified: '2026-08-12'
 tags:
-- Company
-apis: []
+- data-integration
+- ipaas
+- etl
+- elt
+- data-replication
+- cloud-backup
+- odata
+- sql
+- workflow-automation
+- no-code
+- connectors
+- data-management
+- mcp
+- agent-native
+- data-access
+apis:
+- name: Skyvia Public API
+  description: >-
+    REST management API for the Skyvia platform. Programmatically read and control account users and invitations,
+    workspaces and workspace membership, on-premise agents, data-source connections, data integration packages and
+    their executions and schedules, automations and their execution history, cloud backups and snapshots, and Skyvia
+    Connect endpoints and their request logs. Authenticated with a scoped Skyvia API token passed in the
+    Authorization header; tokens carry per-resource read/execute/modify scopes and cannot be issued for longer than
+    one year.
+  humanURL: https://docs.skyvia.com/api-reference/
+  baseURL: https://api.skyvia.com
+  tags:
+  - data-integration
+  - ipaas
+  - workflow-automation
+  - cloud-backup
+  - data-management
+  - management-api
+  properties:
+  - type: Documentation
+    url: https://docs.skyvia.com/api-reference/
+  - type: APIReference
+    url: https://docs.skyvia.com/api-reference/
+  - type: Swagger
+    url: https://api.skyvia.com/swagger/index.html
+  - type: OpenAPI
+    url: openapi/skyvia-account-api-openapi.yml
+  - type: OpenAPI
+    url: openapi/skyvia-agents-api-openapi.yml
+  - type: OpenAPI
+    url: openapi/skyvia-automations-api-openapi.yml
+  - type: OpenAPI
+    url: openapi/skyvia-backups-api-openapi.yml
+  - type: OpenAPI
+    url: openapi/skyvia-connections-api-openapi.yml
+  - type: OpenAPI
+    url: openapi/skyvia-endpoints-api-openapi.yml
+  - type: OpenAPI
+    url: openapi/skyvia-integrations-api-openapi.yml
+  - type: OpenAPI
+    url: openapi/skyvia-workspaces-api-openapi.yml
+  - type: Authentication
+    url: authentication/skyvia-authentication.yml
+  - type: Conventions
+    url: conventions/skyvia-conventions.yml
+  - type: ErrorCatalog
+    url: errors/skyvia-problem-types.yml
+  - type: DataModel
+    url: data-model/skyvia-data-model.yml
+  - type: Overlay
+    url: overlays/skyvia-public-api-overlay.yaml
+- name: Skyvia Connect MCP Endpoint
+  description: >-
+    Hosted Model Context Protocol server that publishes any Skyvia connection — 200+ cloud apps and databases — as a
+    set of MCP tools an AI assistant can call. Each customer endpoint is served from mcp.skyvia.com under its own
+    endpoint id; the server advertises four tools (Instructions, Objects, ObjectInfo, Execute) that let an agent
+    discover the objects behind the endpoint, read their metadata and relationships, and run parameterized SQL
+    against the live data source. Optional endpoint security uses HTTP Basic user accounts plus IP allow-lists.
+  humanURL: https://docs.skyvia.com/connect/mcp-endpoints/
+  baseURL: https://mcp.skyvia.com
+  tags:
+  - mcp
+  - agent-native
+  - data-access
+  - sql
+  - connectors
+  properties:
+  - type: MCPServer
+    url: mcp/skyvia-mcp.yml
+  - type: MCPServer
+    url: https://mcp.skyvia.com/mcp
+  - type: ToolCrosswalk
+    url: mcp/skyvia-tool-crosswalk.yml
+  - type: Documentation
+    url: https://docs.skyvia.com/connect/mcp-endpoints/
+  - type: GettingStarted
+    url: https://docs.skyvia.com/connect/mcp-endpoints/using-with-claude.html
+  - type: Website
+    url: https://skyvia.com/connect/mcp-endpoint
+- name: Skyvia Connect OData & SQL Endpoints
+  description: >-
+    Connectivity-as-a-service layer that exposes a Skyvia connection as a secured web API without writing code. An
+    endpoint can be published as an OData v4 service (consumable from Power BI, Excel, Tableau and any OData client)
+    or as a SQL endpoint, with per-endpoint user accounts, IP address filtering, per-object and per-operation
+    permissions, and a full request log. Endpoints are served from connect.skyvia.com, or self-hosted on IIS via the
+    Skyvia Agent under the hybrid deployment option.
+  humanURL: https://docs.skyvia.com/connect/
+  baseURL: https://connect.skyvia.com
+  tags:
+  - odata
+  - sql
+  - data-access
+  - connectors
+  - data-management
+  properties:
+  - type: Documentation
+    url: https://docs.skyvia.com/connect/
+  - type: Website
+    url: https://skyvia.com/connect
+  - type: OData
+    url: https://docs.skyvia.com/connect/odata-endpoints/
+- name: Skyvia Automation Webhook Triggers
+  description: >-
+    Inbound webhook surface for Skyvia Automation. Each automation with a Webhook trigger is assigned a Skyvia-issued
+    base URL plus a user-defined event name; an external application POSTs its event payload to that URL to start the
+    automation in real time. Payloads may be authenticated with SHA256 HMAC hash verification against a shared secret
+    key, with the signature carried in a configurable request header; requests whose signature does not match are
+    rejected with "Invalid HMAC header value". Complemented by polling Connection triggers that watch a data source
+    for new, updated or deleted records.
+  humanURL: https://docs.skyvia.com/automation/building-automation/triggers.html
+  baseURL: https://app.skyvia.com
+  tags:
+  - webhooks
+  - workflow-automation
+  - events
+  - no-code
+  properties:
+  - type: Webhooks
+    url: asyncapi/skyvia-automation-webhooks.yml
+  - type: Documentation
+    url: https://docs.skyvia.com/automation/building-automation/triggers.html
 maintainers:
 - FN: Kin Lane
   email: kin@apievangelist.com
@@ -21,7 +161,76 @@ maintainers:
 common:
 - type: Website
   url: https://skyvia.com/
+- type: DeveloperPortal
+  url: https://docs.skyvia.com/
+- type: Documentation
+  url: https://docs.skyvia.com/
+- type: APIReference
+  url: https://docs.skyvia.com/api-reference/
+- type: GettingStarted
+  url: https://docs.skyvia.com/concepts.html
+- type: Support
+  url: https://skyvia.com/support
+- type: Blog
+  url: https://skyvia.com/blog/
+- type: Pricing
+  url: https://skyvia.com/pricing
+- type: SignUp
+  url: https://app.skyvia.com/#/signup
+- type: Login
+  url: https://app.skyvia.com/
+- type: TermsOfService
+  url: https://skyvia.com/terms-of-service
+- type: PrivacyPolicy
+  url: https://skyvia.com/privacy-policy
+- type: ChangeLog
+  url: https://docs.skyvia.com/recent-releases/
+- type: ChangeLog
+  url: changelog/skyvia-changelog.yml
+- type: Compliance
+  url: https://skyvia.com/security
+- type: TrustCenter
+  url: security/skyvia-trust-center.yml
+- type: LLMsTxt
+  url: llms/skyvia-llms.txt
+- type: MCPServer
+  url: mcp/skyvia-mcp.yml
+- type: Authentication
+  url: authentication/skyvia-authentication.yml
+- type: OAuthScopes
+  url: scopes/skyvia-scopes.yml
+- type: Conventions
+  url: conventions/skyvia-conventions.yml
+- type: Lifecycle
+  url: lifecycle/skyvia-lifecycle.yml
+- type: Conformance
+  url: conformance/skyvia-conformance.yml
+- type: ErrorCatalog
+  url: errors/skyvia-problem-types.yml
+- type: DataModel
+  url: data-model/skyvia-data-model.yml
+- type: DomainSecurity
+  url: security/skyvia-domain-security.yml
+- type: Sandbox
+  url: sandbox/skyvia-sandbox.yml
+- type: Plans
+  url: plans/skyvia-plans-pricing.yml
+- type: RateLimits
+  url: rate-limits/skyvia-rate-limits.yml
+- type: Webhooks
+  url: asyncapi/skyvia-automation-webhooks.yml
+- type: AgentSkill
+  url: skills/_index.yml
+- type: Packages
+  url: packages/skyvia-packages.yml
+- type: SDKs
+  url: packages/skyvia-packages.yml
 x-vouched-by:
 - Drip
 - MailerLite
 x-vouch-count: 2
+x-enrichment:
+  date: '2026-08-12'
+  status: enriched
+  artifacts_added: 35
+  pass: local-v1

@@ -1,0 +1,64 @@
+generated: '2026-08-12'
+method: searched
+source: >-
+  NuGet registration + flat-container APIs, npm registry, PyPI, and the Skyvia documentation
+  (docs.skyvia.com/connect/sql-endpoints/ado.net-provider.html, docs.skyvia.com/agents.html)
+summary: >-
+  Skyvia publishes exactly one first-party client library to a public package registry: dotConnect for
+  Skyvia Connect, a .NET ADO.NET provider from Devart that lets .NET code query a Skyvia Connect SQL
+  endpoint. There is NO client SDK for the Skyvia Public REST management API in any language and on any
+  registry — no npm, PyPI, Maven, RubyGems, Packagist, crates.io or Go module package exists for it; callers
+  are expected to work from the Swagger document directly. The Skyvia Agent, the on-premise gateway, is a
+  Windows installer distributed from the app, not a registry artifact.
+official_package_count: 1
+registry_gaps:
+  rest_api_client_sdk: none
+  checked_registries: [npm, pypi, nuget, maven-central, rubygems, packagist, crates.io, pkg.go.dev]
+packages:
+- language: dotnet
+  registry: nuget
+  name: Devart.Data.SkyviaConnect
+  url: https://www.nuget.org/packages/Devart.Data.SkyviaConnect
+  install: Install-Package Devart.Data.SkyviaConnect
+  official: true
+  publisher: Devart
+  version: 1.0.1120
+  published: '2024-10-07'
+  release_count: 3
+  first_published: '2020-03-17'
+  total_downloads: 1989
+  covers: Skyvia Connect SQL endpoints
+  covers_rest_api: false
+  docs: https://docs.skyvia.com/connect/sql-endpoints/ado.net-provider.html
+  description: >-
+    dotConnect for SkyviaConnect is an ADO.NET provider for accessing data of SQL endpoints created with
+    Skyvia Connect.
+  note: >-
+    Three releases in six years (1.0.14 on 2020-03-17, 1.0.108 on 2020-07-30, 1.0.1120 on 2024-10-07). The
+    current release predates every 2025 and 2026 Connect feature in the changelog, including MCP endpoints
+    (2025) and hybrid deployment (April 2026), so the shipped provider does not reflect the current product.
+- language: null
+  registry: download
+  name: Skyvia Agent
+  url: https://skyvia.com/agent
+  install: Windows installer downloaded from the Agent wizard in the Skyvia app
+  official: true
+  publisher: Devart
+  version: null
+  published: null
+  covers: on-premise connectivity gateway; also hosts SDK Connector .NET assemblies and Connect hybrid runtime
+  docs: https://docs.skyvia.com/agents.html
+  note: >-
+    Not distributed through any package registry and not version-pinned on a public page, so there is no
+    metadata endpoint to read a version or release date from — recorded as null rather than guessed. The
+    download is served from inside the authenticated app via the Agent wizard, together with a per-account
+    agent key.
+related_but_not_first_party_clients:
+- note: >-
+    Skyvia Connect OData v4 endpoints are consumed by generic OData clients (Power BI, Excel, Tableau, any
+    OData library). Those are third-party tools, not Skyvia packages, and are deliberately not listed here.
+- note: >-
+    The Skyvia Connectors SDK and the SDK Connector (June 2026) let a customer AUTHOR a connector — the
+    Connectors SDK as JSON/REST connector configuration, the SDK Connector as custom .NET assemblies loaded
+    by the Skyvia Agent. Both are extension points for building against Skyvia, not client libraries Skyvia
+    publishes, and neither is distributed as a public registry package.

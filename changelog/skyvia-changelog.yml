@@ -1,0 +1,97 @@
+generated: '2026-08-12'
+method: searched
+source: https://docs.skyvia.com/recent-releases/
+url: https://docs.skyvia.com/recent-releases/
+scheme: dated-monthly
+current_version: '2026-08'
+history_begins: '2014-03'
+scope: >-
+  Product and connector release notes for the whole Skyvia platform. Changes to the Public REST API contract
+  are not called out separately. Recent window only — the full archive runs monthly back to March 2014 at
+  /recent-releases/{year}/{month}-{year}.html for older years and /recent-releases/{month}-{year}.html for
+  recent ones.
+entries:
+- date: '2026-08'
+  url: https://docs.skyvia.com/recent-releases/august-2026.html
+  breaking: false
+  highlights:
+  - >-
+    AI Assistant for Expressions — the Expression and Mapping editors replace the previous "Generate with
+    AI" action with a conversational assistant that can modify, fix and refine an existing expression across
+    follow-up messages.
+  - Asana connector — new PeopleValue field on ProjectCustomFields and TaskCustomFields.
+  - Cin7 Core Inventory connector — rate-limit throttling added to keep request frequency inside the Cin7 API limits.
+  - >-
+    HubSpot connector — new MarketingCampaigns, MarketingCampaignAssets, MarketingCampaignBudgets and
+    MarketingCampaignSpends objects, plus LandingPages and WebsitePages for the new HubSpot Site Pages API.
+- date: '2026-07'
+  url: https://docs.skyvia.com/recent-releases/july-2026.html
+  breaking: false
+  highlights:
+  - Redesigned Task Editor across Import, Export, Synchronization and Replication.
+  - Import — row limit and CSV data filtering.
+  - Replication — BigQuery table partitioning, Data Preview with on-the-spot column include/exclude, and Snowflake as a replication source with incremental updates.
+  - New connector — Odoo.
+- date: '2026-06'
+  url: https://docs.skyvia.com/recent-releases/june-2026.html
+  breaking: false
+  highlights:
+  - Data Flow Debug mode — breakpoints on component outputs, component state, processed-record counts and output-data inspection.
+  - >-
+    SDK Connector — custom .NET providers compiled to assemblies and loaded by the locally installed Skyvia
+    Agent, so customer code runs on the customer machine and never in Skyvia infrastructure.
+  - Account security — IP filtering and enforced two-factor authentication.
+  - Data Flow — Avro and Parquet support; CSV/JSON source and target components merged into File Source and File Target.
+  - Redesigned Automations list with trigger type, state and enabled status.
+- date: '2026-05'
+  url: https://docs.skyvia.com/recent-releases/may-2026.html
+  breaking: false
+  highlights:
+  - Automation execution logs — step-by-step records, log search, downloadable log file.
+  - New connector — HubDB.
+  - Chargebee connector — SubscriptionRamps object and Nested Objects support on several fields.
+  - Facebook Ads connector — CreatedTime on FormLeads with native filtering and incremental replication.
+- date: '2026-04'
+  url: https://docs.skyvia.com/recent-releases/april-2026.html
+  breaking: false
+  highlights:
+  - >-
+    Connect hybrid deployment — design OData and SQL endpoints in Skyvia and host the Connect runtime on
+    local IIS, so data never leaves the customer network. Supported for PostgreSQL, MySQL, Oracle, SQL
+    Server, AlloyDB, Acumatica and ODBC. Not enabled by default; priced on request.
+  - Step-by-step Endpoint wizard.
+  - Replication from Google BigQuery, with incremental replication or full resync.
+  - New connectors — Google Gemini, xAI Grok.
+- date: '2026-03'
+  url: https://docs.skyvia.com/recent-releases/march-2026.html
+  breaking: true
+  breaking_note: >-
+    Import tasks using the Upsert target operation with "Use External ID" now expose only target primary key
+    fields for mapping on the Returning tab, affecting existing Salesforce and Zoho CRM configurations.
+  highlights:
+  - Upsert mapping change for Salesforce and Zoho CRM (see breaking_note).
+  - New connector — OpenAI, exposing no data objects but providing actions and stored procedures callable from Control Flow, Data Flow and Automation.
+- date: '2026-02'
+  url: https://docs.skyvia.com/recent-releases/february-2026.html
+  breaking: false
+  highlights:
+  - AI expression generation in the Expression and Mapping editors.
+  - Value Mapping — visual multi-select item mapping, custom mapping rules and type conversion for import integrations.
+  - New connector — GraphQL, for querying and modifying records in any GraphQL data source.
+- date: '2026-01'
+  url: https://docs.skyvia.com/recent-releases/january-2026.html
+  breaking: false
+  highlights:
+  - Replication wizard and Agent wizard.
+  - SHA256 HMAC signature validation for Automation webhook trigger payloads; events with an invalid signature are ignored.
+  - Redesigned Discover Platform page.
+observations:
+- >-
+  Continuous monthly cadence since March 2014 with no visible gap — a strong operational-transparency
+  signal, and unusual for a company of Skyvia's size.
+- >-
+  The changelog is product-shaped, not contract-shaped: connector object and field additions dominate, and
+  no entry in the recent window records a change to the Public REST API's routes, schemas or auth model.
+- >-
+  Breaking changes are described in place rather than flagged, dated for removal, or given a migration
+  window — the March 2026 Upsert change is the clearest example in the recent window.

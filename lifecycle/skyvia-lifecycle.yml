@@ -1,0 +1,80 @@
+generated: '2026-08-12'
+method: searched
+source: >-
+  https://docs.skyvia.com/recent-releases/ + https://docs.skyvia.com/api-reference/ +
+  openapi/_original/skyvia-public-api-openapi-original.json + live host probes
+versioning:
+  scheme: uri-path
+  current: v1
+  example: https://api.skyvia.com/v1/workspaces
+  spec_discovery: https://api.skyvia.com/swagger/{version}/swagger.json
+  policy_url: null
+  note: >-
+    Every route carries /v1/ and the Swagger document is served per version, so a v2 would be independently
+    discoverable. Skyvia publishes no written versioning policy — nothing states how long a version is
+    supported, how a new version is announced, or whether v1 is stable.
+deprecation:
+  policy_url: null
+  sunset_header: false
+  deprecation_header: false
+  note: >-
+    No deprecation policy, no RFC 8594 Sunset or Deprecation header support, and no `deprecated: true` flag
+    on any of the 52 operations in the spec. No apis.yml Deprecation pointer is emitted, because there is no
+    policy to point at.
+deprecated_operations: []
+release_cadence:
+  cadence: monthly
+  changelog: https://docs.skyvia.com/recent-releases/
+  first_recorded: '2014-03'
+  most_recent: '2026-08'
+  note: >-
+    Skyvia has published dated monthly release notes continuously since March 2014 — one of the longer
+    unbroken public changelogs in the catalog. Entries cover platform features and per-connector changes.
+    See changelog/skyvia-changelog.yml.
+  api_changes_called_out: false
+  api_note: >-
+    The release notes describe product and connector changes; changes to the Public REST API itself are not
+    separately called out, so an API consumer cannot follow the changelog to learn when their contract moved.
+status_page:
+  url: null
+  note: >-
+    No status page found. status.skyvia.com does not resolve (DNS NXDOMAIN), skyvia.com/status returns 404,
+    and no status or uptime link appears in the docs, the footer, or the support page. No apis.yml StatusPage
+    pointer is emitted.
+  probed:
+  - url: https://status.skyvia.com/
+    status: 000
+    note: DNS did not resolve
+  - url: https://skyvia.com/status
+    status: 404
+sla:
+  url: null
+  uptime_target: null
+  note: >-
+    No published SLA or uptime commitment. skyvia.com/sla returns 404. The pricing page attaches "priority
+    support" to Enterprise plans but names no availability target.
+  probed:
+  - url: https://skyvia.com/sla
+    status: 404
+support:
+  url: https://skyvia.com/support
+  community: https://support.skyvia.com/portal/en/community
+  note: >-
+    The Zoho-hosted support portal (support.skyvia.com) returns 403 to unauthenticated automated fetches;
+    individual community topics are publicly indexed.
+platform_lifecycle_notes:
+- >-
+  Hybrid deployment of the Connect runtime (April 2026) is gated: "Hybrid deployment is not available by
+  default. Contact us for pricing if you want it enabled for your account."
+- >-
+  A superseded expression runtime exists — the docs carry a "main differences between old and new runtime
+  syntax" topic — indicating at least one in-product migration that is documented as a differences page
+  rather than as a deprecation with a sunset date.
+- >-
+  The Data Flow CSV Source, CSV Target and JSON Target components were merged into File Source and File
+  Target in June 2026; the release note describes the replacement but sets no removal date for the old
+  components.
+gaps:
+- No versioning policy, no deprecation policy, no Sunset/Deprecation header support.
+- No status page and no SLA.
+- The changelog does not distinguish API-contract changes from product changes.

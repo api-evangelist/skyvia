@@ -1,0 +1,163 @@
+generated: '2026-08-12'
+method: derived
+source: mcp/skyvia-mcp.yml + openapi/*.yml
+summary: >-
+  Skyvia's MCP surface and its REST surface are NOT two projections of one data core — they are two
+  different products. The MCP server (Skyvia Connect) reads and queries CUSTOMER DATA through a published
+  endpoint; the Public REST API (api.skyvia.com) manages SKYVIA PLATFORM OBJECTS — workspaces, connections,
+  integrations, automations, backups, endpoints. There is therefore almost no overlap to bind: every MCP
+  tool is mcp_only, and every REST operation is rest_only. The one genuine seam is the Endpoints resource
+  in REST, which administers the very endpoint the MCP server serves — but it administers it, it does not
+  call it, and its own EndpointDto.type enum does not yet include MCP.
+surfaces:
+  openapi:
+    files:
+    - openapi/skyvia-account-api-openapi.yml
+    - openapi/skyvia-agents-api-openapi.yml
+    - openapi/skyvia-automations-api-openapi.yml
+    - openapi/skyvia-backups-api-openapi.yml
+    - openapi/skyvia-connections-api-openapi.yml
+    - openapi/skyvia-endpoints-api-openapi.yml
+    - openapi/skyvia-integrations-api-openapi.yml
+    - openapi/skyvia-workspaces-api-openapi.yml
+    original: openapi/_original/skyvia-public-api-openapi-original.json
+    host: https://api.skyvia.com
+    gated: true
+    gate: Every request requires an Authorization API token; unauthenticated requests return 403.
+    note: >-
+      The published spec declares NO operationIds — every operation is identified here by METHOD + path.
+      This is a real contract-quality gap, not an omission on our side.
+  mcp:
+    url: https://mcp.skyvia.com/mcp
+    gated: false
+    gate: >-
+      tools/list answers anonymously; the DATA behind a customer endpoint is gated by that endpoint's
+      optional HTTP Basic users and IP allow-list.
+  graphql:
+    present: false
+    note: >-
+      Skyvia ships a GraphQL CONNECTOR (a data source it can read from, added February 2026), but exposes
+      no GraphQL API of its own.
+  odata:
+    url_form: https://connect.skyvia.com/{endpointId}
+    gated: true
+    note: >-
+      Skyvia Connect OData v4 endpoints are per-customer and carry customer data; no public metadata
+      document is reachable without an endpoint id and credentials.
+crosswalk: []
+mcp_only:
+- tool: Instructions
+  reason: >-
+    Server-side self-documentation. No REST equivalent — the Public API has no operation that returns usage
+    instructions.
+- tool: Objects
+  reason: >-
+    Lists the objects (tables/views/cloud objects) behind a Connect endpoint. This is endpoint DATA-PLANE
+    metadata served by connect/mcp.skyvia.com; the Public API's Endpoints resource exposes only the endpoint
+    record itself (id, name, token, active, type, created, modified) and its request log, never the objects
+    inside it.
+- tool: ObjectInfo
+  reason: >-
+    Detailed field/relationship metadata for one endpoint object, including parent and child relations. No
+    REST counterpart at any level of the Public API.
+- tool: Execute
+  reason: >-
+    Runs parameterized SQL against the endpoint's underlying data source and returns paged results. The
+    Public API is a control plane only — it has no data-read or query operation of any kind.
+rest_only:
+- capability: Account administration
+  operations:
+  - GET /v1/account/users
+  - DELETE /v1/account/users
+  - GET /v1/account/invitations
+  - POST /v1/account/invitations
+  - POST /v1/account/invitations/{invitationId}/resend
+  - DELETE /v1/account/invitations/{invitationId}
+  reason: No MCP tool covers account membership.
+- capability: Agents (on-premise gateway)
+  operations:
+  - GET /v1/workspaces/{workspaceId}/agents
+  - GET /v1/workspaces/{workspaceId}/agents/{agentId}
+  - POST /v1/workspaces/{workspaceId}/agents/{agentId}/test
+  reason: No MCP tool covers agent lifecycle or connectivity testing.
+- capability: Automations
+  operations:
+  - GET /v1/workspaces/{workspaceId}/automations
+  - GET /v1/workspaces/{workspaceId}/automations/{automationId}
+  - GET /v1/workspaces/{workspaceId}/automations/{automationId}/executions
+  - GET /v1/workspaces/{workspaceId}/automations/{automationId}/executions/{executionId}
+  - GET /v1/workspaces/{workspaceId}/automations/{automationId}/state
+  - GET /v1/workspaces/{workspaceId}/automations/{automationId}/active
+  - POST /v1/workspaces/{workspaceId}/automations/{automationId}/enable
+  - POST /v1/workspaces/{workspaceId}/automations/{automationId}/disable
+  reason: >-
+    An agent cannot start, stop, or inspect an automation through MCP — only through the REST control plane
+    with an Automation-scoped token.
+- capability: Backups
+  operations:
+  - GET /v1/workspaces/{workspaceId}/backups
+  - GET /v1/workspaces/{workspaceId}/backups/{backupId}
+  - GET /v1/workspaces/{workspaceId}/backups/{backupId}/snapshots
+  - POST /v1/workspaces/{workspaceId}/backups/{backupId}/snapshots
+  - GET /v1/workspaces/{workspaceId}/backups/{backupId}/snapshots/{snapshotId}
+  - GET /v1/workspaces/{workspaceId}/backups/{backupId}/snapshots/active
+  - GET /v1/workspaces/{workspaceId}/backups/{backupId}/schedule
+  - POST /v1/workspaces/{workspaceId}/backups/{backupId}/schedule/enable
+  - POST /v1/workspaces/{workspaceId}/backups/{backupId}/schedule/disable
+  reason: No MCP tool covers backup or snapshot control.
+- capability: Connections
+  operations:
+  - GET /v1/workspaces/{workspaceId}/connections
+  - GET /v1/workspaces/{workspaceId}/connections/{connectionId}
+  - POST /v1/workspaces/{workspaceId}/connections/{connectionId}/test
+  reason: >-
+    Closest conceptual neighbour to the MCP surface — a Connect endpoint is built on a connection — but the
+    REST operations administer the connection record and test reachability; they never read through it.
+- capability: Connect endpoints
+  operations:
+  - GET /v1/endpoints/types
+  - GET /v1/workspaces/{workspaceId}/endpoints
+  - GET /v1/workspaces/{workspaceId}/endpoints/{endpointId}
+  - POST /v1/workspaces/{workspaceId}/endpoints/{endpointId}/enable
+  - POST /v1/workspaces/{workspaceId}/endpoints/{endpointId}/disable
+  - GET /v1/workspaces/{workspaceId}/endpoints/{endpointId}/executions
+  - GET /v1/workspaces/{workspaceId}/endpoints/{endpointId}/executions/{recordId}
+  reason: >-
+    The administrative seam to the MCP/OData data plane: these operations enable, disable and audit the
+    endpoint the MCP server fronts. EndpointDto.type enumerates only OData and Sql, so MCP endpoints are not
+    yet addressable here.
+- capability: Integrations
+  operations:
+  - GET /v1/workspaces/{workspaceId}/integrations
+  - GET /v1/workspaces/{workspaceId}/integrations/{integrationId}
+  - GET /v1/workspaces/{workspaceId}/integrations/{integrationId}/executions
+  - POST /v1/workspaces/{workspaceId}/integrations/{integrationId}/executions
+  - GET /v1/workspaces/{workspaceId}/integrations/{integrationId}/executions/{executionId}
+  - GET /v1/workspaces/{workspaceId}/integrations/{integrationId}/executions/active
+  - POST /v1/workspaces/{workspaceId}/integrations/{integrationId}/executions/cancel
+  - POST /v1/workspaces/{workspaceId}/integrations/{integrationId}/executions/kill
+  - GET /v1/workspaces/{workspaceId}/integrations/{integrationId}/schedule
+  - POST /v1/workspaces/{workspaceId}/integrations/{integrationId}/schedule/enable
+  - POST /v1/workspaces/{workspaceId}/integrations/{integrationId}/schedule/disable
+  reason: No MCP tool can run or cancel an integration.
+- capability: Workspaces
+  operations:
+  - GET /v1/workspaces
+  - GET /v1/workspaces/{workspaceId}
+  - GET /v1/workspaces/{workspaceId}/users
+  - POST /v1/workspaces/{workspaceId}/users
+  - DELETE /v1/workspaces/{workspaceId}/users/{userId}
+  reason: No MCP tool covers workspaces or membership.
+coverage:
+  mcp_tools_named: 4
+  mcp_tools_bound_to_rest: 0
+  mcp_only: 4
+  rest_operations_total: 52
+  rest_operations_with_a_tool: 0
+  rest_only: 52
+  binding_rate: 0.0
+  note: >-
+    A binding rate of zero is the finding, not a failure of the crosswalk. Skyvia's agent surface reaches
+    customer data and its API surface reaches the platform; an agent given the MCP endpoint can query the
+    business data but cannot operate the pipelines that fill it, and an agent given an API token can operate
+    every pipeline but cannot read a single row.

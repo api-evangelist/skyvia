@@ -1,0 +1,206 @@
+generated: '2026-08-12'
+method: derived
+source: openapi/_original/skyvia-public-api-openapi-original.json
+api: Skyvia Public API
+summary: >-
+  Entity-relationship graph of the Skyvia control plane, derived from the 45 schemas and 47 route templates
+  in the published Swagger document. The model is strictly hierarchical and path-expressed: Account owns
+  Workspaces, a Workspace owns every asset (Agents, Connections, Integrations, Automations, Backups,
+  Endpoints), and each executable asset owns a run-history collection. Note that the DTOs themselves carry
+  almost no foreign keys — parentage is encoded in the URL path (workspaceId is a path parameter on 44 of
+  52 operations), not in the response bodies, so the graph below is read from the route hierarchy as much
+  as from the schemas.
+id_strategy:
+  workspace: integer (int32)
+  assets: integer (int32)
+  note: >-
+    Ids are plain 32-bit integers with no type prefixes and no GUIDs, so an id is only meaningful inside its
+    workspace and resource type. There is no globally addressable identifier for any Skyvia object.
+entities:
+- name: Account
+  schemas: [AccountUserDto, AccountInvitedUserDto, AccountWorkspaceUserDto, InviteUserRequestDto, RemoveAccountUserRequestDto, InvitedUserStatusDto, InviteToWorkspaceDto]
+  root: true
+  description: The billing and identity boundary. Owns users, pending invitations, and workspaces.
+  relationships:
+  - type: has_many
+    target: Workspace
+    via: path (/v1/workspaces)
+  - type: has_many
+    target: AccountUser
+    via: path (/v1/account/users)
+  - type: has_many
+    target: AccountInvitation
+    via: path (/v1/account/invitations)
+- name: Workspace
+  schemas: [WorkspaceDto, WorkspaceUserDto, AddWorkspaceUserRequestDto]
+  description: >-
+    The container every asset lives in and the unit of access control. workspaceId is a path parameter on 44
+    of the 52 operations.
+  relationships:
+  - type: belongs_to
+    target: Account
+    via: implicit (token scope)
+  - type: has_many
+    target: WorkspaceUser
+    via: path (/v1/workspaces/{workspaceId}/users)
+  - type: has_many
+    target: Agent
+    via: path
+  - type: has_many
+    target: Connection
+    via: path
+  - type: has_many
+    target: Integration
+    via: path
+  - type: has_many
+    target: Automation
+    via: path
+  - type: has_many
+    target: Backup
+    via: path
+  - type: has_many
+    target: Endpoint
+    via: path
+- name: Agent
+  schemas: [AgentDto]
+  description: On-premise gateway registration that lets Skyvia reach a local data source.
+  relationships:
+  - type: belongs_to
+    target: Workspace
+    via: path
+  - type: referenced_by
+    target: Connection
+    via: agent connections
+    confidence: medium
+    note: >-
+      The docs describe agent connections (connections routed through an installed Agent), but AgentDto and
+      ConnectionDto carry no mutual foreign key in the spec, so the link is documented rather than modelled.
+- name: Connection
+  schemas: [ConnectionDto, ConnectionDetailsDto]
+  description: A configured data source — one of 200+ cloud apps or databases.
+  relationships:
+  - type: belongs_to
+    target: Workspace
+    via: path
+  - type: referenced_by
+    target: Integration
+    confidence: medium
+    note: Integrations read and write through connections, but IntegrationDto exposes no connection id.
+  - type: referenced_by
+    target: Endpoint
+    confidence: medium
+    note: >-
+      A Connect endpoint publishes exactly one connection — this is the pivot between the control plane and
+      the data plane — but EndpointDto carries no connection id either.
+- name: Integration
+  schemas: [IntegrationDto, IntegrationScheduleDto]
+  description: A data integration package — import, export, replication, synchronization, data flow or control flow.
+  relationships:
+  - type: belongs_to
+    target: Workspace
+    via: path
+  - type: has_many
+    target: IntegrationExecution
+    via: path (/integrations/{integrationId}/executions)
+  - type: has_one
+    target: IntegrationSchedule
+    via: path (/integrations/{integrationId}/schedule)
+- name: IntegrationExecution
+  schemas: [IntegrationExecutionLogDto, IntegrationExecutionResultDto, IntegrationExecutionLogDtoHasMorePagingDto]
+  description: One run of an integration, with result and log detail. Filterable by startDate, endDate and failed.
+  relationships:
+  - type: belongs_to
+    target: Integration
+    via: path
+- name: Automation
+  schemas: [AutomationDto, AutomationStateDto, AutomationExecutionStateDto, AutomationQueueStateDto, AutomationTriggerStateDto]
+  description: A trigger-driven business process. Started by manual, schedule, connection-polling or webhook triggers.
+  relationships:
+  - type: belongs_to
+    target: Workspace
+    via: path
+  - type: has_many
+    target: AutomationExecution
+    via: path (/automations/{automationId}/executions)
+  - type: has_one
+    target: AutomationState
+    via: path (/automations/{automationId}/state)
+  - type: has_one
+    target: AutomationTriggerState
+    via: AutomationStateDto
+- name: AutomationExecution
+  schemas: [AutomationLogItemDto, AutomationLogItemDetailsDto, AutomationLogItemDtoHasMorePagingDto]
+  description: One automation run, with a step-level log available on the detail route.
+  relationships:
+  - type: belongs_to
+    target: Automation
+    via: path
+- name: Backup
+  schemas: [BackupDto, BackupScheduleDto, BackupActiveRunDto]
+  description: A cloud-to-cloud backup definition.
+  relationships:
+  - type: belongs_to
+    target: Workspace
+    via: path
+  - type: has_many
+    target: BackupSnapshot
+    via: path (/backups/{backupId}/snapshots)
+  - type: has_one
+    target: BackupSchedule
+    via: path (/backups/{backupId}/schedule)
+- name: BackupSnapshot
+  schemas: [BackupSnapshotLogDto, BackupSnapshotLogDetailsDto, BackupSnapshotLogDtoHasMorePagingDto]
+  description: One point-in-time snapshot produced by a backup.
+  relationships:
+  - type: belongs_to
+    target: Backup
+    via: path
+- name: Endpoint
+  schemas: [EndpointDto]
+  description: >-
+    A Skyvia Connect endpoint publishing a connection over the web. EndpointDto carries id, name, token,
+    active, type, created and modified.
+  enum:
+    type: [OData, Sql]
+    note: >-
+      The type enum has only two values. MCP endpoints, shipped in 2025, are NOT representable in the v1
+      management API — an MCP endpoint cannot be listed, enabled, disabled or audited through this resource.
+      This is the sharpest drift between the shipped product and the published contract.
+  relationships:
+  - type: belongs_to
+    target: Workspace
+    via: path
+  - type: has_many
+    target: EndpointRequestLog
+    via: path (/endpoints/{endpointId}/executions)
+  - type: publishes
+    target: Connection
+    confidence: medium
+- name: EndpointRequestLog
+  schemas: [EndpointRequestLogDto, EndpointRequestLogDetailedDto, EndpointRequestLogDtoHasMorePagingDto]
+  description: Per-request audit trail for a Connect endpoint — the only observability surface over the data plane.
+  relationships:
+  - type: belongs_to
+    target: Endpoint
+    via: path
+paging_wrappers:
+  pattern: '{Entity}DtoHasMorePagingDto'
+  shape: '{ data: [Entity], hasMore: boolean }'
+  count: 12
+  note: Envelope types, not domain entities. See conventions/skyvia-conventions.yml.
+observations:
+- >-
+  Foreign keys are absent from the DTOs almost everywhere; the hierarchy lives in the URL. A client that
+  fetches an EndpointDto or IntegrationDto in isolation cannot tell which connection or workspace it belongs
+  to without remembering the path it used.
+- >-
+  There is a clean four-level shape throughout: Account > Workspace > Asset > Run. Every executable asset
+  (Integration, Automation, Backup) exposes the same run-history idiom with startDate/endDate/failed filters
+  and a summary/detail DTO pair.
+- >-
+  Endpoint is the only entity that bridges to the data plane, and it is the one whose enum has fallen behind
+  the product.
+gaps:
+- No connection id on EndpointDto or IntegrationDto, so the control-plane graph cannot be reassembled from responses alone.
+- No global identifier scheme; ids are workspace-local int32.
+- EndpointDto.type omits the MCP endpoint type shipped in the product.

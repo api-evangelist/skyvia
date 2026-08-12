@@ -1,0 +1,106 @@
+generated: '2026-08-12'
+method: probed
+source: live GET of /.well-known/* on every Skyvia host in apis.yml
+summary: >-
+  No Skyvia host serves any /.well-known/ discovery document. skyvia.com answers HTTP 200 for every
+  /.well-known/* path, but the body is the 118KB marketing homepage HTML — a soft-404 catch-all, not a
+  document, so every one of those 200s is recorded as a miss. api.skyvia.com rejects every unauthenticated
+  request, including /.well-known/*, with a 403 JSON envelope. mcp.skyvia.com and docs.skyvia.com return
+  honest 404s. No security.txt, no OIDC/OAuth discovery, no api-catalog, no ai-plugin, no agent card.
+  Because nothing returned a real document, NO WellKnown or SecurityTxt pointer is emitted in apis.yml.
+real_document_count: 0
+hosts:
+- host: https://skyvia.com
+  note: >-
+    SPA/marketing catch-all — returns HTTP 200 with the homepage HTML (text/html, 118181 bytes) for every
+    /.well-known/ path probed. Treated as a miss, not a hit.
+  documents:
+  - path: /.well-known/security.txt
+    status: 200
+    content_type: text/html
+    document: false
+    note: homepage HTML shell, not RFC 9116 text
+  - path: /.well-known/openid-configuration
+    status: 200
+    content_type: text/html
+    document: false
+  - path: /.well-known/oauth-authorization-server
+    status: 200
+    content_type: text/html
+    document: false
+  - path: /.well-known/api-catalog
+    status: 200
+    content_type: text/html
+    document: false
+  - path: /.well-known/ai-plugin.json
+    status: 200
+    content_type: text/html
+    document: false
+  - path: /.well-known/agent-card.json
+    status: 200
+    content_type: text/html
+    document: false
+  - path: /.well-known/agent.json
+    status: 200
+    content_type: text/html
+    document: false
+- host: https://api.skyvia.com
+  note: >-
+    Every unauthenticated path returns 403 with the Skyvia API error envelope
+    {"errorCode":403,"errors":{},"message":"Authorization header is missing or invalid.","refresh":false}.
+  documents:
+  - path: /.well-known/security.txt
+    status: 403
+    document: false
+  - path: /.well-known/openid-configuration
+    status: 403
+    document: false
+  - path: /.well-known/oauth-authorization-server
+    status: 403
+    document: false
+  - path: /.well-known/oauth-protected-resource
+    status: 403
+    document: false
+  - path: /.well-known/api-catalog
+    status: 403
+    document: false
+  - path: /.well-known/ai-plugin.json
+    status: 403
+    document: false
+  - path: /.well-known/agent-card.json
+    status: 403
+    document: false
+  - path: /.well-known/agent.json
+    status: 403
+    document: false
+- host: https://mcp.skyvia.com
+  note: >-
+    Honest 404s. Notably the MCP server publishes NO OAuth discovery — it is not an OAuth-protected
+    resource; endpoint security, when enabled, is HTTP Basic plus an IP allow-list.
+  documents:
+  - path: /.well-known/oauth-authorization-server
+    status: 404
+    document: false
+  - path: /.well-known/oauth-protected-resource
+    status: 404
+    document: false
+  - path: /.well-known/agent-card.json
+    status: 404
+    document: false
+- host: https://docs.skyvia.com
+  documents:
+  - path: /.well-known/agent-card.json
+    status: 404
+    document: false
+  - path: /llms.txt
+    status: 404
+    document: false
+    note: >-
+      llms.txt is NOT on the docs host — it is served from the marketing host at https://skyvia.com/llms.txt
+      (HTTP 200, text/plain). Captured verbatim in llms/skyvia-llms.txt.
+robots:
+  url: https://skyvia.com/robots.txt
+  status: 200
+  disallow:
+  - /resources/docs/
+  sitemap: https://skyvia.com/sitemap-index.xml

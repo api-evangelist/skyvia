@@ -1,0 +1,198 @@
+generated: '2026-08-12'
+method: searched
+source: https://skyvia.com/pricing
+docs: https://docs.skyvia.com/account-management/subscription-limits-and-plans-in-more-details.html
+currency: USD
+billing_periods: [monthly, annual]
+plan_count: 17
+model: >-
+  Skyvia prices each of its six products separately on the same account — a customer subscribes only to the
+  products they use, and each product has its own free tier. Annual pricing is billed as an annual package
+  at a lower effective monthly rate. Quotas are subscription-level throughput ceilings (records, tasks,
+  storage, traffic, queries per day) rather than per-request API rate limits; see
+  rate-limits/skyvia-rate-limits.yml.
+api_access_note: >-
+  The pricing page does not gate the Public REST API to any tier, and does not list API calls as a metered
+  quantity on any plan. What the plans do meter is the work the API triggers — an integration run started
+  through POST /integrations/{id}/executions consumes the Data Integration records quota, and an automation
+  started by a webhook consumes the Automation tasks quota.
+products:
+- product: Data Integration
+  plans:
+  - name: Free
+    price_monthly: 0
+    price_annual_monthly: 0
+    limits:
+      records_per_month: 10000
+      scheduling_frequency: once a day
+      scheduled_integrations: 2
+      integration_expiration_days: 30
+      scenarios: basic
+      mapping: simple
+  - name: Basic
+    price_monthly: 99.79
+    price_annual_monthly: 79
+    annual_saving: 240
+    limits:
+      records_per_month: unlimited
+      scheduling_frequency: once a day
+      scheduled_integrations: 5
+      scenarios: basic
+      mapping: simple
+  - name: Standard
+    price_monthly: 199
+    price_annual_monthly: 159
+    annual_saving: 480
+    limits:
+      records_per_month: unlimited
+      scheduling_frequency: once hourly
+      scheduled_integrations: 50
+      scenarios: basic
+      mapping: advanced
+  - name: Professional
+    price_monthly: 499
+    price_annual_monthly: 399
+    annual_saving: 1200
+    limits:
+      records_per_month: unlimited
+      scheduling_frequency: once per minute
+      scheduled_integrations: unlimited
+      scenarios: advanced
+      mapping: advanced
+  - name: Enterprise
+    price_monthly: null
+    contact_sales: true
+    limits:
+      records_per_month: unlimited
+      dedicated_vm: true
+      instant_runs: true
+      support: priority
+- product: Automation
+  plans:
+  - name: Free
+    price_monthly: 0
+    price_annual_monthly: 0
+    limits:
+      tasks_per_month: 1000
+      minimum_schedule_interval: 1 day
+      active_automations: 2
+      log_retention_days: 7
+  - name: Standard
+    price_monthly: 119.99
+    price_annual_monthly: 99
+    annual_saving: 240
+    limits:
+      tasks_per_month: unlimited
+      minimum_schedule_interval: 1 minute
+      active_automations: unlimited
+      log_retention_days: 60
+- product: Backup
+  plans:
+  - name: Free
+    price_monthly: 0
+    price_annual_monthly: 0
+    limits:
+      storage: 1 GB
+      snapshot_retention: 3 months
+  - name: Standard
+    price_monthly: 9
+    price_annual_monthly: 7
+    annual_saving: 24
+    limits:
+      storage: 20 GB
+      snapshot_retention: unlimited
+  - name: Professional
+    price_monthly: 99.79
+    price_annual_monthly: 79
+    annual_saving: 240
+    limits:
+      storage: 200 GB
+      snapshot_retention: unlimited
+  - name: Enterprise
+    price_monthly: 499
+    price_annual_monthly: 399
+    annual_saving: 1200
+    limits:
+      storage: 1 TB
+      snapshot_retention: unlimited
+- product: Query
+  plans:
+  - name: Free
+    price_monthly: 0
+    price_annual_monthly: 0
+    limits:
+      queries_per_day: 5
+      traffic: limited
+  - name: Standard
+    price_monthly: 19.15
+    price_annual_monthly: 15
+    annual_saving: 48
+    limits:
+      queries_per_day: unlimited
+      traffic: unlimited
+- product: Connect
+  note: >-
+    This is the product that meters the OData, SQL and MCP endpoint surface — the traffic ceiling below is
+    the closest thing Skyvia publishes to a rate limit on an agent-callable API.
+  plans:
+  - name: Free
+    price_monthly: 0
+    price_annual_monthly: 0
+    limits:
+      traffic_per_month: 100 KB
+      endpoints: 1
+      connectors: 1
+      connector_types: cloud only
+      endpoint_security: false
+  - name: Basic
+    price_monthly: 19.15
+    price_annual_monthly: 15
+    annual_saving: 48
+    limits:
+      traffic_per_month: 1 MB
+      endpoints: unlimited
+      connectors: unlimited
+      connector_types: any
+      endpoint_security: false
+  - name: Standard
+    price_monthly: 49.39
+    price_annual_monthly: 39
+    annual_saving: 120
+    limits:
+      traffic_per_month: 100 MB
+      endpoints: unlimited
+      connectors: unlimited
+      connector_types: any
+      endpoint_security: true
+  - name: Professional
+    price_monthly: 99.79
+    price_annual_monthly: 79
+    annual_saving: 240
+    limits:
+      traffic_per_month: 1 GB
+      endpoints: unlimited
+      connectors: unlimited
+      connector_types: any
+      endpoint_security: true
+- product: Looker Studio Connector
+  plans:
+  - name: Standard
+    price_monthly: 35.28
+    price_annual_monthly: 28
+    annual_saving: 84
+    limits:
+      connections: unlimited
+      connector_types: any
+      traffic: unlimited
+observations:
+- >-
+  Every product has a genuine free tier with no card required, so the entire surface — including a Connect
+  endpoint and therefore an MCP endpoint — can be exercised at zero cost. The Connect free tier's 100 KB per
+  month of traffic is the binding constraint on evaluating the agent surface.
+- >-
+  The Connect traffic quota is measured in bytes per month, not requests, which means an agent issuing SQL
+  through the MCP Execute tool consumes quota in proportion to result-set size. A single unbounded SELECT can
+  exhaust a Free or Basic plan.
+- >-
+  Hybrid deployment of the Connect runtime is not on the pricing page at all — the April 2026 release note
+  states it is disabled by default and priced on request.

@@ -1,0 +1,99 @@
+generated: '2026-08-12'
+method: searched
+source: >-
+  https://docs.skyvia.com/api-reference/ + https://skyvia.com/pricing +
+  https://docs.skyvia.com/account-management/subscription-limits-and-plans-in-more-details.html +
+  openapi/_original/skyvia-public-api-openapi-original.json
+limit_count: 0
+summary: >-
+  Skyvia publishes NO per-request rate limit for any of its APIs, and NO rate-limit response headers. The
+  API reference has no rate-limit section; the 52-operation Swagger document declares no 429 response and no
+  headers on any response; and no RateLimit-*, X-RateLimit-* or Retry-After header was observed on live
+  responses. An honest zero: a client has no runtime signal telling it how close it is to a ceiling, and no
+  documented status code to back off on.
+response_headers: []
+status_on_exhaustion: null
+retry_after: false
+limits: []
+what_is_metered_instead:
+  note: >-
+    Skyvia meters subscription-level THROUGHPUT rather than request rate. These are real, published ceilings
+    that an API or agent caller will hit, but they are billing quotas enforced per month or per day against
+    the account, not per-request limits with a runtime signal. Captured in full in
+    plans/skyvia-plans-pricing.yml.
+  quotas:
+  - product: Data Integration
+    metric: records processed per month
+    free: 10000
+    paid: unlimited
+    consumed_by: POST /v1/workspaces/{workspaceId}/integrations/{integrationId}/executions
+  - product: Data Integration
+    metric: minimum scheduling frequency
+    free: once a day
+    paid: once a day (Basic) / once hourly (Standard) / once per minute (Professional) / instant (Enterprise)
+    note: >-
+      This is the closest analogue to a rate limit on the platform — it caps how often a scheduled
+      integration may run, by plan.
+  - product: Automation
+    metric: tasks per month
+    free: 1000
+    paid: unlimited
+    consumed_by: webhook, schedule and connection triggers
+  - product: Automation
+    metric: minimum schedule interval
+    free: 1 day
+    paid: 1 minute
+  - product: Query
+    metric: queries per day
+    free: 5
+    paid: unlimited
+  - product: Connect
+    metric: traffic per month (bytes)
+    free: 100 KB
+    paid: 1 MB (Basic) / 100 MB (Standard) / 1 GB (Professional)
+    consumed_by: OData endpoints, SQL endpoints, and MCP endpoint tool calls
+    note: >-
+      The binding constraint on the agent surface. Because it is measured in bytes rather than calls, the
+      cost of an MCP Execute call scales with result-set size, and an unbounded query can exhaust a month's
+      quota in one request.
+  - product: Backup
+    metric: storage
+    free: 1 GB
+    paid: 20 GB / 200 GB / 1 TB
+connector_side_limits:
+  note: >-
+    Skyvia does throttle OUTBOUND requests to the third-party APIs it integrates with, to stay inside those
+    vendors' limits — the August 2026 release note records rate-limit throttling added to the Cin7 Core
+    Inventory connector "to regulate request frequency in compliance with the Cin7 Core Inventory API
+    limits", and community threads discuss Salesforce Bulk API limits. That is Skyvia respecting other
+    people's limits, not Skyvia publishing its own.
+  evidence:
+  - https://docs.skyvia.com/recent-releases/august-2026.html
+mcp_surface_controls:
+  note: >-
+    The Connect MCP Execute tool carries per-call bounds in its own inputSchema that function as soft limits
+    even though they are caller-set rather than server-enforced ceilings.
+  controls:
+  - name: pageSize
+    default: 500
+    description: Maximum records returned per page.
+  - name: commandTimeout
+    default: null
+    description: Command timeout in seconds.
+  - name: expireTimeout
+    default: 3600
+    description: Result-reader lifetime in seconds.
+gaps:
+- No documented request-rate limit on the Public REST API, Connect endpoints, or the MCP server.
+- No 429 declared in the spec and no rate-limit or Retry-After headers observed.
+- No published guidance on concurrency, burst behaviour, or backoff.
+evidence:
+- url: https://docs.skyvia.com/api-reference/
+  status: 200
+  finding: no rate-limit section; grep for "rate limit", "Retry-After", "X-RateLimit" returned nothing
+- url: https://api.skyvia.com/swagger/v1/swagger.json
+  status: 200
+  finding: no 429 response and no response headers declared on any of 52 operations
+- url: https://skyvia.com/pricing
+  status: 200
+  finding: quotas published per product per month; no per-request limits

@@ -1,0 +1,407 @@
+openapi: 3.0.1
+info:
+  title: Skyvia Public API — Endpoints
+  version: v1
+  description: Skyvia Connect endpoints (OData and SQL) that publish data over the web, plus their request logs.
+  x-apievangelist-source: https://api.skyvia.com/swagger/v1/swagger.json
+servers:
+- url: https://api.skyvia.com
+  description: Skyvia public API
+tags:
+- name: Endpoints
+  description: Skyvia Connect endpoints (OData and SQL) that publish data over the web, plus their request logs.
+paths:
+  /v1/endpoints/types:
+    get:
+      tags:
+      - Endpoints
+      responses:
+        '200':
+          description: OK
+          content:
+            text/plain:
+              schema:
+                type: object
+                properties:
+                  OData:
+                    type: integer
+                    format: int32
+                  Sql:
+                    type: integer
+                    format: int32
+                additionalProperties: false
+            application/json:
+              schema:
+                type: object
+                properties:
+                  OData:
+                    type: integer
+                    format: int32
+                  Sql:
+                    type: integer
+                    format: int32
+                additionalProperties: false
+            text/json:
+              schema:
+                type: object
+                properties:
+                  OData:
+                    type: integer
+                    format: int32
+                  Sql:
+                    type: integer
+                    format: int32
+                additionalProperties: false
+  /v1/workspaces/{workspaceId}/endpoints:
+    get:
+      tags:
+      - Endpoints
+      summary: Get endpoints
+      parameters:
+      - name: workspaceId
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - name: skip
+        in: query
+        description: Items to skip [0...]
+        schema:
+          type: integer
+          format: int32
+          default: 0
+      - name: take
+        in: query
+        description: Items to take [1..200]
+        schema:
+          type: integer
+          format: int32
+          default: 20
+      responses:
+        '200':
+          description: OK
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/EndpointDtoHasMorePagingDto'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EndpointDtoHasMorePagingDto'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/EndpointDtoHasMorePagingDto'
+  /v1/workspaces/{workspaceId}/endpoints/{endpointId}:
+    get:
+      tags:
+      - Endpoints
+      parameters:
+      - name: workspaceId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - name: endpointId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      responses:
+        '200':
+          description: OK
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/EndpointDto'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EndpointDto'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/EndpointDto'
+  /v1/workspaces/{workspaceId}/endpoints/{endpointId}/enable:
+    post:
+      tags:
+      - Endpoints
+      parameters:
+      - name: workspaceId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - name: endpointId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      responses:
+        '200':
+          description: OK
+  /v1/workspaces/{workspaceId}/endpoints/{endpointId}/disable:
+    post:
+      tags:
+      - Endpoints
+      parameters:
+      - name: workspaceId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - name: endpointId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      responses:
+        '200':
+          description: OK
+  /v1/workspaces/{workspaceId}/endpoints/{endpointId}/executions:
+    get:
+      tags:
+      - Endpoints
+      summary: Get requests log
+      parameters:
+      - name: workspaceId
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - name: endpointId
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - name: startDate
+        in: query
+        description: ''
+        schema:
+          type: string
+          format: date-time
+      - name: endDate
+        in: query
+        description: ''
+        schema:
+          type: string
+          format: date-time
+      - name: failed
+        in: query
+        description: ''
+        schema:
+          type: boolean
+      - name: skip
+        in: query
+        description: Items to skip [0...]
+        schema:
+          type: integer
+          format: int32
+          default: 0
+      - name: take
+        in: query
+        description: Items to take [1..200]
+        schema:
+          type: integer
+          format: int32
+          default: 20
+      - name: sortOrder
+        in: query
+        description: 'To sort the available list of records in either ascending or descending order. Possible values: asc
+          - ascending order, desc - descending order.The default value is ''asc''.'
+        schema:
+          type: string
+          default: asc
+      - name: sortBy
+        in: query
+        description: 'To sort the records based on the fields: date, executionId. The default value is ''date'''
+        schema:
+          type: string
+          default: date
+      responses:
+        '200':
+          description: OK
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/EndpointRequestLogDtoHasMorePagingDto'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EndpointRequestLogDtoHasMorePagingDto'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/EndpointRequestLogDtoHasMorePagingDto'
+  /v1/workspaces/{workspaceId}/endpoints/{endpointId}/executions/{recordId}:
+    get:
+      tags:
+      - Endpoints
+      parameters:
+      - name: workspaceId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - name: endpointId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - name: recordId
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/EndpointRequestLogDetailedDto'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EndpointRequestLogDetailedDto'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/EndpointRequestLogDetailedDto'
+components:
+  schemas:
+    EndpointDto:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int32
+        name:
+          type: string
+          nullable: true
+        token:
+          type: string
+          nullable: true
+        active:
+          type: boolean
+        type:
+          enum:
+          - OData
+          - Sql
+          type: string
+        created:
+          type: string
+          format: date-time
+        modified:
+          type: string
+          format: date-time
+      additionalProperties: false
+    EndpointDtoHasMorePagingDto:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/EndpointDto'
+          nullable: true
+        hasMore:
+          type: boolean
+      additionalProperties: false
+    EndpointRequestLogDetailedDto:
+      type: object
+      properties:
+        date:
+          type: string
+          format: date-time
+        url:
+          type: string
+          nullable: true
+        method:
+          type: string
+          nullable: true
+        remoteIP:
+          type: string
+          nullable: true
+        userAgent:
+          type: string
+          nullable: true
+        user:
+          type: string
+          nullable: true
+        error:
+          type: string
+          nullable: true
+        log:
+          type: array
+          items:
+            type: string
+          nullable: true
+        bytes:
+          type: integer
+          format: int32
+        rows:
+          type: integer
+          format: int32
+        pageToken:
+          type: string
+          nullable: true
+        external:
+          type: boolean
+      additionalProperties: false
+    EndpointRequestLogDto:
+      type: object
+      properties:
+        executionId:
+          type: string
+          nullable: true
+        date:
+          type: string
+          format: date-time
+        method:
+          enum:
+          - GET
+          - POST
+          - PUT
+          - DELETE
+          - PATCH
+          - HEAD
+          - OPTIONS
+          - TRACE
+          type: string
+        failed:
+          type: boolean
+        bytes:
+          type: integer
+          format: int32
+        remoteIP:
+          type: string
+          nullable: true
+        url:
+          type: string
+          nullable: true
+      additionalProperties: false
+    EndpointRequestLogDtoHasMorePagingDto:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/EndpointRequestLogDto'
+          nullable: true
+        hasMore:
+          type: boolean
+      additionalProperties: false
+  securitySchemes:
+    Access Token:
+      type: apiKey
+      description: Authorization header with the Skyvia access token.
+      name: Authorization
+      in: header
+security:
+- Access Token: []

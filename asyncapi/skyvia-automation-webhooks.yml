@@ -1,0 +1,95 @@
+generated: '2026-08-12'
+method: searched
+source: https://docs.skyvia.com/automation/building-automation/triggers.html
+spec_type: null
+asyncapi_published: false
+summary: >-
+  Skyvia publishes no AsyncAPI document, and it does NOT emit webhooks about its own resources — there is no
+  way to subscribe to "integration finished", "backup failed" or "automation errored" as an outbound event,
+  and no event catalog exists. What Skyvia has is an INBOUND webhook surface: Automation can be started by
+  an HTTP request from an external system, with optional SHA256 HMAC payload verification. That is a real
+  event surface and is captured here as a webhook catalog, but the direction is the opposite of the usual
+  provider webhook and consumers should not expect callbacks.
+direction: inbound
+outbound_webhooks:
+  supported: false
+  note: >-
+    Confirmed by absence across the API reference, the Automation docs and the monthly release notes back
+    through January 2026. Skyvia's own notification surface is email (Account Settings > Email
+    Notifications) plus in-app execution history and logs, readable through the REST API's
+    /executions and /snapshots routes by polling.
+  polling_alternative:
+  - GET /v1/workspaces/{workspaceId}/integrations/{integrationId}/executions
+  - GET /v1/workspaces/{workspaceId}/integrations/{integrationId}/executions/active
+  - GET /v1/workspaces/{workspaceId}/automations/{automationId}/executions
+  - GET /v1/workspaces/{workspaceId}/automations/{automationId}/state
+  - GET /v1/workspaces/{workspaceId}/backups/{backupId}/snapshots
+  - GET /v1/workspaces/{workspaceId}/endpoints/{endpointId}/executions
+  note_on_polling: >-
+    All six accept startDate, endDate and failed filters plus skip/take paging, so an integrator building a
+    notification pipeline on top of Skyvia polls these with a Read-scoped token rather than receiving events.
+inbound_webhooks:
+  product: Skyvia Automation
+  docs: https://docs.skyvia.com/automation/building-automation/triggers.html
+  url_form: '{skyvia-issued base URL}/{user-defined event name}'
+  url_note: >-
+    The trigger URL is generated automatically in two parts — a base URL created by Skyvia and an event name
+    the user defines. The concrete host is only visible inside an authenticated account, so it is recorded
+    as a form, not as a literal.
+  method: POST
+  payload: >-
+    Arbitrary — whatever the calling system sends. Skyvia does not define a payload schema; the automation
+    consumes the received payload through its own components and expressions, so the contract is the
+    caller's, not Skyvia's.
+  security:
+    hash_verification: SHA256 HMAC
+    secret: user-supplied Secret Key configured on the trigger
+    signature_header: >-
+      Configurable — the user picks which incoming HTTP header carries the signature via a "Signature Header"
+      dropdown. There is no fixed header name.
+    computation: >-
+      The signature is validated against the ORIGINAL payload of the webhook, so the comparison is between
+      the supplied hash and the hash of the raw body.
+    on_failure:
+      behaviour: The event is ignored and the automation does not run.
+      message: Invalid HMAC header value
+    optional: true
+    note: Hash verification is opt-in per trigger; a trigger with it disabled accepts any caller who knows the URL.
+    added: '2026-01'
+triggers:
+- type: Manual
+  description: Start the automation on demand from the Run action on the automation management pane.
+  event_driven: false
+- type: Run on Schedule
+  description: >-
+    Recurring or one-time schedule with configurable frequency, time and timezone. Minimum interval is
+    1 day on the Free plan and 1 minute on Standard.
+  event_driven: false
+- type: Connection
+  subtype: Polling Trigger
+  description: >-
+    Watches a data source at a specified interval for new, updated or deleted records and starts the
+    automation when it finds them. Available event kinds vary by connector.
+  event_driven: true
+  delivery: polling
+  note: >-
+    Skyvia does the polling on the customer's behalf, which is how it presents non-event-capable data sources
+    as event sources. The available trigger events are not enumerated per connector in the documentation.
+- type: Webhook
+  description: >-
+    Receives an HTTP request from an external application and starts the automation in real time. Optional
+    SHA256 HMAC hash verification against a shared secret.
+  event_driven: true
+  delivery: push
+  inbound: true
+testing:
+  supported: true
+  note: >-
+    Automation Test Mode waits for a real event when the trigger is a Webhook or Connection trigger, and lets
+    you repeat the previous execution with the same captured data. Test executions are not billed against
+    the tasks quota. See sandbox/skyvia-sandbox.yml.
+gaps:
+- No AsyncAPI, CloudEvents or event-catalog document is published.
+- No outbound webhooks — an integrator cannot be notified when a Skyvia job succeeds or fails.
+- The inbound webhook signature header name is customer-configured, so there is no interoperable convention to code against.
+- Connection trigger event types are not enumerated per connector.

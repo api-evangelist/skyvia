@@ -1,0 +1,74 @@
+generated: '2026-08-12'
+method: generated
+source: >-
+  openapi/*.yml + mcp/skyvia-mcp.yml + conventions/skyvia-conventions.yml + scopes/skyvia-scopes.yml +
+  errors/skyvia-problem-types.yml
+note: >-
+  Skyvia's published Swagger document declares NO operationIds on any of its 52 operations, so every skill
+  identifies operations by HTTP method + path exactly as they appear in the spec. Nothing is invented — each
+  operation named in a skill was verified present in openapi/_original/skyvia-public-api-openapi-original.json.
+  Skyvia publishes no AGENTS.md or first-party agent skills; these are API Evangelist generated.
+skills:
+- file: skyvia-run-and-monitor-integration.md
+  name: Run a Skyvia integration and monitor it to completion
+  api: openapi/skyvia-integrations-api-openapi.yml
+  surface: rest
+  operations:
+  - POST /v1/workspaces/{workspaceId}/integrations/{integrationId}/executions
+  - GET /v1/workspaces/{workspaceId}/integrations/{integrationId}/executions/active
+  - GET /v1/workspaces/{workspaceId}/integrations/{integrationId}/executions
+  - GET /v1/workspaces/{workspaceId}/integrations/{integrationId}/executions/{executionId}
+  - POST /v1/workspaces/{workspaceId}/integrations/{integrationId}/executions/cancel
+  - POST /v1/workspaces/{workspaceId}/integrations/{integrationId}/executions/kill
+  - GET /v1/workspaces/{workspaceId}/integrations
+  scopes: [Integration / Read, Integration / Execute, Workspace / Read]
+- file: skyvia-query-data-via-mcp-endpoint.md
+  name: Query business data through a Skyvia Connect MCP endpoint
+  api: mcp/skyvia-mcp.yml
+  surface: mcp
+  operations: [Instructions, Objects, ObjectInfo, Execute]
+  note: Tool names and input schemas read live from tools/list on https://mcp.skyvia.com/mcp, 2026-08-12.
+- file: skyvia-audit-connect-endpoints.md
+  name: Audit and control Skyvia Connect endpoints
+  api: openapi/skyvia-endpoints-api-openapi.yml
+  surface: rest
+  operations:
+  - GET /v1/endpoints/types
+  - GET /v1/workspaces/{workspaceId}/endpoints
+  - GET /v1/workspaces/{workspaceId}/endpoints/{endpointId}
+  - GET /v1/workspaces/{workspaceId}/endpoints/{endpointId}/executions
+  - GET /v1/workspaces/{workspaceId}/endpoints/{endpointId}/executions/{recordId}
+  - POST /v1/workspaces/{workspaceId}/endpoints/{endpointId}/disable
+  - POST /v1/workspaces/{workspaceId}/endpoints/{endpointId}/enable
+  scopes: [Endpoint / Read, Endpoint / Enable-Disable, Workspace / Read]
+- file: skyvia-manage-workspace-access.md
+  name: Manage Skyvia account and workspace access
+  api: openapi/skyvia-account-api-openapi.yml
+  surface: rest
+  operations:
+  - GET /v1/account/users
+  - DELETE /v1/account/users
+  - GET /v1/account/invitations
+  - POST /v1/account/invitations
+  - POST /v1/account/invitations/{invitationId}/resend
+  - DELETE /v1/account/invitations/{invitationId}
+  - GET /v1/workspaces
+  - GET /v1/workspaces/{workspaceId}/users
+  - POST /v1/workspaces/{workspaceId}/users
+  - DELETE /v1/workspaces/{workspaceId}/users/{userId}
+  scopes: [Account / Read, Account / Modify, Workspace / Read, Workspace / Read Users, Workspace / Modify Users]
+- file: skyvia-backup-and-verify.md
+  name: Trigger a Skyvia backup snapshot and verify it completed
+  api: openapi/skyvia-backups-api-openapi.yml
+  surface: rest
+  operations:
+  - GET /v1/workspaces/{workspaceId}/backups
+  - GET /v1/workspaces/{workspaceId}/backups/{backupId}
+  - GET /v1/workspaces/{workspaceId}/backups/{backupId}/snapshots/active
+  - POST /v1/workspaces/{workspaceId}/backups/{backupId}/snapshots
+  - GET /v1/workspaces/{workspaceId}/backups/{backupId}/snapshots
+  - GET /v1/workspaces/{workspaceId}/backups/{backupId}/snapshots/{snapshotId}
+  - GET /v1/workspaces/{workspaceId}/backups/{backupId}/schedule
+  - POST /v1/workspaces/{workspaceId}/backups/{backupId}/schedule/enable
+  - POST /v1/workspaces/{workspaceId}/backups/{backupId}/schedule/disable
+  scopes: [Workspace / Read]

@@ -1,0 +1,83 @@
+generated: '2026-08-12'
+method: searched
+source: openapi/*.yml (derived baseline) + https://docs.skyvia.com/account-management/api-settings.html
+docs: https://docs.skyvia.com/account-management/api-settings.html
+summary:
+  types:
+  - apiKey
+  - http
+  api_key_in:
+  - header
+  oauth2_flows: []
+  note: >-
+    Skyvia uses no OAuth 2.0 and no OpenID Connect on any of its own surfaces. The Public REST API is
+    authenticated with a single opaque, scoped, expiring API token in the Authorization header. Skyvia
+    Connect endpoints (OData, SQL, MCP) use a separate, per-endpoint credential model — optional HTTP Basic
+    endpoint users plus an IP allow-list — which is unrelated to the account API token.
+schemes:
+- name: Access Token
+  type: apiKey
+  in: header
+  parameter: Authorization
+  description: Authorization header with the Skyvia access token.
+  surface: Skyvia Public API (https://api.skyvia.com)
+  scoped: true
+  scopes: scopes/skyvia-scopes.yml
+  expiry:
+    max_lifetime: 1 year
+    note: >-
+      "you cannot create token lasting longer than a year." Tokens display an expiration date and a last-used
+      timestamp in Account Settings > API Settings.
+  issuance: Self-service in the Skyvia app under Account Settings > API Settings.
+  rotation: Manual — create a new token and delete the old one; no programmatic rotation endpoint exists.
+  observed_failure:
+    http_status: 403
+    body: '{"errorCode":403,"errors":{},"message":"Authorization header is missing or invalid.","refresh":false}'
+    note: >-
+      Probed live and unauthenticated on 2026-08-12. Skyvia answers a missing or invalid token with 403, not
+      401, and returns no WWW-Authenticate challenge — so a client cannot discover the scheme from the
+      response. The spec declares no 401/403 response at all, so this envelope is undocumented.
+  sources:
+  - openapi/skyvia-account-api-openapi.yml
+  - openapi/skyvia-agents-api-openapi.yml
+  - openapi/skyvia-automations-api-openapi.yml
+  - openapi/skyvia-backups-api-openapi.yml
+  - openapi/skyvia-connections-api-openapi.yml
+  - openapi/skyvia-endpoints-api-openapi.yml
+  - openapi/skyvia-integrations-api-openapi.yml
+  - openapi/skyvia-workspaces-api-openapi.yml
+- name: Connect endpoint user
+  type: http
+  scheme: basic
+  surface: Skyvia Connect OData / SQL / MCP endpoints
+  optional: true
+  description: >-
+    Per-endpoint user accounts. Credentials are the endpoint user name and password joined with a colon and
+    base64-encoded into the Authorization header. Security is optional per endpoint — an endpoint with no
+    user accounts is reachable by anyone holding the endpoint URL, which is what makes an MCP endpoint usable
+    from the Claude web client. Adding user accounts restricts the endpoint to clients that support
+    authenticated MCP, such as Claude Desktop.
+  additional_controls:
+  - IP address filtering (allow-list of ranges permitted to reach the endpoint)
+  - Per-object and per-operation permissions on the endpoint
+  docs: https://docs.skyvia.com/connect/security-settings.html
+  sources:
+  - https://docs.skyvia.com/connect/security-settings.html
+  - https://docs.skyvia.com/connect/mcp-endpoints/using-with-claude.html
+account_level_controls:
+- control: Two-factor authentication
+  scope: Skyvia account sign-in
+  enforceable: true
+  note: An account can require all users to have 2FA enabled (added June 2026).
+  docs: https://docs.skyvia.com/profile-management/two-factor-authentication.html
+- control: IP filtering
+  scope: Skyvia account sign-in
+  note: Restricts account access to specific IP addresses (added June 2026).
+  docs: https://docs.skyvia.com/account-management/account-security.html
+gaps:
+- No OAuth 2.0 or OIDC on any Skyvia surface; no /.well-known discovery documents are served.
+- >-
+  The Authorization header VALUE format for the Public API token is not stated anywhere in the docs — the
+  reference says only that the token "must be passed in the Authorization header", and the spec's scheme
+  description repeats it. Whether a `Bearer ` prefix is required is left for the caller to discover.
+- The spec declares no 401 or 403 responses, so the auth-failure contract is undocumented in the machine-readable artifact.

@@ -1,0 +1,93 @@
+generated: '2026-08-12'
+method: searched
+source: >-
+  https://docs.skyvia.com/automation/operating-automation/testing.html +
+  https://docs.skyvia.com/recent-releases/june-2026.html + https://skyvia.com/pricing +
+  https://docs.skyvia.com/api-reference/
+summary: >-
+  Skyvia has no sandbox in the payments sense — no test-mode credentials, no test/live key prefixes, no
+  magic test values, no separate sandbox host. api.skyvia.com is the only host, and a token issued there
+  acts on real workspaces. What Skyvia does publish is a genuine free tier on every product plus two
+  in-product safe-execution features — Automation Test Mode and Data Flow Debug mode — which is how a
+  developer exercises the platform without consequence.
+test_live_separation:
+  separate_hosts: false
+  key_prefixes: false
+  test_mode_credentials: false
+  note: >-
+    There is one API host, one token type, and no mode flag. A token created in Account Settings > API
+    Settings operates on production workspaces immediately. The only isolation available is organisational —
+    create a separate workspace, or a separate free account, to experiment in.
+free_tier_as_sandbox:
+  available: true
+  card_required: false
+  note: >-
+    Every Skyvia product has a Free plan, so the whole surface including a Connect endpoint and therefore an
+    MCP endpoint can be exercised at zero cost. This is the practical evaluation path.
+  ceilings:
+    data_integration: 10000 records/month, 2 scheduled integrations expiring after 30 days, once-a-day scheduling
+    automation: 1000 tasks/month, 2 active automations, 7-day log retention
+    backup: 1 GB storage, 3-month snapshot retention
+    query: 5 queries/day
+    connect: 100 KB traffic/month, 1 endpoint, 1 cloud connector
+  see: plans/skyvia-plans-pricing.yml
+safe_execution_features:
+- name: Automation Test Mode
+  docs: https://docs.skyvia.com/automation/operating-automation/testing.html
+  product: Automation
+  billed: false
+  quote: >-
+    "It enables you to test automation without involving the billed tasks and navigating to the automation
+    overview."
+  behaviour:
+  - Manual and Schedule triggers execute immediately when tested.
+  - >-
+    Connection and Webhook triggers wait for a real event; you can either repeat the previous execution with
+    the same captured data or wait for a fresh one.
+  - Test executions are recorded in Execution History and can be filtered to test-only runs and re-run.
+  - Queued executions can be tested one at a time or the queue cleared to wait for new events.
+  constraint: >-
+    "You cannot enable your automation while the test is in progress." The test must be stopped before the
+    automation is activated.
+  note: >-
+    The replay-the-previous-execution behaviour is the closest thing Skyvia offers to a fixture: a real
+    captured webhook payload can be re-fired against a changing automation without asking the caller to send
+    it again.
+- name: Data Flow Debug mode
+  docs: https://docs.skyvia.com/recent-releases/june-2026.html
+  product: Data Integration (Data Flow)
+  added: '2026-06'
+  behaviour:
+  - Set breakpoints on component outputs.
+  - Inspect component state, processed-record counts and output data at each stage.
+- name: Data Preview in Replication
+  docs: https://docs.skyvia.com/recent-releases/july-2026.html
+  product: Data Integration (Replication)
+  added: '2026-07'
+  behaviour:
+  - Preview the data that will be replicated before running the integration, and include or exclude columns on the spot.
+- name: schemaOnly on MCP Execute
+  product: Connect MCP endpoint
+  behaviour:
+  - >-
+    The Execute tool accepts schemaOnly (default false). When true the server validates the SQL and returns
+    only the result schema, returning no data — a dry-run for an agent about to run an unfamiliar query.
+  source: mcp/skyvia-mcp.yml
+- name: Connection and Agent test operations
+  product: Skyvia Public API
+  behaviour:
+  - POST /v1/workspaces/{workspaceId}/connections/{connectionId}/test verifies a connection without using it.
+  - POST /v1/workspaces/{workspaceId}/agents/{agentId}/test verifies agent reachability.
+  caveat: >-
+    Both return HTTP 200 whether the test passed or failed, with the outcome in the ApiResult `message`
+    field, so a caller must read the body rather than the status. See errors/skyvia-problem-types.yml.
+test_values:
+  published: false
+  note: >-
+    Skyvia publishes no test card numbers, test accounts, magic identifiers or fixture tokens. None are
+    invented here. Demo connections do exist inside the app on the Discover Platform page (January 2026
+    release), but their credentials are only visible to a signed-in user and are not published.
+gaps:
+- No dedicated sandbox host or test-mode token for the Public REST API.
+- No published fixtures or synthetic data set.
+- No way to dry-run a REST write operation; only the two /test operations are non-mutating by design.

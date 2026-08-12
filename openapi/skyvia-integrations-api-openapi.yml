@@ -1,0 +1,507 @@
+openapi: 3.0.1
+info:
+  title: Skyvia Public API — Integrations
+  version: v1
+  description: 'Data integration packages (import, export, replication, synchronization, data flow, control flow): execution,
+    cancellation, and schedules.'
+  x-apievangelist-source: https://api.skyvia.com/swagger/v1/swagger.json
+servers:
+- url: https://api.skyvia.com
+  description: Skyvia public API
+tags:
+- name: Integrations
+  description: 'Data integration packages (import, export, replication, synchronization, data flow, control flow): execution,
+    cancellation, and schedules.'
+paths:
+  /v1/workspaces/{workspaceId}/integrations:
+    get:
+      tags:
+      - Integrations
+      summary: Get integrations
+      parameters:
+      - name: workspaceId
+        in: path
+        description: Workspace Id
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - name: skip
+        in: query
+        description: Items to skip [0...]
+        schema:
+          type: integer
+          format: int32
+          default: 0
+      - name: take
+        in: query
+        description: Items to take [1..200]
+        schema:
+          type: integer
+          format: int32
+          default: 20
+      responses:
+        '200':
+          description: OK
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/IntegrationDtoHasMorePagingDto'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IntegrationDtoHasMorePagingDto'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/IntegrationDtoHasMorePagingDto'
+  /v1/workspaces/{workspaceId}/integrations/{integrationId}:
+    get:
+      tags:
+      - Integrations
+      parameters:
+      - name: workspaceId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - name: integrationId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      responses:
+        '200':
+          description: OK
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/IntegrationDto'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IntegrationDto'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/IntegrationDto'
+  /v1/workspaces/{workspaceId}/integrations/{integrationId}/executions:
+    get:
+      tags:
+      - Integrations
+      summary: Get finished executions
+      parameters:
+      - name: workspaceId
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - name: integrationId
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - name: startDate
+        in: query
+        description: ''
+        schema:
+          type: string
+          format: date-time
+      - name: endDate
+        in: query
+        description: ''
+        schema:
+          type: string
+          format: date-time
+      - name: failed
+        in: query
+        description: ''
+        schema:
+          type: boolean
+      - name: skip
+        in: query
+        description: Items to skip [0...]
+        schema:
+          type: integer
+          format: int32
+          default: 0
+      - name: take
+        in: query
+        description: Items to take [1..200]
+        schema:
+          type: integer
+          format: int32
+          default: 20
+      - name: sortOrder
+        in: query
+        description: 'To sort the available list of records in either ascending or descending order. Possible values: asc
+          - ascending order, desc - descending order.The default value is ''asc''.'
+        schema:
+          type: string
+          default: asc
+      - name: sortBy
+        in: query
+        description: 'To sort the records based on the fields: startDate, runId. The default value is ''startDate'''
+        schema:
+          type: string
+          default: startDate
+      responses:
+        '200':
+          description: OK
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/IntegrationExecutionLogDtoHasMorePagingDto'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IntegrationExecutionLogDtoHasMorePagingDto'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/IntegrationExecutionLogDtoHasMorePagingDto'
+    post:
+      tags:
+      - Integrations
+      parameters:
+      - name: workspaceId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - name: integrationId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      responses:
+        '200':
+          description: OK
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/IntegrationExecutionLogDto'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IntegrationExecutionLogDto'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/IntegrationExecutionLogDto'
+  /v1/workspaces/{workspaceId}/integrations/{integrationId}/executions/{executionId}:
+    get:
+      tags:
+      - Integrations
+      parameters:
+      - name: workspaceId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - name: integrationId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - name: executionId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      responses:
+        '200':
+          description: OK
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/IntegrationExecutionResultDto'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IntegrationExecutionResultDto'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/IntegrationExecutionResultDto'
+  /v1/workspaces/{workspaceId}/integrations/{integrationId}/executions/active:
+    get:
+      tags:
+      - Integrations
+      parameters:
+      - name: workspaceId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - name: integrationId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      responses:
+        '200':
+          description: OK
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/IntegrationExecutionLogDto'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IntegrationExecutionLogDto'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/IntegrationExecutionLogDto'
+  /v1/workspaces/{workspaceId}/integrations/{integrationId}/executions/cancel:
+    post:
+      tags:
+      - Integrations
+      parameters:
+      - name: workspaceId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - name: integrationId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      responses:
+        '200':
+          description: OK
+  /v1/workspaces/{workspaceId}/integrations/{integrationId}/executions/kill:
+    post:
+      tags:
+      - Integrations
+      parameters:
+      - name: workspaceId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - name: integrationId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      responses:
+        '200':
+          description: OK
+  /v1/workspaces/{workspaceId}/integrations/{integrationId}/schedule:
+    get:
+      tags:
+      - Integrations
+      parameters:
+      - name: workspaceId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - name: integrationId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      responses:
+        '200':
+          description: OK
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/IntegrationScheduleDto'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IntegrationScheduleDto'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/IntegrationScheduleDto'
+  /v1/workspaces/{workspaceId}/integrations/{integrationId}/schedule/enable:
+    post:
+      tags:
+      - Integrations
+      parameters:
+      - name: workspaceId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - name: integrationId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      responses:
+        '200':
+          description: OK
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/IntegrationScheduleDto'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IntegrationScheduleDto'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/IntegrationScheduleDto'
+  /v1/workspaces/{workspaceId}/integrations/{integrationId}/schedule/disable:
+    post:
+      tags:
+      - Integrations
+      parameters:
+      - name: workspaceId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - name: integrationId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      responses:
+        '200':
+          description: OK
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/IntegrationScheduleDto'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IntegrationScheduleDto'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/IntegrationScheduleDto'
+components:
+  schemas:
+    IntegrationDto:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int32
+        name:
+          type: string
+          nullable: true
+        type:
+          type: string
+          description: 'Possible values: dataflow, export, controlflow, replication, import, sync, custom'
+          nullable: true
+        created:
+          type: string
+          format: date-time
+        modified:
+          type: string
+          format: date-time
+        scheduled:
+          type: boolean
+      additionalProperties: false
+    IntegrationDtoHasMorePagingDto:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/IntegrationDto'
+          nullable: true
+        hasMore:
+          type: boolean
+      additionalProperties: false
+    IntegrationExecutionLogDto:
+      type: object
+      properties:
+        runId:
+          type: integer
+          format: int32
+        date:
+          type: string
+          format: date-time
+        duration:
+          type: integer
+          format: int32
+        state:
+          enum:
+          - New
+          - Queued
+          - Running
+          - Succeeded
+          - Failed
+          - Canceling
+          - Canceled
+          type: string
+        successRows:
+          type: integer
+          format: int32
+        errorRows:
+          type: integer
+          format: int32
+      additionalProperties: false
+    IntegrationExecutionLogDtoHasMorePagingDto:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/IntegrationExecutionLogDto'
+          nullable: true
+        hasMore:
+          type: boolean
+      additionalProperties: false
+    IntegrationExecutionResultDto:
+      type: object
+      properties:
+        runId:
+          type: integer
+          format: int32
+        queueTime:
+          type: string
+          format: date-time
+        startTime:
+          type: string
+          format: date-time
+          nullable: true
+        endTime:
+          type: string
+          format: date-time
+          nullable: true
+        state:
+          enum:
+          - New
+          - Queued
+          - Running
+          - Succeeded
+          - Failed
+          - Canceling
+          - Canceled
+          type: string
+        result:
+          type: string
+          nullable: true
+      additionalProperties: false
+    IntegrationScheduleDto:
+      type: object
+      properties:
+        active:
+          type: boolean
+      additionalProperties: false
+  securitySchemes:
+    Access Token:
+      type: apiKey
+      description: Authorization header with the Skyvia access token.
+      name: Authorization
+      in: header
+security:
+- Access Token: []

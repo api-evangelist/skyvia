@@ -1,0 +1,145 @@
+generated: '2026-08-12'
+method: derived
+source: openapi/_original/skyvia-public-api-openapi-original.json + https://docs.skyvia.com/api-reference/ + live probes of https://api.skyvia.com
+api: Skyvia Public API
+summary: >-
+  Cross-cutting request/response semantics for the Skyvia Public API, derived from the published Swagger
+  document and confirmed where possible against live unauthenticated responses. Skyvia's conventions are
+  consistent but thin: one auth header, one paging shape, one sort/filter idiom, one error envelope. The
+  notable absences are idempotency and rate-limit signalling, both of which are genuinely missing rather
+  than undocumented.
+authentication:
+  style: opaque API token in the Authorization header
+  header: Authorization
+  scoped: true
+  see: authentication/skyvia-authentication.yml
+  see_also: scopes/skyvia-scopes.yml
+idempotency:
+  supported: false
+  header: null
+  note: >-
+    Skyvia publishes NO idempotency contract. There is no Idempotency-Key header or parameter anywhere in
+    the 52-operation spec and no mention of idempotency, request keys or safe retries in the API reference.
+    Several POST operations are naturally idempotent by state (enable, disable, schedule/enable,
+    schedule/disable, executions/cancel, executions/kill), but the two that create work —
+    POST /v1/workspaces/{workspaceId}/integrations/{integrationId}/executions and
+    POST /v1/workspaces/{workspaceId}/backups/{backupId}/snapshots — are not, and a retried call after a
+    timeout can start a second integration run or a second snapshot. No apis.yml Idempotency pointer is
+    emitted, because none is earned.
+  risk_operations:
+  - POST /v1/workspaces/{workspaceId}/integrations/{integrationId}/executions
+  - POST /v1/workspaces/{workspaceId}/backups/{backupId}/snapshots
+  - POST /v1/account/invitations
+  - POST /v1/account/invitations/{invitationId}/resend
+  - POST /v1/workspaces/{workspaceId}/users
+pagination:
+  style: offset
+  parameters:
+  - name: skip
+    in: query
+    type: integer
+    description: Number of records to skip.
+  - name: take
+    in: query
+    type: integer
+    description: Number of records to return in this page.
+  response_envelope:
+    shape: '{ "data": [ ... ], "hasMore": true }'
+    schemas_suffix: HasMorePagingDto
+    fields:
+    - field: data
+      description: The page of records; nullable.
+    - field: hasMore
+      description: Boolean indicating whether further records exist beyond this page.
+  applies_to_operations: 12
+  note: >-
+    Every list operation returns a `<Entity>DtoHasMorePagingDto` wrapper. There is no total count and no
+    cursor or next-page token — a client paginates by incrementing `skip` until `hasMore` is false. The
+    default and maximum values for `take` are not documented.
+  contrast: >-
+    The Connect MCP Execute tool uses a different, cursor-style paging model: `pageSize` (default 500) plus a
+    next-page token returned with each page, with a result-reader lifetime governed by `expireTimeout`
+    (default 3600 seconds). The two surfaces do not share a paging convention.
+filtering_and_sorting:
+  parameters:
+  - name: searchMask
+    applies_to: [account users, account invitations]
+    description: Free-text search mask.
+  - name: startDate
+    applies_to: [automation executions, integration executions, endpoint request log, backup snapshots]
+  - name: endDate
+    applies_to: [automation executions, integration executions, endpoint request log, backup snapshots]
+  - name: failed
+    type: boolean
+    description: Restrict execution/log listings to failed runs.
+  - name: sortBy
+  - name: sortOrder
+  note: >-
+    Allowed `sortBy` field names and `sortOrder` values are not enumerated in the spec — both are declared as
+    free strings, so valid values must be discovered by trial.
+field_expansion:
+  supported: false
+  note: >-
+    No expand, fields, or include parameter. Detail is obtained by calling the item operation
+    (GET .../{id}) rather than by expanding a list response. Several resources publish a distinct detail DTO
+    (AutomationLogItemDetailsDto, BackupSnapshotLogDetailsDto, EndpointRequestLogDetailedDto,
+    ConnectionDetailsDto) reached only through the item route.
+metadata:
+  supported: false
+  note: No customer-defined metadata or tag field on any resource DTO.
+request_tracing:
+  request_id_header: null
+  note: >-
+    No request-id or correlation-id header is documented, and none was observed on live responses. Endpoint
+    activity is instead auditable server-side through the Connect request log
+    (GET /v1/workspaces/{workspaceId}/endpoints/{endpointId}/executions), and integration/automation runs
+    through their execution history.
+versioning:
+  scheme: uri-path
+  current: v1
+  example: https://api.skyvia.com/v1/workspaces
+  spec_version: v1
+  note: >-
+    Version is carried in the path on every route. The Swagger document is served per version at
+    /swagger/{version}/swagger.json, so a future v2 would be independently discoverable. See
+    lifecycle/skyvia-lifecycle.yml.
+error_envelope:
+  documented_in_spec: false
+  observed: true
+  shape: '{ "errorCode": <int>, "errors": { }, "message": "<string>", "refresh": <bool> }'
+  content_type: application/json
+  note: >-
+    Observed live on an unauthenticated request to https://api.skyvia.com/openapi.json (403). The spec
+    declares only 200 responses on all 52 operations and models a partial `ApiResult` schema
+    ({message, refresh}) used solely as the 200 body of the two /test operations, so the real error envelope
+    — which additionally carries `errorCode` and a field-level `errors` map — is nowhere in the contract.
+  see: errors/skyvia-problem-types.yml
+  rfc9457: false
+content_negotiation:
+  response_content_types:
+  - application/json
+  - text/json
+  - text/plain
+  note: >-
+    Every 200 response advertises all three. text/plain on a JSON payload is a Swashbuckle default that
+    Skyvia has not trimmed, not a distinct representation.
+rate_limit_signalling:
+  headers: []
+  status_on_exhaustion: null
+  note: >-
+    No RateLimit-*, X-RateLimit-* or Retry-After header is documented, and the API reference contains no
+    rate-limit section. See rate-limits/skyvia-rate-limits.yml — the real throughput ceilings Skyvia
+    publishes are plan quotas (records, tasks, traffic, queries per day), enforced at the subscription level
+    rather than as per-request limits.
+webhooks:
+  direction: inbound-only
+  note: >-
+    Skyvia RECEIVES webhooks as an Automation trigger; it does not emit webhooks about its own resources.
+    See asyncapi/skyvia-automation-webhooks.yml.
+cross_links:
+  authentication: authentication/skyvia-authentication.yml
+  scopes: scopes/skyvia-scopes.yml
+  errors: errors/skyvia-problem-types.yml
+  lifecycle: lifecycle/skyvia-lifecycle.yml
+  rate_limits: rate-limits/skyvia-rate-limits.yml
+  data_model: data-model/skyvia-data-model.yml

@@ -1,0 +1,137 @@
+overlay: 1.0.0
+info:
+  title: API Evangelist enhancements for the Skyvia Public API
+  version: 1.0.0
+  description: >-
+    Captures the enhancements API Evangelist applied when refining Skyvia's published Swagger document
+    (https://api.skyvia.com/swagger/v1/swagger.json) into the eight per-tag OpenAPI files in openapi/. The
+    harvested original is preserved unmodified at
+    openapi/_original/skyvia-public-api-openapi-original.json. Every action below records something the
+    published spec omits and that we could establish from Skyvia's own documentation or from live probes —
+    nothing here invents API behaviour.
+extends: openapi/_original/skyvia-public-api-openapi-original.json
+x-generated: '2026-08-12'
+x-method: generated
+x-source: openapi/_original/skyvia-public-api-openapi-original.json
+actions:
+- target: $.info
+  description: >-
+    Attribute the source and record that the document was harvested from Skyvia's live Swagger endpoint.
+  update:
+    x-apievangelist-source: https://api.skyvia.com/swagger/v1/swagger.json
+    x-apievangelist-harvested: '2026-08-12'
+    x-apievangelist-profile: https://github.com/api-evangelist/skyvia
+- target: $
+  description: >-
+    Add the servers[] block the published document omits entirely. The host is established from the Swagger
+    UI location (https://api.skyvia.com/swagger/index.html), from the API reference, and from live 403
+    responses carrying the Skyvia error envelope at https://api.skyvia.com/v1/*.
+  update:
+    servers:
+    - url: https://api.skyvia.com
+      description: Skyvia public API
+- target: $.info
+  description: >-
+    Record the error envelope the API actually returns. The published spec declares no 4xx or 5xx response
+    on any of its 52 operations; this envelope was observed live and unauthenticated on 2026-08-12.
+  update:
+    x-apievangelist-error-envelope:
+      documented_by_provider: false
+      observed: true
+      content_type: application/json
+      shape: '{ "errorCode": integer, "errors": object, "message": string, "refresh": boolean }'
+      example: '{"errorCode":403,"errors":{},"message":"Authorization header is missing or invalid.","refresh":false}'
+      catalog: errors/skyvia-problem-types.yml
+- target: $.info
+  description: >-
+    Record the pagination convention, which is consistent across all 12 list operations but never described
+    in the spec or the reference.
+  update:
+    x-apievangelist-pagination:
+      style: offset
+      parameters: [skip, take]
+      envelope: '{ "data": [...], "hasMore": boolean }'
+      schema_suffix: HasMorePagingDto
+      total_count: false
+      cursor: false
+      documented: conventions/skyvia-conventions.yml
+- target: $.components.securitySchemes['Access Token']
+  description: >-
+    Bind the single apiKey scheme to Skyvia's documented token model — scoped permissions selected at
+    creation, and a maximum lifetime of one year. Neither fact appears in the spec.
+  update:
+    x-apievangelist-token-model:
+      issuance: Account Settings > API Settings
+      max_lifetime: 1 year
+      scoped: true
+      scopes_are_in_spec: false
+      scope_catalog: scopes/skyvia-scopes.yml
+      docs: https://docs.skyvia.com/account-management/api-settings.html
+      observed_failure_status: 403
+      www_authenticate: false
+- target: $.paths['/v1/workspaces/{workspaceId}/endpoints/{endpointId}'].get
+  description: >-
+    Flag that EndpointDto.type enumerates only OData and Sql, while Skyvia Connect has shipped MCP endpoints
+    since 2025 — so this operation cannot represent every endpoint that exists in a workspace.
+  update:
+    x-apievangelist-coverage-gap:
+      issue: EndpointDto.type enum omits the MCP endpoint type shipped in the product
+      enum_in_spec: [OData, Sql]
+      product_types: [OData, Sql, MCP]
+      evidence: https://docs.skyvia.com/connect/mcp-endpoints/
+- target: $.paths['/v1/workspaces/{workspaceId}/connections/{connectionId}/test'].post
+  description: >-
+    Record that this operation reports failure in the 200 body rather than by status code — a caller must
+    read ApiResult.message, not the HTTP status, to know whether the test passed.
+  update:
+    x-apievangelist-semantics:
+      failure_signalled_in_body: true
+      field: message
+      status_on_failure: 200
+- target: $.paths['/v1/workspaces/{workspaceId}/agents/{agentId}/test'].post
+  description: Same 200-on-failure semantics as the connection test operation.
+  update:
+    x-apievangelist-semantics:
+      failure_signalled_in_body: true
+      field: message
+      status_on_failure: 200
+- target: $.paths['/v1/workspaces/{workspaceId}/integrations/{integrationId}/executions'].post
+  description: >-
+    Flag the absence of an idempotency contract on an operation that starts billable work. A retry after a
+    timeout can start a second integration run.
+  update:
+    x-apievangelist-idempotency:
+      supported: false
+      header: null
+      risk: A retried request can start a duplicate integration run and consume the records quota twice.
+      documented: conventions/skyvia-conventions.yml
+- target: $.paths['/v1/workspaces/{workspaceId}/backups/{backupId}/snapshots'].post
+  description: Same idempotency risk on snapshot creation.
+  update:
+    x-apievangelist-idempotency:
+      supported: false
+      header: null
+      risk: A retried request can create a duplicate snapshot and consume backup storage twice.
+- target: $.info
+  description: >-
+    Record the two spec-content gaps that most affect machine consumption, so a follow-up with Skyvia has
+    something concrete to reference.
+  update:
+    x-apievangelist-contract-gaps:
+    - No operationId on any of the 52 operations — generated clients get positional names and nothing can reference an operation stably.
+    - No servers[] block, so the spec is not directly executable.
+    - Summaries on only 12 of 52 operations; no operation-level descriptions.
+    - No 4xx or 5xx responses declared anywhere.
+    - No examples in the document.
+    - No rate-limit headers or 429 declared.
+- target: $.info
+  description: Note the split-by-tag refinement applied when producing the openapi/ files.
+  update:
+    x-apievangelist-refinement:
+      method: split-by-tag
+      files: 8
+      tags: [Account, Agents, Automations, Backups, Connections, Endpoints, Integrations, Workspaces]
+      note: >-
+        Each per-tag file carries only the component schemas reachable from its own operations, plus the
+        shared securitySchemes and the added servers[] block. Path items, operations, parameters and schema
+        bodies are byte-faithful to the harvested original.

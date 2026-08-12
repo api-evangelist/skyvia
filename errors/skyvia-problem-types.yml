@@ -1,0 +1,113 @@
+generated: '2026-08-12'
+method: probed
+source: >-
+  live unauthenticated responses from https://api.skyvia.com + openapi/_original/skyvia-public-api-openapi-original.json
+format: proprietary
+rfc9457: false
+summary: >-
+  The Skyvia Public API declares NO error responses. All 52 operations in the published Swagger document
+  declare exactly one response — 200 — so there is no 4xx or 5xx anywhere in the machine-readable contract,
+  and nothing to derive an error catalog from. The catalog below is therefore built from live probes rather
+  than the spec: the real envelope was observed by calling the API without credentials. This is the single
+  largest contract-quality gap in Skyvia's API surface — an agent reading the spec has no way to know what a
+  failure looks like, what field carries the reason, or whether the response is even JSON.
+envelope:
+  content_type: application/json
+  fields:
+  - field: errorCode
+    type: integer
+    description: Numeric error code, mirroring the HTTP status on the responses observed.
+  - field: errors
+    type: object
+    description: >-
+      Map of field-level validation errors. Empty ({}) on the authorization failures probed; the per-field
+      shape is not documented and could not be triggered without credentials.
+  - field: message
+    type: string
+    description: Human-readable failure description.
+  - field: refresh
+    type: boolean
+    description: >-
+      Undocumented. Present on both the error envelope and the `ApiResult` 200 schema, which suggests a
+      client-side "reload state" hint rather than an error field.
+  example: |
+    {
+      "errorCode": 403,
+      "errors": {},
+      "message": "Authorization header is missing or invalid.",
+      "refresh": false
+    }
+problems:
+- status: 403
+  code: 403
+  title: Authorization header is missing or invalid.
+  meaning: >-
+    The Authorization header was absent, malformed, or carried a token that is expired, revoked, or lacks the
+    permission the operation requires.
+  remediation: >-
+    Create or renew an API token in Account Settings > API Settings, confirm it carries the scope the
+    operation needs (see scopes/skyvia-scopes.yml), and send it in the Authorization header.
+  in_spec: false
+  observed: true
+  evidence:
+    url: https://api.skyvia.com/openapi.json
+    fetched: '2026-08-12'
+    http_status: 403
+    body: '{"errorCode":403,"errors":{},"message":"Authorization header is missing or invalid.","refresh":false}'
+  note: >-
+    Skyvia returns 403, not 401, for a missing credential, and sends no WWW-Authenticate challenge. A client
+    cannot distinguish "not authenticated" from "authenticated but not permitted" by status code alone; the
+    `message` string is the only signal.
+- status: 404
+  code: 404
+  title: Not found
+  meaning: The route does not exist on api.skyvia.com.
+  in_spec: false
+  observed: true
+  evidence:
+    url: https://mcp.skyvia.com/v1/mcp
+    fetched: '2026-08-12'
+    http_status: 404
+  note: Recorded from the MCP host; api.skyvia.com answers 403 before route resolution on unauthenticated calls, so a 404 could not be isolated there without credentials.
+- status: 405
+  code: 405
+  title: Method not allowed
+  meaning: The HTTP method is not supported on this route.
+  in_spec: false
+  observed: true
+  evidence:
+    url: https://mcp.skyvia.com/
+    fetched: '2026-08-12'
+    http_status: 405
+    note: POST to the MCP host root, which serves only GET.
+partial_spec_schema:
+  name: ApiResult
+  used_on:
+  - POST /v1/workspaces/{workspaceId}/agents/{agentId}/test
+  - POST /v1/workspaces/{workspaceId}/connections/{connectionId}/test
+  as: 200 response body
+  shape: '{ "message": string|null, "refresh": boolean }'
+  note: >-
+    The only schema in the spec that carries a `message`. It is a SUCCESS body for the two connectivity-test
+    operations — a failed agent or connection test returns HTTP 200 with the failure text in `message` — so
+    a caller must inspect the body, not the status, to know whether a test passed. It is a strict subset of
+    the real error envelope, missing `errorCode` and `errors`.
+related_error_surfaces:
+- surface: Skyvia Automation webhook trigger
+  error: Invalid HMAC header value
+  meaning: >-
+    The SHA256 HMAC signature in the configured signature header does not match the hash of the received
+    payload; the event is ignored and the automation does not run.
+  docs: https://docs.skyvia.com/automation/building-automation/triggers.html
+  see: asyncapi/skyvia-automation-webhooks.yml
+- surface: Skyvia Connect endpoints
+  note: >-
+    Endpoint request failures are recorded in the Connect request log, readable through
+    GET /v1/workspaces/{workspaceId}/endpoints/{endpointId}/executions and its detail route
+    (EndpointRequestLogDetailedDto). No published catalog of endpoint error codes exists.
+gaps:
+- No 4xx or 5xx response is declared on any of the 52 operations.
+- No published error-code reference page exists in the Skyvia documentation.
+- The error envelope is not modelled as a schema in the spec, so no generated client will deserialize it.
+- 403 is used where 401 is meant, with no WWW-Authenticate header.
+- The `errors` field-level validation map could not be exercised without credentials; its shape is unrecorded.

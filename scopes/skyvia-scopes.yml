@@ -1,0 +1,137 @@
+generated: '2026-08-12'
+method: searched
+source: https://docs.skyvia.com/account-management/api-settings.html
+docs: https://docs.skyvia.com/account-management/api-settings.html
+scheme: api-token-scopes
+oauth2: false
+summary: >-
+  IMPORTANT: these are NOT OAuth 2.0 scopes. Skyvia runs no OAuth or OIDC. A Skyvia API token is an opaque
+  bearer credential created in Account Settings > API Settings, and at creation time the user selects a set
+  of per-resource permissions the token carries. Those permissions are the scope model recorded here. They
+  are documented in prose on the API Settings page and appear nowhere in the OpenAPI document — the spec
+  declares a single `Access Token` apiKey scheme with an empty scope list on every operation, so an agent
+  reading only the spec cannot tell which token permission any operation needs. The mapping below is
+  reconstructed from the documented permission names against the operations they govern.
+scope_count: 18
+resources:
+- resource: Account
+  scopes:
+  - scope: Account / Read
+    description: Access user and invitation lists.
+    governs:
+    - GET /v1/account/users
+    - GET /v1/account/invitations
+  - scope: Account / Modify
+    description: Manage users and invitations.
+    governs:
+    - DELETE /v1/account/users
+    - POST /v1/account/invitations
+    - POST /v1/account/invitations/{invitationId}/resend
+    - DELETE /v1/account/invitations/{invitationId}
+- resource: Agent
+  scopes:
+  - scope: Agent / Read
+    description: View agent lists and details.
+    governs:
+    - GET /v1/workspaces/{workspaceId}/agents
+    - GET /v1/workspaces/{workspaceId}/agents/{agentId}
+  - scope: Agent / Modify
+    description: Test agent connections.
+    governs:
+    - POST /v1/workspaces/{workspaceId}/agents/{agentId}/test
+- resource: Automation
+  scopes:
+  - scope: Automation / Read
+    description: View automation lists, details, state and execution history.
+    governs:
+    - GET /v1/workspaces/{workspaceId}/automations
+    - GET /v1/workspaces/{workspaceId}/automations/{automationId}
+    - GET /v1/workspaces/{workspaceId}/automations/{automationId}/executions
+    - GET /v1/workspaces/{workspaceId}/automations/{automationId}/executions/{executionId}
+    - GET /v1/workspaces/{workspaceId}/automations/{automationId}/state
+    - GET /v1/workspaces/{workspaceId}/automations/{automationId}/active
+  - scope: Automation / Execute
+    description: Run automations.
+  - scope: Automation / Enable-Disable
+    description: Control automation status.
+    governs:
+    - POST /v1/workspaces/{workspaceId}/automations/{automationId}/enable
+    - POST /v1/workspaces/{workspaceId}/automations/{automationId}/disable
+- resource: Connection
+  scopes:
+  - scope: Connection / Read
+    description: View connection lists and details.
+    governs:
+    - GET /v1/workspaces/{workspaceId}/connections
+    - GET /v1/workspaces/{workspaceId}/connections/{connectionId}
+  - scope: Connection / Test
+    description: Verify connection functionality.
+    governs:
+    - POST /v1/workspaces/{workspaceId}/connections/{connectionId}/test
+- resource: Endpoint
+  scopes:
+  - scope: Endpoint / Read
+    description: Access Connect endpoint information and request logs.
+    governs:
+    - GET /v1/endpoints/types
+    - GET /v1/workspaces/{workspaceId}/endpoints
+    - GET /v1/workspaces/{workspaceId}/endpoints/{endpointId}
+    - GET /v1/workspaces/{workspaceId}/endpoints/{endpointId}/executions
+    - GET /v1/workspaces/{workspaceId}/endpoints/{endpointId}/executions/{recordId}
+  - scope: Endpoint / Enable-Disable
+    description: Control endpoint status.
+    governs:
+    - POST /v1/workspaces/{workspaceId}/endpoints/{endpointId}/enable
+    - POST /v1/workspaces/{workspaceId}/endpoints/{endpointId}/disable
+- resource: Integration
+  scopes:
+  - scope: Integration / Read
+    description: View integrations and execution history.
+    governs:
+    - GET /v1/workspaces/{workspaceId}/integrations
+    - GET /v1/workspaces/{workspaceId}/integrations/{integrationId}
+    - GET /v1/workspaces/{workspaceId}/integrations/{integrationId}/executions
+    - GET /v1/workspaces/{workspaceId}/integrations/{integrationId}/executions/{executionId}
+    - GET /v1/workspaces/{workspaceId}/integrations/{integrationId}/executions/active
+  - scope: Integration / Execute
+    description: Run integrations and manage execution.
+    governs:
+    - POST /v1/workspaces/{workspaceId}/integrations/{integrationId}/executions
+    - POST /v1/workspaces/{workspaceId}/integrations/{integrationId}/executions/cancel
+    - POST /v1/workspaces/{workspaceId}/integrations/{integrationId}/executions/kill
+  - scope: Integration / Read Schedule
+    description: Access scheduling information.
+    governs:
+    - GET /v1/workspaces/{workspaceId}/integrations/{integrationId}/schedule
+  - scope: Integration / Enable-Disable Schedule
+    description: Control schedule status.
+    governs:
+    - POST /v1/workspaces/{workspaceId}/integrations/{integrationId}/schedule/enable
+    - POST /v1/workspaces/{workspaceId}/integrations/{integrationId}/schedule/disable
+- resource: Workspace
+  scopes:
+  - scope: Workspace / Read
+    description: View workspace information.
+    governs:
+    - GET /v1/workspaces
+    - GET /v1/workspaces/{workspaceId}
+  - scope: Workspace / Read Users
+    description: Access workspace user lists.
+    governs:
+    - GET /v1/workspaces/{workspaceId}/users
+  - scope: Workspace / Modify Users
+    description: Manage user workspace access.
+    governs:
+    - POST /v1/workspaces/{workspaceId}/users
+    - DELETE /v1/workspaces/{workspaceId}/users/{userId}
+unmapped:
+- scope: Automation / Execute
+  reason: >-
+    Documented as a token permission, but the v1 API publishes no operation that starts an automation —
+    automations are started by their own trigger (manual, schedule, connection polling, or webhook). Recorded
+    as published-but-unbound rather than mapped to a guess. Backup schedule enable/disable and snapshot
+    creation, conversely, appear in the spec but are not named as a distinct Backup permission on the API
+    Settings page.
+gaps:
+- The scope model is prose-only; no scope strings appear in the OpenAPI, so per-operation authorization is not machine-readable.
+- No scope-to-operation table is published by Skyvia; the mapping above is derived by API Evangelist from resource names and is marked as such.

@@ -1,0 +1,174 @@
+openapi: 3.0.1
+info:
+  title: Skyvia Public API — Connections
+  version: v1
+  description: Data-source connections defined in a workspace, and connection testing.
+  x-apievangelist-source: https://api.skyvia.com/swagger/v1/swagger.json
+servers:
+- url: https://api.skyvia.com
+  description: Skyvia public API
+tags:
+- name: Connections
+  description: Data-source connections defined in a workspace, and connection testing.
+paths:
+  /v1/workspaces/{workspaceId}/connections:
+    get:
+      tags:
+      - Connections
+      summary: Get connections
+      parameters:
+      - name: workspaceId
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - name: skip
+        in: query
+        description: Items to skip [0...]
+        schema:
+          type: integer
+          format: int32
+          default: 0
+      - name: take
+        in: query
+        description: Items to take [1..200]
+        schema:
+          type: integer
+          format: int32
+          default: 20
+      responses:
+        '200':
+          description: OK
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/ConnectionDtoHasMorePagingDto'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConnectionDtoHasMorePagingDto'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/ConnectionDtoHasMorePagingDto'
+  /v1/workspaces/{workspaceId}/connections/{connectionId}:
+    get:
+      tags:
+      - Connections
+      parameters:
+      - name: workspaceId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - name: connectionId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      responses:
+        '200':
+          description: OK
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/ConnectionDetailsDto'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConnectionDetailsDto'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/ConnectionDetailsDto'
+  /v1/workspaces/{workspaceId}/connections/{connectionId}/test:
+    post:
+      tags:
+      - Connections
+      parameters:
+      - name: workspaceId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - name: connectionId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      responses:
+        '200':
+          description: OK
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/ApiResult'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResult'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/ApiResult'
+components:
+  schemas:
+    ApiResult:
+      type: object
+      properties:
+        message:
+          type: string
+          nullable: true
+        refresh:
+          type: boolean
+      additionalProperties: false
+    ConnectionDetailsDto:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int32
+        name:
+          type: string
+          nullable: true
+        connector:
+          type: string
+          nullable: true
+        type:
+          enum:
+          - Direct
+          - Agent
+          type: string
+      additionalProperties: false
+    ConnectionDto:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int32
+        name:
+          type: string
+          nullable: true
+        connector:
+          type: string
+          nullable: true
+      additionalProperties: false
+    ConnectionDtoHasMorePagingDto:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/ConnectionDto'
+          nullable: true
+        hasMore:
+          type: boolean
+      additionalProperties: false
+  securitySchemes:
+    Access Token:
+      type: apiKey
+      description: Authorization header with the Skyvia access token.
+      name: Authorization
+      in: header
+security:
+- Access Token: []

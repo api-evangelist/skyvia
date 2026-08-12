@@ -1,0 +1,35 @@
+# Skyvia Documentation Structure for AI Models
+
+> Skyvia is the all-in-one cloud data platform for no coding data integration, cloud to cloud backup, management via SQL and data access via OData interface.
+
+- [Cloud Data Platform](https://skyvia.com/): Cloud data integration, management, and backup solutions for businesses.
+- [Skyvia Agent Application](https://skyvia.com/agent): Easily connect to on-premise data securely via Skyvia.
+- [Business Process Automation](https://skyvia.com/automation): Easily automate business processes with Skyvia's tools.
+- [Cloud Data Backup](https://skyvia.com/backup): Securely back up and restore all your cloud data easily.
+- [Skyvia Case Studies](https://skyvia.com/case-studies): Skyvia's case studies showcase data integration success stories.
+- [Cloud Data Solutions](https://skyvia.com/company): Skyvia offers cloud data integration and management solutions.
+- [Skyvia Connect API](https://skyvia.com/connect): Easily publish data via web API with Skyvia Connect.
+- [Data Connectors Overview](https://skyvia.com/connectors): Explore various connectors for seamless data integration.
+- [Data Analysis Tools](https://skyvia.com/data-analysis): Consolidate and analyze your data efficiently with Skyvia.
+- [Data Integration Solutions](https://skyvia.com/data-integration): Easily integrate data from various sources and applications.
+- [ETL Tools Comparison](https://skyvia.com/etl-tools-comparison): Comprehensive comparison of various ETL tools and features.
+- [Integration Packages Gallery](https://skyvia.com/gallery): Explore integration packages and queries for various applications.
+- [Salesforce Data Optimization](https://skyvia.com/get-more-from-sfdc-with-skyvia): Optimize Salesforce data management and reduce storage costs effectively.
+- [Data Integration Resources](https://skyvia.com/learn): Explore articles, videos, and tutorials for data integration.
+- [On-Premise Data Integration](https://skyvia.com/on-premise-data-integration): Easily integrate on-premise and cloud data with Skyvia.
+- [Partner with Skyvia](https://skyvia.com/partners): Join Skyvia's partner network for efficient business solutions.
+- [Cloud Data Platform](https://skyvia.com/platform): Comprehensive cloud data platform for integration and management.
+- [Skyvia Pricing Plans](https://skyvia.com/pricing): Affordable plans for data integration, automation, and backup solutions.
+- [Privacy Policy Overview](https://skyvia.com/privacy-policy): Skyvia privacy policy outlines data collection and usage practices.
+- [SQL Client and Query Builder](https://skyvia.com/query): Online SQL client with visual query builder for data management.
+- [Skyvia Resources](https://skyvia.com/resources): Explore Skyvia's resources for data integration and tutorials.
+- [Skyvia Sales Contact](https://skyvia.com/schedule-demo): Contact Skyvia for product inquiries and support assistance.
+- [Skyvia Data Security](https://skyvia.com/security): Skyvia ensures data security with advanced encryption and compliance.
+- [Skyvia Data Solutions](https://skyvia.com/solutions): Explore Skyvia's solutions for data integration, management, and backup.
+- [SQL for Cloud Apps](https://skyvia.com/sql-for-cloud-apps): Easily manage cloud data using SQL for various applications.
+- [Skyvia Terms of Service](https://skyvia.com/terms-of-service): Comprehensive terms governing use of Skyvia services and sites.
+- [Skyvia Whitepapers](https://skyvia.com/whitepapers): Skyvia Whitepapers.
+- [Skyvia Webinars](https://skyvia.com/webinars): Skyvia Webinars.
+- [Skyvia Contacts](https://skyvia.com/company/contacts): Skyvia Contacts.
+
+### For a full reference, see: https://skyvia.com/llms-full.txt
