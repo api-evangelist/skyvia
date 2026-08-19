@@ -13,7 +13,7 @@ image: https://skyvia.com/assets/img/meta-img/meta-image.png
 url: https://raw.githubusercontent.com/api-evangelist/skyvia/refs/heads/main/apis.yml
 x-type: company
 x-source: harvest:marketing-integration-graph
-specificationVersion: '0.21'
+specificationVersion: '0.23'
 created: '2026-08-12'
 modified: '2026-08-12'
 tags:
