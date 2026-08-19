@@ -4,14 +4,13 @@ status: published
 source: https://mcp.skyvia.com/mcp
 docs: https://docs.skyvia.com/connect/mcp-endpoints/
 marketing: https://skyvia.com/connect/mcp-endpoint
-summary: >-
-  Skyvia Connect MCP endpoints are a product feature, not a single fixed server: a customer publishes any
-  one of their Skyvia connections (200+ cloud apps and databases) as an MCP endpoint, and Skyvia serves it
-  from https://mcp.skyvia.com/<endpointId>. The tool SET is fixed and generic — four tools that let an agent
-  discover the objects behind the endpoint, read their metadata and relationships, and run parameterized SQL
-  — while the DATA those tools reach is whatever connection the customer bound to the endpoint. The tool
-  manifest below was read live and unauthenticated from tools/list on 2026-08-12; the inputSchema blocks are
-  the server's own, not ours.
+summary: 'Skyvia Connect MCP endpoints are a product feature, not a single fixed server: a customer publishes
+  any one of their Skyvia connections (200+ cloud apps and databases) as an MCP endpoint, and Skyvia serves
+  it from https://mcp.skyvia.com/<endpointId>. The tool SET is fixed and generic — four tools that let
+  an agent discover the objects behind the endpoint, read their metadata and relationships, and run parameterized
+  SQL — while the DATA those tools reach is whatever connection the customer bound to the endpoint. The
+  tool manifest below was read live and unauthenticated from tools/list on 2026-08-12; the inputSchema
+  blocks are the server''s own, not ours.'
 server:
   name: Devart.Skyvia.Connect.Mcp
   version: 1.0.9575.27520
@@ -29,13 +28,12 @@ server:
     prompts: false
 authentication:
   gated: false
-  note: >-
-    tools/list and initialize both answer anonymously — no OAuth challenge, and no
-    /.well-known/oauth-authorization-server or /.well-known/oauth-protected-resource is served (both 404).
-    Per-endpoint security is optional and, when enabled, is HTTP Basic: the endpoint user name and password
-    are joined with a colon and base64-encoded into the Authorization header, optionally combined with an IP
-    allow-list. Skyvia documents that an endpoint WITH user accounts can only be used from Claude Desktop,
-    not the Claude web client, because not every MCP client supports authenticated endpoints.
+  note: 'tools/list and initialize both answer anonymously — no OAuth challenge, and no /.well-known/oauth-authorization-server
+    or /.well-known/oauth-protected-resource is served (both 404). Per-endpoint security is optional and,
+    when enabled, is HTTP Basic: the endpoint user name and password are joined with a colon and base64-encoded
+    into the Authorization header, optionally combined with an IP allow-list. Skyvia documents that an
+    endpoint WITH user accounts can only be used from Claude Desktop, not the Claude web client, because
+    not every MCP client supports authenticated endpoints.'
   scheme: http-basic
   optional: true
   ip_allow_list: true
@@ -48,19 +46,20 @@ tools:
   required: []
 - name: Objects
   category: structure
-  description: >-
-    Requests the list and brief information about the endpoint objects (underlying cloud objects or database
-    tables and views).
+  description: Requests the list and brief information about the endpoint objects (underlying cloud objects
+    or database tables and views).
   input_properties:
   - name: includeNonQueryable
     type: boolean
     default: false
-    description: >-
-      When set to true, objects that cannot be queried are included in the result. When false (default),
-      only queryable objects are returned.
+    description: When set to true, objects that cannot be queried are included in the result. When false
+      (default), only queryable objects are returned.
   - name: responseFormat
     type: string
-    enum: [Csv, Json, Markdown]
+    enum:
+    - Csv
+    - Json
+    - Markdown
     default: Csv
   required: []
   execution:
@@ -79,38 +78,46 @@ tools:
     default: false
   - name: responseFormat
     type: string
-    enum: [Csv, Json, Markdown]
+    enum:
+    - Csv
+    - Json
+    - Markdown
     default: Csv
-  required: [objectName]
+  required:
+  - objectName
   execution:
     taskSupport: optional
 - name: Execute
   category: data
-  description: >-
-    Executes the SQL code with SQL parameters, specified in the body parameter and returns the first page of
-    queried data, if any, with result schema information. If there are more records than fit on one page,
-    you can query them using the get request to the next page resource and providing the token of the next
-    page, returned together with the current page.
+  description: Executes the SQL code with SQL parameters, specified in the body parameter and returns
+    the first page of queried data, if any, with result schema information. If there are more records
+    than fit on one page, you can query them using the get request to the next page resource and providing
+    the token of the next page, returned together with the current page.
   input_properties:
   - name: body
     type: object
     required: true
     properties:
     - name: sql
-      type: [string, 'null']
+      type:
+      - string
+      - 'null'
     - name: parameters
-      type: [array, 'null']
-      description: >-
-        Array of {name, dbType, value}. dbType enumerates the ADO.NET DbType set — AnsiString, Binary, Byte,
-        Boolean, Currency, Date, DateTime, Decimal, Double, Guid, Int16, Int32, Int64, Object, SByte, Single,
-        String, Time, UInt16, UInt32, UInt64, VarNumeric, AnsiStringFixedLength, StringFixedLength, Xml,
-        DateTime2, DateTimeOffset. Default String.
+      type:
+      - array
+      - 'null'
+      description: Array of {name, dbType, value}. dbType enumerates the ADO.NET DbType set — AnsiString,
+        Binary, Byte, Boolean, Currency, Date, DateTime, Decimal, Double, Guid, Int16, Int32, Int64, Object,
+        SByte, Single, String, Time, UInt16, UInt32, UInt64, VarNumeric, AnsiStringFixedLength, StringFixedLength,
+        Xml, DateTime2, DateTimeOffset. Default String.
     - name: pageSize
       type: integer
       default: 500
       description: The maximal number of records per one page.
     - name: commandTimeout
-      type: [integer, 'null']
+      type:
+      - integer
+      - 'null'
       description: Command timeout in seconds.
     - name: expireTimeout
       type: integer
@@ -119,28 +126,28 @@ tools:
     - name: schemaOnly
       type: boolean
       default: false
-      description: >-
-        If set to true, the server doesn't return the data. If the query is valid, it returns only the
-        result schema.
+      description: If set to true, the server doesn't return the data. If the query is valid, it returns
+        only the result schema.
   - name: responseFormat
     type: string
-    enum: [Csv, Json, Markdown]
+    enum:
+    - Csv
+    - Json
+    - Markdown
     default: Csv
-  required: [body]
+  required:
+  - body
   execution:
     taskSupport: optional
 observations:
-- >-
-  The Execute tool is a general-purpose SQL execution surface against whatever data source backs the
-  endpoint. Agent-access consequence is therefore determined by the endpoint's own per-object and
-  per-operation permissions in Skyvia Connect, not by the tool contract — a read-only endpoint and a
-  read-write endpoint expose the identical Execute tool.
-- >-
-  The server advertises protocolVersion 2024-11-05 on initialize, several revisions behind the current MCP
-  spec, while carrying non-standard `execution.taskSupport` and `_meta.category` keys on its tools.
-- >-
-  The Skyvia Public API's EndpointDto.type enum still lists only `OData` and `Sql` — the MCP endpoint type
-  is not yet representable in the v1 management API, so MCP endpoints cannot be enumerated or toggled
+- The Execute tool is a general-purpose SQL execution surface against whatever data source backs the endpoint.
+  Agent-access consequence is therefore determined by the endpoint's own per-object and per-operation
+  permissions in Skyvia Connect, not by the tool contract — a read-only endpoint and a read-write endpoint
+  expose the identical Execute tool.
+- The server advertises protocolVersion 2024-11-05 on initialize, several revisions behind the current
+  MCP spec, while carrying non-standard `execution.taskSupport` and `_meta.category` keys on its tools.
+- The Skyvia Public API's EndpointDto.type enum still lists only `OData` and `Sql` — the MCP endpoint
+  type is not yet representable in the v1 management API, so MCP endpoints cannot be enumerated or toggled
   through /v1/workspaces/{workspaceId}/endpoints the way OData and SQL endpoints can.
 x-evidence:
   fetched: '2026-08-12'
@@ -157,3 +164,11 @@ x-evidence:
     url: https://mcp.skyvia.com/
     http_status: 200
     body: '{"appInfo":"Devart.Skyvia.Connect.Mcp","versionInfo":"1.0.9575","buildTime":"2026-03-20T15:17:20"}'
+deployment:
+  mode: remote
+  endpoint: https://mcp.skyvia.com/mcp
+  verified: probed
+  probe: live
+  tools: 4
+  checked: '2026-08-12'
+  source: catalog MCP census

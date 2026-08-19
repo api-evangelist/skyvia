@@ -1,0 +1,639 @@
+{
+  "item": [
+    {
+      "id": "10b52540-d52e-483c-95e8-a70e38a3484a",
+      "name": "Account",
+      "description": {
+        "content": "Account-level user and invitation management for the Skyvia account.",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "d374710c-c36c-48bd-b020-d47997dd289f",
+          "name": "Get account users",
+          "request": {
+            "name": "Get account users",
+            "description": {},
+            "url": {
+              "path": [
+                "v1",
+                "account",
+                "users"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "searchMask",
+                  "value": "<string>",
+                  "description": "search by user name"
+                },
+                {
+                  "disabled": false,
+                  "key": "take",
+                  "value": "20",
+                  "description": "Items to take [1..200]"
+                },
+                {
+                  "disabled": false,
+                  "key": "skip",
+                  "value": "0",
+                  "description": "Items to skip [0...]"
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "text/plain"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "b00b41de-a3d2-408f-b018-6eb588d35535",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "account",
+                    "users"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "searchMask",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "take",
+                      "value": "20"
+                    },
+                    {
+                      "key": "skip",
+                      "value": "0"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "text/plain"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": [\n    {\n      \"id\": 6902,\n      \"email\": \"string\",\n      \"fullName\": \"string\",\n      \"type\": \"Administrator\",\n      \"workspaces\": [\n        {\n          \"workspaceId\": 3307,\n          \"roleName\": \"string\",\n          \"roleId\": 6050\n        },\n        {\n          \"workspaceId\": 613,\n          \"roleName\": \"string\",\n          \"roleId\": 5201\n        }\n      ]\n    },\n    {\n      \"id\": 7248,\n      \"email\": \"string\",\n      \"fullName\": \"string\",\n      \"type\": \"Member\",\n      \"workspaces\": [\n        {\n          \"workspaceId\": 9243,\n          \"roleName\": \"string\",\n          \"roleId\": 4244\n        },\n        {\n          \"workspaceId\": 2345,\n          \"roleName\": \"string\",\n          \"roleId\": 1564\n        }\n      ]\n    }\n  ],\n  \"hasMore\": false\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "0754d526-7a28-4fdf-8714-32d510771c47",
+          "name": "/v1/account/users",
+          "request": {
+            "name": "/v1/account/users",
+            "description": {},
+            "url": {
+              "path": [
+                "v1",
+                "account",
+                "users"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "method": "DELETE",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "6815a562-bfa0-4f16-a48f-10c6de8850ae",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "account",
+                    "users"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"email\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "ef599882-53fd-42ed-9f8c-034e4e10a78f",
+          "name": "Get account invitations",
+          "request": {
+            "name": "Get account invitations",
+            "description": {},
+            "url": {
+              "path": [
+                "v1",
+                "account",
+                "invitations"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "take",
+                  "value": "20",
+                  "description": "Items to take [1..200]"
+                },
+                {
+                  "disabled": false,
+                  "key": "skip",
+                  "value": "0",
+                  "description": "Items to skip [0...]"
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "text/plain"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "3f5bd88c-aa2b-4dc7-8f93-8b6ba14ca312",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "account",
+                    "invitations"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "take",
+                      "value": "20"
+                    },
+                    {
+                      "key": "skip",
+                      "value": "0"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "text/plain"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": [\n    {\n      \"id\": 1009,\n      \"email\": \"string\",\n      \"type\": \"Administrator\",\n      \"workspaces\": [\n        {\n          \"workspaceId\": 588,\n          \"roleName\": \"string\",\n          \"roleId\": 1212\n        },\n        {\n          \"workspaceId\": 8531,\n          \"roleName\": \"string\",\n          \"roleId\": 5088\n        }\n      ],\n      \"invitationDate\": \"1956-05-20T17:59:15.080Z\",\n      \"userId\": 3310,\n      \"fullName\": \"string\"\n    },\n    {\n      \"id\": 671,\n      \"email\": \"string\",\n      \"type\": \"Administrator\",\n      \"workspaces\": [\n        {\n          \"workspaceId\": 2820,\n          \"roleName\": \"string\",\n          \"roleId\": 70\n        },\n        {\n          \"workspaceId\": 1150,\n          \"roleName\": \"string\",\n          \"roleId\": 4764\n        }\n      ],\n      \"invitationDate\": \"1997-06-29T15:08:42.134Z\",\n      \"userId\": 3223,\n      \"fullName\": \"string\"\n    }\n  ],\n  \"hasMore\": true\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "868c1660-5a2c-456e-8ce1-69f9a14f0ae5",
+          "name": "/v1/account/invitations",
+          "request": {
+            "name": "/v1/account/invitations",
+            "description": {},
+            "url": {
+              "path": [
+                "v1",
+                "account",
+                "invitations"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "text/plain"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"<string>\",\n  \"userType\": \"<string>\",\n  \"workspaces\": [\n    {\n      \"roleId\": \"<integer>\",\n      \"workspaceId\": \"<integer>\"\n    },\n    {\n      \"roleId\": \"<integer>\",\n      \"workspaceId\": \"<integer>\"\n    }\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "8bae9ca4-d853-4ada-8163-b587982dfbcb",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "account",
+                    "invitations"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "text/plain"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"email\": \"johnDou@email.org\",\n  \"userType\": \"Member\",\n  \"workspaces\": [\n    {\n      \"roleId\": 3,\n      \"workspaceId\": 123\n    },\n    {\n      \"roleId\": 3,\n      \"workspaceId\": 123\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"email\": \"string\",\n  \"status\": \"string\",\n  \"invitationId\": 4696\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "a884ca41-6cb7-40cc-bce6-183108cbb873",
+          "name": "/v1/account/invitations/:invitationId/resend",
+          "request": {
+            "name": "/v1/account/invitations/:invitationId/resend",
+            "description": {},
+            "url": {
+              "path": [
+                "v1",
+                "account",
+                "invitations",
+                ":invitationId",
+                "resend"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<integer>",
+                  "key": "invitationId",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "text/plain"
+              }
+            ],
+            "method": "POST",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "b102e065-4c51-4d8a-87d7-2e841212065b",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "account",
+                    "invitations",
+                    ":invitationId",
+                    "resend"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "invitationId",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "text/plain"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"email\": \"string\",\n  \"status\": \"string\",\n  \"invitationId\": 4696\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "653ec9b4-328d-46c6-8d29-b5ef3f93a6b8",
+          "name": "/v1/account/invitations/:invitationId",
+          "request": {
+            "name": "/v1/account/invitations/:invitationId",
+            "description": {},
+            "url": {
+              "path": [
+                "v1",
+                "account",
+                "invitations",
+                ":invitationId"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<integer>",
+                  "key": "invitationId",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "method": "DELETE",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "ef3e3c1f-b89b-4d61-92e1-630ba84c6476",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "account",
+                    "invitations",
+                    ":invitationId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "invitationId",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api.skyvia.com",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "apikey",
+    "apikey": [
+      {
+        "key": "key",
+        "value": "Authorization"
+      },
+      {
+        "key": "value",
+        "value": "{{apiKey}}"
+      },
+      {
+        "key": "in",
+        "value": "header"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "adbc6f15-ac02-4b3c-befd-56664aa13e18",
+    "name": "Skyvia Public API — Account",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Account-level user and invitation management for the Skyvia account.",
+      "type": "text/plain"
+    }
+  }
+}

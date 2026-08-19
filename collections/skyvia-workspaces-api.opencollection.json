@@ -1,0 +1,121 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Skyvia Public API — Workspaces",
+    "version": "v1"
+  },
+  "request": {
+    "auth": {
+      "type": "apikey",
+      "key": "Authorization",
+      "value": "{{Authorization}}",
+      "placement": "header"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Workspaces",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "GET /v1/workspaces",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.skyvia.com/v1/workspaces"
+          }
+        },
+        {
+          "info": {
+            "name": "GET /v1/workspaces/{workspaceId}",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.skyvia.com/v1/workspaces/:workspaceId",
+            "params": [
+              {
+                "name": "workspaceId",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          }
+        },
+        {
+          "info": {
+            "name": "Get workspace users",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.skyvia.com/v1/workspaces/:workspaceId/users",
+            "params": [
+              {
+                "name": "workspaceId",
+                "value": "",
+                "type": "path",
+                "description": "The workspace ID"
+              },
+              {
+                "name": "searchMask",
+                "value": "",
+                "type": "query",
+                "description": "Search by part of user name"
+              }
+            ]
+          },
+          "docs": "Get workspace users"
+        },
+        {
+          "info": {
+            "name": "POST /v1/workspaces/{workspaceId}/users",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.skyvia.com/v1/workspaces/:workspaceId/users",
+            "params": [
+              {
+                "name": "workspaceId",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          }
+        },
+        {
+          "info": {
+            "name": "DELETE /v1/workspaces/{workspaceId}/users/{userId}",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.skyvia.com/v1/workspaces/:workspaceId/users/:userId",
+            "params": [
+              {
+                "name": "workspaceId",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "userId",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

@@ -1,0 +1,100 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Skyvia Public API — Connections",
+    "version": "v1"
+  },
+  "request": {
+    "auth": {
+      "type": "apikey",
+      "key": "Authorization",
+      "value": "{{Authorization}}",
+      "placement": "header"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Connections",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get connections",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.skyvia.com/v1/workspaces/:workspaceId/connections",
+            "params": [
+              {
+                "name": "workspaceId",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "skip",
+                "value": "",
+                "type": "query",
+                "description": "Items to skip [0...]"
+              },
+              {
+                "name": "take",
+                "value": "",
+                "type": "query",
+                "description": "Items to take [1..200]"
+              }
+            ]
+          },
+          "docs": "Get connections"
+        },
+        {
+          "info": {
+            "name": "GET /v1/workspaces/{workspaceId}/connections/{connectionId}",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.skyvia.com/v1/workspaces/:workspaceId/connections/:connectionId",
+            "params": [
+              {
+                "name": "workspaceId",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "connectionId",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          }
+        },
+        {
+          "info": {
+            "name": "POST /v1/workspaces/{workspaceId}/connections/{connectionId}/test",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.skyvia.com/v1/workspaces/:workspaceId/connections/:connectionId/test",
+            "params": [
+              {
+                "name": "workspaceId",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "connectionId",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

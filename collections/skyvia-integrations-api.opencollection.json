@@ -1,0 +1,322 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Skyvia Public API — Integrations",
+    "version": "v1"
+  },
+  "request": {
+    "auth": {
+      "type": "apikey",
+      "key": "Authorization",
+      "value": "{{Authorization}}",
+      "placement": "header"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Integrations",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get integrations",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.skyvia.com/v1/workspaces/:workspaceId/integrations",
+            "params": [
+              {
+                "name": "workspaceId",
+                "value": "",
+                "type": "path",
+                "description": "Workspace Id"
+              },
+              {
+                "name": "skip",
+                "value": "",
+                "type": "query",
+                "description": "Items to skip [0...]"
+              },
+              {
+                "name": "take",
+                "value": "",
+                "type": "query",
+                "description": "Items to take [1..200]"
+              }
+            ]
+          },
+          "docs": "Get integrations"
+        },
+        {
+          "info": {
+            "name": "GET /v1/workspaces/{workspaceId}/integrations/{integrationId}",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.skyvia.com/v1/workspaces/:workspaceId/integrations/:integrationId",
+            "params": [
+              {
+                "name": "workspaceId",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "integrationId",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          }
+        },
+        {
+          "info": {
+            "name": "Get finished executions",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.skyvia.com/v1/workspaces/:workspaceId/integrations/:integrationId/executions",
+            "params": [
+              {
+                "name": "workspaceId",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "integrationId",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "startDate",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "endDate",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "failed",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "skip",
+                "value": "",
+                "type": "query",
+                "description": "Items to skip [0...]"
+              },
+              {
+                "name": "take",
+                "value": "",
+                "type": "query",
+                "description": "Items to take [1..200]"
+              },
+              {
+                "name": "sortOrder",
+                "value": "",
+                "type": "query",
+                "description": "To sort the available list of records in either ascending or descending order. Possible values: asc - ascending order, desc - descending order.The default value is 'asc'."
+              },
+              {
+                "name": "sortBy",
+                "value": "",
+                "type": "query",
+                "description": "To sort the records based on the fields: startDate, runId. The default value is 'startDate'"
+              }
+            ]
+          },
+          "docs": "Get finished executions"
+        },
+        {
+          "info": {
+            "name": "POST /v1/workspaces/{workspaceId}/integrations/{integrationId}/executions",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.skyvia.com/v1/workspaces/:workspaceId/integrations/:integrationId/executions",
+            "params": [
+              {
+                "name": "workspaceId",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "integrationId",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          }
+        },
+        {
+          "info": {
+            "name": "GET /v1/workspaces/{workspaceId}/integrations/{integrationId}/executions/{executionId}",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.skyvia.com/v1/workspaces/:workspaceId/integrations/:integrationId/executions/:executionId",
+            "params": [
+              {
+                "name": "workspaceId",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "integrationId",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "executionId",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          }
+        },
+        {
+          "info": {
+            "name": "GET /v1/workspaces/{workspaceId}/integrations/{integrationId}/executions/active",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.skyvia.com/v1/workspaces/:workspaceId/integrations/:integrationId/executions/active",
+            "params": [
+              {
+                "name": "workspaceId",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "integrationId",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          }
+        },
+        {
+          "info": {
+            "name": "POST /v1/workspaces/{workspaceId}/integrations/{integrationId}/executions/cancel",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.skyvia.com/v1/workspaces/:workspaceId/integrations/:integrationId/executions/cancel",
+            "params": [
+              {
+                "name": "workspaceId",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "integrationId",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          }
+        },
+        {
+          "info": {
+            "name": "POST /v1/workspaces/{workspaceId}/integrations/{integrationId}/executions/kill",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.skyvia.com/v1/workspaces/:workspaceId/integrations/:integrationId/executions/kill",
+            "params": [
+              {
+                "name": "workspaceId",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "integrationId",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          }
+        },
+        {
+          "info": {
+            "name": "GET /v1/workspaces/{workspaceId}/integrations/{integrationId}/schedule",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.skyvia.com/v1/workspaces/:workspaceId/integrations/:integrationId/schedule",
+            "params": [
+              {
+                "name": "workspaceId",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "integrationId",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          }
+        },
+        {
+          "info": {
+            "name": "POST /v1/workspaces/{workspaceId}/integrations/{integrationId}/schedule/enable",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.skyvia.com/v1/workspaces/:workspaceId/integrations/:integrationId/schedule/enable",
+            "params": [
+              {
+                "name": "workspaceId",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "integrationId",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          }
+        },
+        {
+          "info": {
+            "name": "POST /v1/workspaces/{workspaceId}/integrations/{integrationId}/schedule/disable",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.skyvia.com/v1/workspaces/:workspaceId/integrations/:integrationId/schedule/disable",
+            "params": [
+              {
+                "name": "workspaceId",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "integrationId",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

@@ -1,0 +1,144 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Skyvia Public API — Account",
+    "version": "v1"
+  },
+  "request": {
+    "auth": {
+      "type": "apikey",
+      "key": "Authorization",
+      "value": "{{Authorization}}",
+      "placement": "header"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Account",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get account users",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.skyvia.com/v1/account/users",
+            "params": [
+              {
+                "name": "searchMask",
+                "value": "",
+                "type": "query",
+                "description": "search by user name"
+              },
+              {
+                "name": "take",
+                "value": "",
+                "type": "query",
+                "description": "Items to take [1..200]"
+              },
+              {
+                "name": "skip",
+                "value": "",
+                "type": "query",
+                "description": "Items to skip [0...]"
+              }
+            ]
+          },
+          "docs": "Get account users"
+        },
+        {
+          "info": {
+            "name": "DELETE /v1/account/users",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.skyvia.com/v1/account/users",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          }
+        },
+        {
+          "info": {
+            "name": "Get account invitations",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.skyvia.com/v1/account/invitations",
+            "params": [
+              {
+                "name": "take",
+                "value": "",
+                "type": "query",
+                "description": "Items to take [1..200]"
+              },
+              {
+                "name": "skip",
+                "value": "",
+                "type": "query",
+                "description": "Items to skip [0...]"
+              }
+            ]
+          },
+          "docs": "Get account invitations"
+        },
+        {
+          "info": {
+            "name": "POST /v1/account/invitations",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.skyvia.com/v1/account/invitations",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          }
+        },
+        {
+          "info": {
+            "name": "POST /v1/account/invitations/{invitationId}/resend",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.skyvia.com/v1/account/invitations/:invitationId/resend",
+            "params": [
+              {
+                "name": "invitationId",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          }
+        },
+        {
+          "info": {
+            "name": "DELETE /v1/account/invitations/{invitationId}",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.skyvia.com/v1/account/invitations/:invitationId",
+            "params": [
+              {
+                "name": "invitationId",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

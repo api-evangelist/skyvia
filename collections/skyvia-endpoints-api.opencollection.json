@@ -1,0 +1,221 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Skyvia Public API — Endpoints",
+    "version": "v1"
+  },
+  "request": {
+    "auth": {
+      "type": "apikey",
+      "key": "Authorization",
+      "value": "{{Authorization}}",
+      "placement": "header"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Endpoints",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "GET /v1/endpoints/types",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.skyvia.com/v1/endpoints/types"
+          }
+        },
+        {
+          "info": {
+            "name": "Get endpoints",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.skyvia.com/v1/workspaces/:workspaceId/endpoints",
+            "params": [
+              {
+                "name": "workspaceId",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "skip",
+                "value": "",
+                "type": "query",
+                "description": "Items to skip [0...]"
+              },
+              {
+                "name": "take",
+                "value": "",
+                "type": "query",
+                "description": "Items to take [1..200]"
+              }
+            ]
+          },
+          "docs": "Get endpoints"
+        },
+        {
+          "info": {
+            "name": "GET /v1/workspaces/{workspaceId}/endpoints/{endpointId}",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.skyvia.com/v1/workspaces/:workspaceId/endpoints/:endpointId",
+            "params": [
+              {
+                "name": "workspaceId",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "endpointId",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          }
+        },
+        {
+          "info": {
+            "name": "POST /v1/workspaces/{workspaceId}/endpoints/{endpointId}/enable",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.skyvia.com/v1/workspaces/:workspaceId/endpoints/:endpointId/enable",
+            "params": [
+              {
+                "name": "workspaceId",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "endpointId",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          }
+        },
+        {
+          "info": {
+            "name": "POST /v1/workspaces/{workspaceId}/endpoints/{endpointId}/disable",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.skyvia.com/v1/workspaces/:workspaceId/endpoints/:endpointId/disable",
+            "params": [
+              {
+                "name": "workspaceId",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "endpointId",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          }
+        },
+        {
+          "info": {
+            "name": "Get requests log",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.skyvia.com/v1/workspaces/:workspaceId/endpoints/:endpointId/executions",
+            "params": [
+              {
+                "name": "workspaceId",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "endpointId",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "startDate",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "endDate",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "failed",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "skip",
+                "value": "",
+                "type": "query",
+                "description": "Items to skip [0...]"
+              },
+              {
+                "name": "take",
+                "value": "",
+                "type": "query",
+                "description": "Items to take [1..200]"
+              },
+              {
+                "name": "sortOrder",
+                "value": "",
+                "type": "query",
+                "description": "To sort the available list of records in either ascending or descending order. Possible values: asc - ascending order, desc - descending order.The default value is 'asc'."
+              },
+              {
+                "name": "sortBy",
+                "value": "",
+                "type": "query",
+                "description": "To sort the records based on the fields: date, executionId. The default value is 'date'"
+              }
+            ]
+          },
+          "docs": "Get requests log"
+        },
+        {
+          "info": {
+            "name": "GET /v1/workspaces/{workspaceId}/endpoints/{endpointId}/executions/{recordId}",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.skyvia.com/v1/workspaces/:workspaceId/endpoints/:endpointId/executions/:recordId",
+            "params": [
+              {
+                "name": "workspaceId",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "endpointId",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "recordId",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}
