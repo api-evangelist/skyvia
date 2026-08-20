@@ -17,6 +17,22 @@ specificationVersion: '0.23'
 created: '2026-08-12'
 modified: '2026-08-12'
 tags:
+- Data Integration
+- iPaaS
+- ETL
+- ELT
+- Data Replication
+- Cloud Backup
+- OData
+- SQL
+- Workflow-Automation
+- No-Code
+- Connectors
+- Data Management
+- MCP
+- agent-native
+- Data Access
+tags_raw:
 - data-integration
 - ipaas
 - etl
@@ -44,6 +60,13 @@ apis:
   humanURL: https://docs.skyvia.com/api-reference/
   baseURL: https://api.skyvia.com
   tags:
+  - Data Integration
+  - iPaaS
+  - Workflow-Automation
+  - Cloud Backup
+  - Data Management
+  - Management API
+  tags_raw:
   - data-integration
   - ipaas
   - workflow-automation
@@ -93,6 +116,12 @@ apis:
   humanURL: https://docs.skyvia.com/connect/mcp-endpoints/
   baseURL: https://mcp.skyvia.com
   tags:
+  - MCP
+  - agent-native
+  - Data Access
+  - SQL
+  - Connectors
+  tags_raw:
   - mcp
   - agent-native
   - data-access
@@ -121,6 +150,12 @@ apis:
   humanURL: https://docs.skyvia.com/connect/
   baseURL: https://connect.skyvia.com
   tags:
+  - OData
+  - SQL
+  - Data Access
+  - Connectors
+  - Data Management
+  tags_raw:
   - odata
   - sql
   - data-access
@@ -144,6 +179,11 @@ apis:
   humanURL: https://docs.skyvia.com/automation/building-automation/triggers.html
   baseURL: https://app.skyvia.com
   tags:
+  - Webhook
+  - Workflow-Automation
+  - Event
+  - No-Code
+  tags_raw:
   - webhooks
   - workflow-automation
   - events
