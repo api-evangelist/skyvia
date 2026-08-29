@@ -9,6 +9,18 @@ description: >-
   endpoint, a SQL endpoint, or an MCP endpoint for AI agents). Skyvia also ships a public REST management API at
   api.skyvia.com that lets you drive accounts, workspaces, agents, connections, integrations, automations, backups
   and Connect endpoints programmatically with a scoped, expiring API token.
+deliveryModel:
+  model: saas
+  open_source: false
+  commercial: true
+  callable_host: true
+  label: Hosted service · you call their endpoint
+  confidence: high
+  source:
+  - openapi
+  - pricing
+  generated: '2026-08-28'
+  method: derived
 image: https://skyvia.com/assets/img/meta-img/meta-image.png
 url: https://raw.githubusercontent.com/api-evangelist/skyvia/refs/heads/main/apis.yml
 x-type: company
