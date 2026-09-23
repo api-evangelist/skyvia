@@ -1,15 +1,11 @@
-openapi: 3.0.1
+openapi: 3.2.0
 info:
-  title: Skyvia Public API — Connections
+  title: Skyvia public Connections API
   version: v1
-  description: Data-source connections defined in a workspace, and connection testing.
-  x-apievangelist-source: https://api.skyvia.com/swagger/v1/swagger.json
-servers:
-- url: https://api.skyvia.com
-  description: Skyvia public API
+security:
+- Access Token: []
 tags:
 - name: Connections
-  description: Data-source connections defined in a workspace, and connection testing.
 paths:
   /v1/workspaces/{workspaceId}/connections:
     get:
@@ -51,6 +47,8 @@ paths:
             text/json:
               schema:
                 $ref: '#/components/schemas/ConnectionDtoHasMorePagingDto'
+      operationId: getV1WorkspacesByWorkspaceIdConnections
+      x-operation-id-source: derived
   /v1/workspaces/{workspaceId}/connections/{connectionId}:
     get:
       tags:
@@ -81,6 +79,10 @@ paths:
             text/json:
               schema:
                 $ref: '#/components/schemas/ConnectionDetailsDto'
+      summary: Get workspaces by workspace id connections by connection id
+      x-summary-source: derived
+      operationId: getV1WorkspacesByWorkspaceIdConnectionsByConnectionId
+      x-operation-id-source: derived
   /v1/workspaces/{workspaceId}/connections/{connectionId}/test:
     post:
       tags:
@@ -111,34 +113,33 @@ paths:
             text/json:
               schema:
                 $ref: '#/components/schemas/ApiResult'
+      summary: Create workspaces by workspace id connections by connection id test
+      x-summary-source: derived
+      operationId: postV1WorkspacesByWorkspaceIdConnectionsByConnectionIdTest
+      x-operation-id-source: derived
 components:
   schemas:
     ApiResult:
       type: object
       properties:
         message:
-          type: string
-          nullable: true
+          type:
+          - string
+          - 'null'
         refresh:
           type: boolean
       additionalProperties: false
-    ConnectionDetailsDto:
+    ConnectionDtoHasMorePagingDto:
       type: object
       properties:
-        id:
-          type: integer
-          format: int32
-        name:
-          type: string
-          nullable: true
-        connector:
-          type: string
-          nullable: true
-        type:
-          enum:
-          - Direct
-          - Agent
-          type: string
+        data:
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/ConnectionDto'
+        hasMore:
+          type: boolean
       additionalProperties: false
     ConnectionDto:
       type: object
@@ -147,28 +148,37 @@ components:
           type: integer
           format: int32
         name:
-          type: string
-          nullable: true
+          type:
+          - string
+          - 'null'
         connector:
-          type: string
-          nullable: true
+          type:
+          - string
+          - 'null'
       additionalProperties: false
-    ConnectionDtoHasMorePagingDto:
+    ConnectionDetailsDto:
       type: object
       properties:
-        data:
-          type: array
-          items:
-            $ref: '#/components/schemas/ConnectionDto'
-          nullable: true
-        hasMore:
-          type: boolean
+        id:
+          type: integer
+          format: int32
+        name:
+          type:
+          - string
+          - 'null'
+        connector:
+          type:
+          - string
+          - 'null'
+        type:
+          enum:
+          - Direct
+          - Agent
+          type: string
       additionalProperties: false
   securitySchemes:
-    Access Token:
+    Access_Token:
       type: apiKey
       description: Authorization header with the Skyvia access token.
       name: Authorization
       in: header
-security:
-- Access Token: []

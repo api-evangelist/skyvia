@@ -1,15 +1,11 @@
-openapi: 3.0.1
+openapi: 3.2.0
 info:
-  title: Skyvia Public API — Account
+  title: Skyvia public Account API
   version: v1
-  description: Account-level user and invitation management for the Skyvia account.
-  x-apievangelist-source: https://api.skyvia.com/swagger/v1/swagger.json
-servers:
-- url: https://api.skyvia.com
-  description: Skyvia public API
+security:
+- Access Token: []
 tags:
 - name: Account
-  description: Account-level user and invitation management for the Skyvia account.
 paths:
   /v1/account/users:
     get:
@@ -49,6 +45,8 @@ paths:
             text/json:
               schema:
                 $ref: '#/components/schemas/AccountUserDtoHasMorePagingDto'
+      operationId: getV1AccountUsers
+      x-operation-id-source: derived
     delete:
       tags:
       - Account
@@ -69,6 +67,10 @@ paths:
       responses:
         '200':
           description: OK
+      summary: Delete account users
+      x-summary-source: derived
+      operationId: deleteV1AccountUsers
+      x-operation-id-source: derived
   /v1/account/invitations:
     get:
       tags:
@@ -102,6 +104,8 @@ paths:
             text/json:
               schema:
                 $ref: '#/components/schemas/AccountInvitedUserDtoHasMorePagingDto'
+      operationId: getV1AccountInvitations
+      x-operation-id-source: derived
     post:
       tags:
       - Account
@@ -132,6 +136,10 @@ paths:
             text/json:
               schema:
                 $ref: '#/components/schemas/InvitedUserStatusDto'
+      summary: Create account invitations
+      x-summary-source: derived
+      operationId: postV1AccountInvitations
+      x-operation-id-source: derived
   /v1/account/invitations/{invitationId}/resend:
     post:
       tags:
@@ -156,6 +164,10 @@ paths:
             text/json:
               schema:
                 $ref: '#/components/schemas/InvitedUserStatusDto'
+      summary: Create account invitations by invitation id resend
+      x-summary-source: derived
+      operationId: postV1AccountInvitationsByInvitationIdResend
+      x-operation-id-source: derived
   /v1/account/invitations/{invitationId}:
     delete:
       tags:
@@ -170,84 +182,12 @@ paths:
       responses:
         '200':
           description: OK
+      summary: Delete account invitations by invitation id
+      x-summary-source: derived
+      operationId: deleteV1AccountInvitationsByInvitationId
+      x-operation-id-source: derived
 components:
   schemas:
-    AccountInvitedUserDto:
-      type: object
-      properties:
-        id:
-          type: integer
-          format: int32
-        email:
-          type: string
-          nullable: true
-        type:
-          enum:
-          - Administrator
-          - Member
-          type: string
-        workspaces:
-          type: array
-          items:
-            $ref: '#/components/schemas/AccountWorkspaceUserDto'
-          nullable: true
-        invitationDate:
-          type: string
-          format: date-time
-        userId:
-          type: integer
-          format: int32
-          nullable: true
-        fullName:
-          type: string
-          nullable: true
-      additionalProperties: false
-    AccountInvitedUserDtoHasMorePagingDto:
-      type: object
-      properties:
-        data:
-          type: array
-          items:
-            $ref: '#/components/schemas/AccountInvitedUserDto'
-          nullable: true
-        hasMore:
-          type: boolean
-      additionalProperties: false
-    AccountUserDto:
-      type: object
-      properties:
-        id:
-          type: integer
-          format: int32
-          nullable: true
-        email:
-          type: string
-          nullable: true
-        fullName:
-          type: string
-          nullable: true
-        type:
-          enum:
-          - Administrator
-          - Member
-          type: string
-        workspaces:
-          type: array
-          items:
-            $ref: '#/components/schemas/AccountWorkspaceUserDto'
-          nullable: true
-      additionalProperties: false
-    AccountUserDtoHasMorePagingDto:
-      type: object
-      properties:
-        data:
-          type: array
-          items:
-            $ref: '#/components/schemas/AccountUserDto'
-          nullable: true
-        hasMore:
-          type: boolean
-      additionalProperties: false
     AccountWorkspaceUserDto:
       type: object
       properties:
@@ -255,26 +195,12 @@ components:
           type: integer
           format: int32
         roleName:
-          type: string
-          nullable: true
+          type:
+          - string
+          - 'null'
         roleId:
           type: integer
           format: int32
-      additionalProperties: false
-    InviteToWorkspaceDto:
-      required:
-      - roleId
-      - workspaceId
-      type: object
-      properties:
-        workspaceId:
-          type: integer
-          format: int32
-          example: 123
-        roleId:
-          type: integer
-          format: int32
-          example: 3
       additionalProperties: false
     InviteUserRequestDto:
       required:
@@ -293,36 +219,139 @@ components:
           type: string
           example: Member
         workspaces:
-          type: array
+          type:
+          - array
+          - 'null'
           items:
             $ref: '#/components/schemas/InviteToWorkspaceDto'
-          nullable: true
       additionalProperties: false
-    InvitedUserStatusDto:
+    AccountUserDtoHasMorePagingDto:
       type: object
       properties:
-        email:
-          type: string
-          nullable: true
-        status:
-          type: string
-          nullable: true
-        invitationId:
-          type: integer
-          format: int32
+        data:
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/AccountUserDto'
+        hasMore:
+          type: boolean
+      additionalProperties: false
+    AccountInvitedUserDtoHasMorePagingDto:
+      type: object
+      properties:
+        data:
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/AccountInvitedUserDto'
+        hasMore:
+          type: boolean
       additionalProperties: false
     RemoveAccountUserRequestDto:
       type: object
       properties:
         email:
+          type:
+          - string
+          - 'null'
+      additionalProperties: false
+    AccountUserDto:
+      type: object
+      properties:
+        id:
+          type:
+          - integer
+          - 'null'
+          format: int32
+        email:
+          type:
+          - string
+          - 'null'
+        fullName:
+          type:
+          - string
+          - 'null'
+        type:
+          enum:
+          - Administrator
+          - Member
           type: string
-          nullable: true
+        workspaces:
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/AccountWorkspaceUserDto'
+      additionalProperties: false
+    AccountInvitedUserDto:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int32
+        email:
+          type:
+          - string
+          - 'null'
+        type:
+          enum:
+          - Administrator
+          - Member
+          type: string
+        workspaces:
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/AccountWorkspaceUserDto'
+        invitationDate:
+          type: string
+          format: date-time
+        userId:
+          type:
+          - integer
+          - 'null'
+          format: int32
+        fullName:
+          type:
+          - string
+          - 'null'
+      additionalProperties: false
+    InviteToWorkspaceDto:
+      required:
+      - roleId
+      - workspaceId
+      type: object
+      properties:
+        workspaceId:
+          type: integer
+          format: int32
+          example: 123
+        roleId:
+          type: integer
+          format: int32
+          example: 3
+      additionalProperties: false
+    InvitedUserStatusDto:
+      type: object
+      properties:
+        email:
+          type:
+          - string
+          - 'null'
+        status:
+          type:
+          - string
+          - 'null'
+        invitationId:
+          type: integer
+          format: int32
       additionalProperties: false
   securitySchemes:
-    Access Token:
+    Access_Token:
       type: apiKey
       description: Authorization header with the Skyvia access token.
       name: Authorization
       in: header
-security:
-- Access Token: []

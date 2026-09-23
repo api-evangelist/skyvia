@@ -2,7 +2,7 @@ overlay: 1.0.0
 info:
   title: API Evangelist enhancements for the Skyvia Public API
   version: 1.0.0
-  description: >-
+  x-description: >-
     Captures the enhancements API Evangelist applied when refining Skyvia's published Swagger document
     (https://api.skyvia.com/swagger/v1/swagger.json) into the eight per-tag OpenAPI files in openapi/. The
     harvested original is preserved unmodified at

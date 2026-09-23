@@ -1,0 +1,42 @@
+{
+  "provider": "skyvia",
+  "sources": [
+    "_original/skyvia-public-api-openapi-original.json"
+  ],
+  "outputs": [
+    "skyvia-account-api-openapi.yml",
+    "skyvia-agents-api-openapi.yml",
+    "skyvia-automations-api-openapi.yml",
+    "skyvia-backups-api-openapi.yml",
+    "skyvia-connections-api-openapi.yml",
+    "skyvia-endpoints-api-openapi.yml",
+    "skyvia-integrations-api-openapi.yml",
+    "skyvia-workspaces-api-openapi.yml"
+  ],
+  "archived": [],
+  "errors": [],
+  "warnings": [],
+  "notes": [
+    "sourced from openapi/_original/ (1 archived document(s)); previously refined output at the top level was skipped rather than re-split",
+    "skyvia-public-api-openapi-original.json: upgraded openapi 3.0.1 -> OpenAPI 3.2.0; renamed 1 component key(s) illegal in 3.x (e.g. Access Token)",
+    "skyvia-public-api-openapi-original.json: declared missing tag: Account",
+    "skyvia-public-api-openapi-original.json: declared missing tag: Agents",
+    "skyvia-public-api-openapi-original.json: declared missing tag: Automations",
+    "skyvia-public-api-openapi-original.json: declared missing tag: Backups",
+    "skyvia-public-api-openapi-original.json: declared missing tag: Connections",
+    "skyvia-public-api-openapi-original.json: declared missing tag: Endpoints",
+    "skyvia-public-api-openapi-original.json: declared missing tag: Integrations",
+    "skyvia-public-api-openapi-original.json: declared missing tag: Workspaces",
+    "apis.yml register: already-registered"
+  ],
+  "skipped": [
+    "skyvia-account-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "skyvia-agents-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "skyvia-automations-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "skyvia-backups-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "skyvia-connections-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "skyvia-endpoints-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "skyvia-integrations-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "skyvia-workspaces-api-openapi.yml: previously refined output, superseded by openapi/_original/"
+  ]
+}

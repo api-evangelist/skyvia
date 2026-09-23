@@ -1,17 +1,11 @@
-openapi: 3.0.1
+openapi: 3.2.0
 info:
-  title: Skyvia Public API — Integrations
+  title: Skyvia public Integrations API
   version: v1
-  description: 'Data integration packages (import, export, replication, synchronization, data flow, control flow): execution,
-    cancellation, and schedules.'
-  x-apievangelist-source: https://api.skyvia.com/swagger/v1/swagger.json
-servers:
-- url: https://api.skyvia.com
-  description: Skyvia public API
+security:
+- Access Token: []
 tags:
 - name: Integrations
-  description: 'Data integration packages (import, export, replication, synchronization, data flow, control flow): execution,
-    cancellation, and schedules.'
 paths:
   /v1/workspaces/{workspaceId}/integrations:
     get:
@@ -53,6 +47,8 @@ paths:
             text/json:
               schema:
                 $ref: '#/components/schemas/IntegrationDtoHasMorePagingDto'
+      operationId: getV1WorkspacesByWorkspaceIdIntegrations
+      x-operation-id-source: derived
   /v1/workspaces/{workspaceId}/integrations/{integrationId}:
     get:
       tags:
@@ -83,6 +79,10 @@ paths:
             text/json:
               schema:
                 $ref: '#/components/schemas/IntegrationDto'
+      summary: Get workspaces by workspace id integrations by integration id
+      x-summary-source: derived
+      operationId: getV1WorkspacesByWorkspaceIdIntegrationsByIntegrationId
+      x-operation-id-source: derived
   /v1/workspaces/{workspaceId}/integrations/{integrationId}/executions:
     get:
       tags:
@@ -136,8 +136,7 @@ paths:
           default: 20
       - name: sortOrder
         in: query
-        description: 'To sort the available list of records in either ascending or descending order. Possible values: asc
-          - ascending order, desc - descending order.The default value is ''asc''.'
+        description: 'To sort the available list of records in either ascending or descending order. Possible values: asc - ascending order, desc - descending order.The default value is ''asc''.'
         schema:
           type: string
           default: asc
@@ -160,6 +159,8 @@ paths:
             text/json:
               schema:
                 $ref: '#/components/schemas/IntegrationExecutionLogDtoHasMorePagingDto'
+      operationId: getV1WorkspacesByWorkspaceIdIntegrationsByIntegrationIdExecutions
+      x-operation-id-source: derived
     post:
       tags:
       - Integrations
@@ -189,6 +190,10 @@ paths:
             text/json:
               schema:
                 $ref: '#/components/schemas/IntegrationExecutionLogDto'
+      summary: Create workspaces by workspace id integrations by integration id executions
+      x-summary-source: derived
+      operationId: postV1WorkspacesByWorkspaceIdIntegrationsByIntegrationIdExecutions
+      x-operation-id-source: derived
   /v1/workspaces/{workspaceId}/integrations/{integrationId}/executions/{executionId}:
     get:
       tags:
@@ -225,6 +230,10 @@ paths:
             text/json:
               schema:
                 $ref: '#/components/schemas/IntegrationExecutionResultDto'
+      summary: Get workspaces by workspace id integrations by integration id executions by…
+      x-summary-source: derived
+      operationId: getV1WorkspacesByWorkspaceIdIntegrationsByIntegrationIdExecutionsByExecutionId
+      x-operation-id-source: derived
   /v1/workspaces/{workspaceId}/integrations/{integrationId}/executions/active:
     get:
       tags:
@@ -255,6 +264,10 @@ paths:
             text/json:
               schema:
                 $ref: '#/components/schemas/IntegrationExecutionLogDto'
+      summary: Get workspaces by workspace id integrations by integration id executions active
+      x-summary-source: derived
+      operationId: getV1WorkspacesByWorkspaceIdIntegrationsByIntegrationIdExecutionsActive
+      x-operation-id-source: derived
   /v1/workspaces/{workspaceId}/integrations/{integrationId}/executions/cancel:
     post:
       tags:
@@ -275,6 +288,10 @@ paths:
       responses:
         '200':
           description: OK
+      summary: Create workspaces by workspace id integrations by integration id executions…
+      x-summary-source: derived
+      operationId: postV1WorkspacesByWorkspaceIdIntegrationsByIntegrationIdExecutionsCancel
+      x-operation-id-source: derived
   /v1/workspaces/{workspaceId}/integrations/{integrationId}/executions/kill:
     post:
       tags:
@@ -295,6 +312,10 @@ paths:
       responses:
         '200':
           description: OK
+      summary: Create workspaces by workspace id integrations by integration id executions kill
+      x-summary-source: derived
+      operationId: postV1WorkspacesByWorkspaceIdIntegrationsByIntegrationIdExecutionsKill
+      x-operation-id-source: derived
   /v1/workspaces/{workspaceId}/integrations/{integrationId}/schedule:
     get:
       tags:
@@ -325,6 +346,10 @@ paths:
             text/json:
               schema:
                 $ref: '#/components/schemas/IntegrationScheduleDto'
+      summary: Get workspaces by workspace id integrations by integration id schedule
+      x-summary-source: derived
+      operationId: getV1WorkspacesByWorkspaceIdIntegrationsByIntegrationIdSchedule
+      x-operation-id-source: derived
   /v1/workspaces/{workspaceId}/integrations/{integrationId}/schedule/enable:
     post:
       tags:
@@ -355,6 +380,10 @@ paths:
             text/json:
               schema:
                 $ref: '#/components/schemas/IntegrationScheduleDto'
+      summary: Create workspaces by workspace id integrations by integration id schedule enable
+      x-summary-source: derived
+      operationId: postV1WorkspacesByWorkspaceIdIntegrationsByIntegrationIdScheduleEnable
+      x-operation-id-source: derived
   /v1/workspaces/{workspaceId}/integrations/{integrationId}/schedule/disable:
     post:
       tags:
@@ -385,38 +414,21 @@ paths:
             text/json:
               schema:
                 $ref: '#/components/schemas/IntegrationScheduleDto'
+      summary: Create workspaces by workspace id integrations by integration id schedule…
+      x-summary-source: derived
+      operationId: postV1WorkspacesByWorkspaceIdIntegrationsByIntegrationIdScheduleDisable
+      x-operation-id-source: derived
 components:
   schemas:
-    IntegrationDto:
-      type: object
-      properties:
-        id:
-          type: integer
-          format: int32
-        name:
-          type: string
-          nullable: true
-        type:
-          type: string
-          description: 'Possible values: dataflow, export, controlflow, replication, import, sync, custom'
-          nullable: true
-        created:
-          type: string
-          format: date-time
-        modified:
-          type: string
-          format: date-time
-        scheduled:
-          type: boolean
-      additionalProperties: false
-    IntegrationDtoHasMorePagingDto:
+    IntegrationExecutionLogDtoHasMorePagingDto:
       type: object
       properties:
         data:
-          type: array
+          type:
+          - array
+          - 'null'
           items:
-            $ref: '#/components/schemas/IntegrationDto'
-          nullable: true
+            $ref: '#/components/schemas/IntegrationExecutionLogDto'
         hasMore:
           type: boolean
       additionalProperties: false
@@ -449,15 +461,46 @@ components:
           type: integer
           format: int32
       additionalProperties: false
-    IntegrationExecutionLogDtoHasMorePagingDto:
+    IntegrationDto:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int32
+        name:
+          type:
+          - string
+          - 'null'
+        type:
+          type:
+          - string
+          - 'null'
+          description: 'Possible values: dataflow, export, controlflow, replication, import, sync, custom'
+        created:
+          type: string
+          format: date-time
+        modified:
+          type: string
+          format: date-time
+        scheduled:
+          type: boolean
+      additionalProperties: false
+    IntegrationDtoHasMorePagingDto:
       type: object
       properties:
         data:
-          type: array
+          type:
+          - array
+          - 'null'
           items:
-            $ref: '#/components/schemas/IntegrationExecutionLogDto'
-          nullable: true
+            $ref: '#/components/schemas/IntegrationDto'
         hasMore:
+          type: boolean
+      additionalProperties: false
+    IntegrationScheduleDto:
+      type: object
+      properties:
+        active:
           type: boolean
       additionalProperties: false
     IntegrationExecutionResultDto:
@@ -470,13 +513,15 @@ components:
           type: string
           format: date-time
         startTime:
-          type: string
+          type:
+          - string
+          - 'null'
           format: date-time
-          nullable: true
         endTime:
-          type: string
+          type:
+          - string
+          - 'null'
           format: date-time
-          nullable: true
         state:
           enum:
           - New
@@ -488,20 +533,13 @@ components:
           - Canceled
           type: string
         result:
-          type: string
-          nullable: true
-      additionalProperties: false
-    IntegrationScheduleDto:
-      type: object
-      properties:
-        active:
-          type: boolean
+          type:
+          - string
+          - 'null'
       additionalProperties: false
   securitySchemes:
-    Access Token:
+    Access_Token:
       type: apiKey
       description: Authorization header with the Skyvia access token.
       name: Authorization
       in: header
-security:
-- Access Token: []

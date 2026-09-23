@@ -1,15 +1,11 @@
-openapi: 3.0.1
+openapi: 3.2.0
 info:
-  title: Skyvia Public API — Endpoints
+  title: Skyvia public Endpoints API
   version: v1
-  description: Skyvia Connect endpoints (OData and SQL) that publish data over the web, plus their request logs.
-  x-apievangelist-source: https://api.skyvia.com/swagger/v1/swagger.json
-servers:
-- url: https://api.skyvia.com
-  description: Skyvia public API
+security:
+- Access Token: []
 tags:
 - name: Endpoints
-  description: Skyvia Connect endpoints (OData and SQL) that publish data over the web, plus their request logs.
 paths:
   /v1/endpoints/types:
     get:
@@ -52,6 +48,10 @@ paths:
                     type: integer
                     format: int32
                 additionalProperties: false
+      summary: Get endpoints types
+      x-summary-source: derived
+      operationId: getV1EndpointsTypes
+      x-operation-id-source: derived
   /v1/workspaces/{workspaceId}/endpoints:
     get:
       tags:
@@ -92,6 +92,8 @@ paths:
             text/json:
               schema:
                 $ref: '#/components/schemas/EndpointDtoHasMorePagingDto'
+      operationId: getV1WorkspacesByWorkspaceIdEndpoints
+      x-operation-id-source: derived
   /v1/workspaces/{workspaceId}/endpoints/{endpointId}:
     get:
       tags:
@@ -122,6 +124,10 @@ paths:
             text/json:
               schema:
                 $ref: '#/components/schemas/EndpointDto'
+      summary: Get workspaces by workspace id endpoints by endpoint id
+      x-summary-source: derived
+      operationId: getV1WorkspacesByWorkspaceIdEndpointsByEndpointId
+      x-operation-id-source: derived
   /v1/workspaces/{workspaceId}/endpoints/{endpointId}/enable:
     post:
       tags:
@@ -142,6 +148,10 @@ paths:
       responses:
         '200':
           description: OK
+      summary: Create workspaces by workspace id endpoints by endpoint id enable
+      x-summary-source: derived
+      operationId: postV1WorkspacesByWorkspaceIdEndpointsByEndpointIdEnable
+      x-operation-id-source: derived
   /v1/workspaces/{workspaceId}/endpoints/{endpointId}/disable:
     post:
       tags:
@@ -162,6 +172,10 @@ paths:
       responses:
         '200':
           description: OK
+      summary: Create workspaces by workspace id endpoints by endpoint id disable
+      x-summary-source: derived
+      operationId: postV1WorkspacesByWorkspaceIdEndpointsByEndpointIdDisable
+      x-operation-id-source: derived
   /v1/workspaces/{workspaceId}/endpoints/{endpointId}/executions:
     get:
       tags:
@@ -215,8 +229,7 @@ paths:
           default: 20
       - name: sortOrder
         in: query
-        description: 'To sort the available list of records in either ascending or descending order. Possible values: asc
-          - ascending order, desc - descending order.The default value is ''asc''.'
+        description: 'To sort the available list of records in either ascending or descending order. Possible values: asc - ascending order, desc - descending order.The default value is ''asc''.'
         schema:
           type: string
           default: asc
@@ -239,6 +252,8 @@ paths:
             text/json:
               schema:
                 $ref: '#/components/schemas/EndpointRequestLogDtoHasMorePagingDto'
+      operationId: getV1WorkspacesByWorkspaceIdEndpointsByEndpointIdExecutions
+      x-operation-id-source: derived
   /v1/workspaces/{workspaceId}/endpoints/{endpointId}/executions/{recordId}:
     get:
       tags:
@@ -274,45 +289,12 @@ paths:
             text/json:
               schema:
                 $ref: '#/components/schemas/EndpointRequestLogDetailedDto'
+      summary: Get workspaces by workspace id endpoints by endpoint id executions by record id
+      x-summary-source: derived
+      operationId: getV1WorkspacesByWorkspaceIdEndpointsByEndpointIdExecutionsByRecordId
+      x-operation-id-source: derived
 components:
   schemas:
-    EndpointDto:
-      type: object
-      properties:
-        id:
-          type: integer
-          format: int32
-        name:
-          type: string
-          nullable: true
-        token:
-          type: string
-          nullable: true
-        active:
-          type: boolean
-        type:
-          enum:
-          - OData
-          - Sql
-          type: string
-        created:
-          type: string
-          format: date-time
-        modified:
-          type: string
-          format: date-time
-      additionalProperties: false
-    EndpointDtoHasMorePagingDto:
-      type: object
-      properties:
-        data:
-          type: array
-          items:
-            $ref: '#/components/schemas/EndpointDto'
-          nullable: true
-        hasMore:
-          type: boolean
-      additionalProperties: false
     EndpointRequestLogDetailedDto:
       type: object
       properties:
@@ -320,28 +302,35 @@ components:
           type: string
           format: date-time
         url:
-          type: string
-          nullable: true
+          type:
+          - string
+          - 'null'
         method:
-          type: string
-          nullable: true
+          type:
+          - string
+          - 'null'
         remoteIP:
-          type: string
-          nullable: true
+          type:
+          - string
+          - 'null'
         userAgent:
-          type: string
-          nullable: true
+          type:
+          - string
+          - 'null'
         user:
-          type: string
-          nullable: true
+          type:
+          - string
+          - 'null'
         error:
-          type: string
-          nullable: true
+          type:
+          - string
+          - 'null'
         log:
-          type: array
+          type:
+          - array
+          - 'null'
           items:
             type: string
-          nullable: true
         bytes:
           type: integer
           format: int32
@@ -349,17 +338,31 @@ components:
           type: integer
           format: int32
         pageToken:
-          type: string
-          nullable: true
+          type:
+          - string
+          - 'null'
         external:
+          type: boolean
+      additionalProperties: false
+    EndpointRequestLogDtoHasMorePagingDto:
+      type: object
+      properties:
+        data:
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/EndpointRequestLogDto'
+        hasMore:
           type: boolean
       additionalProperties: false
     EndpointRequestLogDto:
       type: object
       properties:
         executionId:
-          type: string
-          nullable: true
+          type:
+          - string
+          - 'null'
         date:
           type: string
           format: date-time
@@ -380,28 +383,57 @@ components:
           type: integer
           format: int32
         remoteIP:
-          type: string
-          nullable: true
+          type:
+          - string
+          - 'null'
         url:
-          type: string
-          nullable: true
+          type:
+          - string
+          - 'null'
       additionalProperties: false
-    EndpointRequestLogDtoHasMorePagingDto:
+    EndpointDto:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int32
+        name:
+          type:
+          - string
+          - 'null'
+        token:
+          type:
+          - string
+          - 'null'
+        active:
+          type: boolean
+        type:
+          enum:
+          - OData
+          - Sql
+          type: string
+        created:
+          type: string
+          format: date-time
+        modified:
+          type: string
+          format: date-time
+      additionalProperties: false
+    EndpointDtoHasMorePagingDto:
       type: object
       properties:
         data:
-          type: array
+          type:
+          - array
+          - 'null'
           items:
-            $ref: '#/components/schemas/EndpointRequestLogDto'
-          nullable: true
+            $ref: '#/components/schemas/EndpointDto'
         hasMore:
           type: boolean
       additionalProperties: false
   securitySchemes:
-    Access Token:
+    Access_Token:
       type: apiKey
       description: Authorization header with the Skyvia access token.
       name: Authorization
       in: header
-security:
-- Access Token: []

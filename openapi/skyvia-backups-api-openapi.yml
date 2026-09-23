@@ -1,15 +1,11 @@
-openapi: 3.0.1
+openapi: 3.2.0
 info:
-  title: Skyvia Public API — Backups
+  title: Skyvia public Backups API
   version: v1
-  description: 'Cloud-to-cloud backups: backup definitions, snapshots, snapshot runs, and backup schedules.'
-  x-apievangelist-source: https://api.skyvia.com/swagger/v1/swagger.json
-servers:
-- url: https://api.skyvia.com
-  description: Skyvia public API
+security:
+- Access Token: []
 tags:
 - name: Backups
-  description: 'Cloud-to-cloud backups: backup definitions, snapshots, snapshot runs, and backup schedules.'
 paths:
   /v1/workspaces/{workspaceId}/backups:
     get:
@@ -51,6 +47,8 @@ paths:
             text/json:
               schema:
                 $ref: '#/components/schemas/BackupDtoHasMorePagingDto'
+      operationId: getV1WorkspacesByWorkspaceIdBackups
+      x-operation-id-source: derived
   /v1/workspaces/{workspaceId}/backups/{backupId}:
     get:
       tags:
@@ -81,6 +79,10 @@ paths:
             text/json:
               schema:
                 $ref: '#/components/schemas/BackupDto'
+      summary: Get workspaces by workspace id backups by backup id
+      x-summary-source: derived
+      operationId: getV1WorkspacesByWorkspaceIdBackupsByBackupId
+      x-operation-id-source: derived
   /v1/workspaces/{workspaceId}/backups/{backupId}/snapshots:
     get:
       tags:
@@ -134,8 +136,7 @@ paths:
           default: 20
       - name: sortOrder
         in: query
-        description: 'To sort the available list of records in either ascending or descending order. Possible values: asc
-          - ascending order, desc - descending order.The default value is ''asc''.'
+        description: 'To sort the available list of records in either ascending or descending order. Possible values: asc - ascending order, desc - descending order.The default value is ''asc''.'
         schema:
           type: string
           default: asc
@@ -158,6 +159,8 @@ paths:
             text/json:
               schema:
                 $ref: '#/components/schemas/BackupSnapshotLogDtoHasMorePagingDto'
+      operationId: getV1WorkspacesByWorkspaceIdBackupsByBackupIdSnapshots
+      x-operation-id-source: derived
     post:
       tags:
       - Backups
@@ -187,6 +190,10 @@ paths:
             text/json:
               schema:
                 $ref: '#/components/schemas/BackupActiveRunDto'
+      summary: Create workspaces by workspace id backups by backup id snapshots
+      x-summary-source: derived
+      operationId: postV1WorkspacesByWorkspaceIdBackupsByBackupIdSnapshots
+      x-operation-id-source: derived
   /v1/workspaces/{workspaceId}/backups/{backupId}/snapshots/{snapshotId}:
     get:
       tags:
@@ -223,6 +230,10 @@ paths:
             text/json:
               schema:
                 $ref: '#/components/schemas/BackupSnapshotLogDetailsDto'
+      summary: Get workspaces by workspace id backups by backup id snapshots by snapshot id
+      x-summary-source: derived
+      operationId: getV1WorkspacesByWorkspaceIdBackupsByBackupIdSnapshotsBySnapshotId
+      x-operation-id-source: derived
   /v1/workspaces/{workspaceId}/backups/{backupId}/snapshots/active:
     get:
       tags:
@@ -253,6 +264,10 @@ paths:
             text/json:
               schema:
                 $ref: '#/components/schemas/BackupActiveRunDto'
+      summary: Get workspaces by workspace id backups by backup id snapshots active
+      x-summary-source: derived
+      operationId: getV1WorkspacesByWorkspaceIdBackupsByBackupIdSnapshotsActive
+      x-operation-id-source: derived
   /v1/workspaces/{workspaceId}/backups/{backupId}/schedule:
     get:
       tags:
@@ -283,6 +298,10 @@ paths:
             text/json:
               schema:
                 $ref: '#/components/schemas/BackupScheduleDto'
+      summary: Get workspaces by workspace id backups by backup id schedule
+      x-summary-source: derived
+      operationId: getV1WorkspacesByWorkspaceIdBackupsByBackupIdSchedule
+      x-operation-id-source: derived
   /v1/workspaces/{workspaceId}/backups/{backupId}/schedule/enable:
     post:
       tags:
@@ -313,6 +332,10 @@ paths:
             text/json:
               schema:
                 $ref: '#/components/schemas/BackupScheduleDto'
+      summary: Create workspaces by workspace id backups by backup id schedule enable
+      x-summary-source: derived
+      operationId: postV1WorkspacesByWorkspaceIdBackupsByBackupIdScheduleEnable
+      x-operation-id-source: derived
   /v1/workspaces/{workspaceId}/backups/{backupId}/schedule/disable:
     post:
       tags:
@@ -343,8 +366,64 @@ paths:
             text/json:
               schema:
                 $ref: '#/components/schemas/BackupScheduleDto'
+      summary: Create workspaces by workspace id backups by backup id schedule disable
+      x-summary-source: derived
+      operationId: postV1WorkspacesByWorkspaceIdBackupsByBackupIdScheduleDisable
+      x-operation-id-source: derived
 components:
   schemas:
+    BackupDtoHasMorePagingDto:
+      type: object
+      properties:
+        data:
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/BackupDto'
+        hasMore:
+          type: boolean
+      additionalProperties: false
+    BackupSnapshotLogDto:
+      type: object
+      properties:
+        snapshotId:
+          type: integer
+          format: int32
+        queueTime:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        startTime:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        endTime:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        state:
+          enum:
+          - New
+          - Queued
+          - Running
+          - Succeeded
+          - Failed
+          - Canceling
+          - Canceled
+          type: string
+        runBySchedule:
+          type: boolean
+      additionalProperties: false
+    BackupScheduleDto:
+      type: object
+      properties:
+        active:
+          type: boolean
+      additionalProperties: false
     BackupActiveRunDto:
       type: object
       properties:
@@ -368,6 +447,18 @@ components:
           - Canceled
           type: string
       additionalProperties: false
+    BackupSnapshotLogDtoHasMorePagingDto:
+      type: object
+      properties:
+        data:
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/BackupSnapshotLogDto'
+        hasMore:
+          type: boolean
+      additionalProperties: false
     BackupDto:
       type: object
       properties:
@@ -375,8 +466,9 @@ components:
           type: integer
           format: int32
         name:
-          type: string
-          nullable: true
+          type:
+          - string
+          - 'null'
         created:
           type: string
           format: date-time
@@ -386,23 +478,6 @@ components:
         scheduled:
           type: boolean
       additionalProperties: false
-    BackupDtoHasMorePagingDto:
-      type: object
-      properties:
-        data:
-          type: array
-          items:
-            $ref: '#/components/schemas/BackupDto'
-          nullable: true
-        hasMore:
-          type: boolean
-      additionalProperties: false
-    BackupScheduleDto:
-      type: object
-      properties:
-        active:
-          type: boolean
-      additionalProperties: false
     BackupSnapshotLogDetailsDto:
       type: object
       properties:
@@ -410,17 +485,20 @@ components:
           type: integer
           format: int32
         queueTime:
-          type: string
+          type:
+          - string
+          - 'null'
           format: date-time
-          nullable: true
         startTime:
-          type: string
+          type:
+          - string
+          - 'null'
           format: date-time
-          nullable: true
         endTime:
-          type: string
+          type:
+          - string
+          - 'null'
           format: date-time
-          nullable: true
         state:
           enum:
           - New
@@ -434,56 +512,13 @@ components:
         runBySchedule:
           type: boolean
         result:
-          type: string
-          nullable: true
-      additionalProperties: false
-    BackupSnapshotLogDto:
-      type: object
-      properties:
-        snapshotId:
-          type: integer
-          format: int32
-        queueTime:
-          type: string
-          format: date-time
-          nullable: true
-        startTime:
-          type: string
-          format: date-time
-          nullable: true
-        endTime:
-          type: string
-          format: date-time
-          nullable: true
-        state:
-          enum:
-          - New
-          - Queued
-          - Running
-          - Succeeded
-          - Failed
-          - Canceling
-          - Canceled
-          type: string
-        runBySchedule:
-          type: boolean
-      additionalProperties: false
-    BackupSnapshotLogDtoHasMorePagingDto:
-      type: object
-      properties:
-        data:
-          type: array
-          items:
-            $ref: '#/components/schemas/BackupSnapshotLogDto'
-          nullable: true
-        hasMore:
-          type: boolean
+          type:
+          - string
+          - 'null'
       additionalProperties: false
   securitySchemes:
-    Access Token:
+    Access_Token:
       type: apiKey
       description: Authorization header with the Skyvia access token.
       name: Authorization
       in: header
-security:
-- Access Token: []
