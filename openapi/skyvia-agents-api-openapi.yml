@@ -129,6 +129,18 @@ components:
         refresh:
           type: boolean
       additionalProperties: false
+    AgentDtoHasMorePagingDto:
+      type: object
+      properties:
+        data:
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/AgentDto'
+        hasMore:
+          type: boolean
+      additionalProperties: false
     AgentDto:
       type: object
       properties:
@@ -143,18 +155,6 @@ components:
           type:
           - string
           - 'null'
-      additionalProperties: false
-    AgentDtoHasMorePagingDto:
-      type: object
-      properties:
-        data:
-          type:
-          - array
-          - 'null'
-          items:
-            $ref: '#/components/schemas/AgentDto'
-        hasMore:
-          type: boolean
       additionalProperties: false
   securitySchemes:
     Access_Token:

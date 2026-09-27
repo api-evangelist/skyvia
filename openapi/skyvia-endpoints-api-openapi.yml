@@ -344,6 +344,18 @@ components:
         external:
           type: boolean
       additionalProperties: false
+    EndpointDtoHasMorePagingDto:
+      type: object
+      properties:
+        data:
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/EndpointDto'
+        hasMore:
+          type: boolean
+      additionalProperties: false
     EndpointRequestLogDtoHasMorePagingDto:
       type: object
       properties:
@@ -418,18 +430,6 @@ components:
         modified:
           type: string
           format: date-time
-      additionalProperties: false
-    EndpointDtoHasMorePagingDto:
-      type: object
-      properties:
-        data:
-          type:
-          - array
-          - 'null'
-          items:
-            $ref: '#/components/schemas/EndpointDto'
-        hasMore:
-          type: boolean
       additionalProperties: false
   securitySchemes:
     Access_Token:

@@ -129,18 +129,6 @@ components:
         refresh:
           type: boolean
       additionalProperties: false
-    ConnectionDtoHasMorePagingDto:
-      type: object
-      properties:
-        data:
-          type:
-          - array
-          - 'null'
-          items:
-            $ref: '#/components/schemas/ConnectionDto'
-        hasMore:
-          type: boolean
-      additionalProperties: false
     ConnectionDto:
       type: object
       properties:
@@ -155,6 +143,18 @@ components:
           type:
           - string
           - 'null'
+      additionalProperties: false
+    ConnectionDtoHasMorePagingDto:
+      type: object
+      properties:
+        data:
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/ConnectionDto'
+        hasMore:
+          type: boolean
       additionalProperties: false
     ConnectionDetailsDto:
       type: object
