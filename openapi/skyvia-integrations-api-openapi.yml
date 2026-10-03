@@ -420,41 +420,7 @@ paths:
       x-operation-id-source: derived
 components:
   schemas:
-    IntegrationExecutionResultDto:
-      type: object
-      properties:
-        runId:
-          type: integer
-          format: int32
-        queueTime:
-          type: string
-          format: date-time
-        startTime:
-          type:
-          - string
-          - 'null'
-          format: date-time
-        endTime:
-          type:
-          - string
-          - 'null'
-          format: date-time
-        state:
-          enum:
-          - New
-          - Queued
-          - Running
-          - Succeeded
-          - Failed
-          - Canceling
-          - Canceled
-          type: string
-        result:
-          type:
-          - string
-          - 'null'
-      additionalProperties: false
-    IntegrationDtoHasMorePagingDto:
+    IntegrationExecutionLogDtoHasMorePagingDto:
       type: object
       properties:
         data:
@@ -462,14 +428,8 @@ components:
           - array
           - 'null'
           items:
-            $ref: '#/components/schemas/IntegrationDto'
+            $ref: '#/components/schemas/IntegrationExecutionLogDto'
         hasMore:
-          type: boolean
-      additionalProperties: false
-    IntegrationScheduleDto:
-      type: object
-      properties:
-        active:
           type: boolean
       additionalProperties: false
     IntegrationExecutionLogDto:
@@ -525,7 +485,47 @@ components:
         scheduled:
           type: boolean
       additionalProperties: false
-    IntegrationExecutionLogDtoHasMorePagingDto:
+    IntegrationScheduleDto:
+      type: object
+      properties:
+        active:
+          type: boolean
+      additionalProperties: false
+    IntegrationExecutionResultDto:
+      type: object
+      properties:
+        runId:
+          type: integer
+          format: int32
+        queueTime:
+          type: string
+          format: date-time
+        startTime:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        endTime:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        state:
+          enum:
+          - New
+          - Queued
+          - Running
+          - Succeeded
+          - Failed
+          - Canceling
+          - Canceled
+          type: string
+        result:
+          type:
+          - string
+          - 'null'
+      additionalProperties: false
+    IntegrationDtoHasMorePagingDto:
       type: object
       properties:
         data:
@@ -533,7 +533,7 @@ components:
           - array
           - 'null'
           items:
-            $ref: '#/components/schemas/IntegrationExecutionLogDto'
+            $ref: '#/components/schemas/IntegrationDto'
         hasMore:
           type: boolean
       additionalProperties: false

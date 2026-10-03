@@ -319,23 +319,12 @@ paths:
       x-operation-id-source: derived
 components:
   schemas:
-    AutomationTriggerStateDto:
+    AutomationQueueStateDto:
       type: object
       properties:
-        enabled:
-          type: boolean
-      additionalProperties: false
-    AutomationDtoHasMorePagingDto:
-      type: object
-      properties:
-        data:
-          type:
-          - array
-          - 'null'
-          items:
-            $ref: '#/components/schemas/AutomationDto'
-        hasMore:
-          type: boolean
+        queuedCount:
+          type: integer
+          format: int32
       additionalProperties: false
     AutomationLogItemDto:
       type: object
@@ -360,6 +349,78 @@ components:
           format: int64
         testMode:
           type: boolean
+      additionalProperties: false
+    AutomationTriggerStateDto:
+      type: object
+      properties:
+        enabled:
+          type: boolean
+      additionalProperties: false
+    AutomationStateDto:
+      type: object
+      properties:
+        trigger:
+          $ref: '#/components/schemas/AutomationTriggerStateDto'
+        queue:
+          $ref: '#/components/schemas/AutomationQueueStateDto'
+        executing:
+          $ref: '#/components/schemas/AutomationExecutionStateDto'
+        testMode:
+          type:
+          - boolean
+          - 'null'
+      additionalProperties: false
+    AutomationLogItemDtoHasMorePagingDto:
+      type: object
+      properties:
+        data:
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/AutomationLogItemDto'
+        hasMore:
+          type: boolean
+      additionalProperties: false
+    AutomationExecutionStateDto:
+      type: object
+      properties:
+        executionId:
+          type: integer
+          format: int64
+        date:
+          type: string
+          format: date-time
+        state:
+          type:
+          - string
+          - 'null'
+        testMode:
+          type: boolean
+      additionalProperties: false
+    AutomationDto:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int32
+        name:
+          type:
+          - string
+          - 'null'
+        triggerType:
+          enum:
+          - Manual
+          - Schedule
+          - Connection
+          - Webhook
+          type: string
+        created:
+          type: string
+          format: date-time
+        modified:
+          type: string
+          format: date-time
       additionalProperties: false
     AutomationLogItemDetailsDto:
       type: object
@@ -403,7 +464,7 @@ components:
           - string
           - 'null'
       additionalProperties: false
-    AutomationLogItemDtoHasMorePagingDto:
+    AutomationDtoHasMorePagingDto:
       type: object
       properties:
         data:
@@ -411,69 +472,8 @@ components:
           - array
           - 'null'
           items:
-            $ref: '#/components/schemas/AutomationLogItemDto'
+            $ref: '#/components/schemas/AutomationDto'
         hasMore:
-          type: boolean
-      additionalProperties: false
-    AutomationStateDto:
-      type: object
-      properties:
-        trigger:
-          $ref: '#/components/schemas/AutomationTriggerStateDto'
-        queue:
-          $ref: '#/components/schemas/AutomationQueueStateDto'
-        executing:
-          $ref: '#/components/schemas/AutomationExecutionStateDto'
-        testMode:
-          type:
-          - boolean
-          - 'null'
-      additionalProperties: false
-    AutomationQueueStateDto:
-      type: object
-      properties:
-        queuedCount:
-          type: integer
-          format: int32
-      additionalProperties: false
-    AutomationDto:
-      type: object
-      properties:
-        id:
-          type: integer
-          format: int32
-        name:
-          type:
-          - string
-          - 'null'
-        triggerType:
-          enum:
-          - Manual
-          - Schedule
-          - Connection
-          - Webhook
-          type: string
-        created:
-          type: string
-          format: date-time
-        modified:
-          type: string
-          format: date-time
-      additionalProperties: false
-    AutomationExecutionStateDto:
-      type: object
-      properties:
-        executionId:
-          type: integer
-          format: int64
-        date:
-          type: string
-          format: date-time
-        state:
-          type:
-          - string
-          - 'null'
-        testMode:
           type: boolean
       additionalProperties: false
   securitySchemes:

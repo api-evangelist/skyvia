@@ -158,6 +158,16 @@ paths:
       x-operation-id-source: derived
 components:
   schemas:
+    AddWorkspaceUserRequestDto:
+      type: object
+      properties:
+        userId:
+          type: integer
+          format: int32
+        roleId:
+          type: integer
+          format: int32
+      additionalProperties: false
     WorkspaceDto:
       type: object
       properties:
@@ -170,16 +180,6 @@ components:
           - 'null'
         isPersonal:
           type: boolean
-      additionalProperties: false
-    AddWorkspaceUserRequestDto:
-      type: object
-      properties:
-        userId:
-          type: integer
-          format: int32
-        roleId:
-          type: integer
-          format: int32
       additionalProperties: false
     WorkspaceUserDto:
       type: object

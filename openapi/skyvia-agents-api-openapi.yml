@@ -119,16 +119,6 @@ paths:
       x-operation-id-source: derived
 components:
   schemas:
-    ApiResult:
-      type: object
-      properties:
-        message:
-          type:
-          - string
-          - 'null'
-        refresh:
-          type: boolean
-      additionalProperties: false
     AgentDtoHasMorePagingDto:
       type: object
       properties:
@@ -139,6 +129,16 @@ components:
           items:
             $ref: '#/components/schemas/AgentDto'
         hasMore:
+          type: boolean
+      additionalProperties: false
+    ApiResult:
+      type: object
+      properties:
+        message:
+          type:
+          - string
+          - 'null'
+        refresh:
           type: boolean
       additionalProperties: false
     AgentDto:

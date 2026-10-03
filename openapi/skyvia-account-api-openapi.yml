@@ -188,6 +188,41 @@ paths:
       x-operation-id-source: derived
 components:
   schemas:
+    AccountInvitedUserDtoHasMorePagingDto:
+      type: object
+      properties:
+        data:
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/AccountInvitedUserDto'
+        hasMore:
+          type: boolean
+      additionalProperties: false
+    RemoveAccountUserRequestDto:
+      type: object
+      properties:
+        email:
+          type:
+          - string
+          - 'null'
+      additionalProperties: false
+    InvitedUserStatusDto:
+      type: object
+      properties:
+        email:
+          type:
+          - string
+          - 'null'
+        status:
+          type:
+          - string
+          - 'null'
+        invitationId:
+          type: integer
+          format: int32
+      additionalProperties: false
     AccountUserDto:
       type: object
       properties:
@@ -216,13 +251,19 @@ components:
           items:
             $ref: '#/components/schemas/AccountWorkspaceUserDto'
       additionalProperties: false
-    RemoveAccountUserRequestDto:
+    AccountWorkspaceUserDto:
       type: object
       properties:
-        email:
+        workspaceId:
+          type: integer
+          format: int32
+        roleName:
           type:
           - string
           - 'null'
+        roleId:
+          type: integer
+          format: int32
       additionalProperties: false
     InviteUserRequestDto:
       required:
@@ -247,35 +288,6 @@ components:
           items:
             $ref: '#/components/schemas/InviteToWorkspaceDto'
       additionalProperties: false
-    AccountWorkspaceUserDto:
-      type: object
-      properties:
-        workspaceId:
-          type: integer
-          format: int32
-        roleName:
-          type:
-          - string
-          - 'null'
-        roleId:
-          type: integer
-          format: int32
-      additionalProperties: false
-    InvitedUserStatusDto:
-      type: object
-      properties:
-        email:
-          type:
-          - string
-          - 'null'
-        status:
-          type:
-          - string
-          - 'null'
-        invitationId:
-          type: integer
-          format: int32
-      additionalProperties: false
     AccountUserDtoHasMorePagingDto:
       type: object
       properties:
@@ -285,33 +297,6 @@ components:
           - 'null'
           items:
             $ref: '#/components/schemas/AccountUserDto'
-        hasMore:
-          type: boolean
-      additionalProperties: false
-    InviteToWorkspaceDto:
-      required:
-      - roleId
-      - workspaceId
-      type: object
-      properties:
-        workspaceId:
-          type: integer
-          format: int32
-          example: 123
-        roleId:
-          type: integer
-          format: int32
-          example: 3
-      additionalProperties: false
-    AccountInvitedUserDtoHasMorePagingDto:
-      type: object
-      properties:
-        data:
-          type:
-          - array
-          - 'null'
-          items:
-            $ref: '#/components/schemas/AccountInvitedUserDto'
         hasMore:
           type: boolean
       additionalProperties: false
@@ -348,6 +333,21 @@ components:
           type:
           - string
           - 'null'
+      additionalProperties: false
+    InviteToWorkspaceDto:
+      required:
+      - roleId
+      - workspaceId
+      type: object
+      properties:
+        workspaceId:
+          type: integer
+          format: int32
+          example: 123
+        roleId:
+          type: integer
+          format: int32
+          example: 3
       additionalProperties: false
   securitySchemes:
     Access_Token:
