@@ -158,6 +158,28 @@ paths:
       x-operation-id-source: derived
 components:
   schemas:
+    WorkspaceUserDto:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int32
+        email:
+          type:
+          - string
+          - 'null'
+        fullName:
+          type:
+          - string
+          - 'null'
+        roleId:
+          type: integer
+          format: int32
+        roleName:
+          type:
+          - string
+          - 'null'
+      additionalProperties: false
     AddWorkspaceUserRequestDto:
       type: object
       properties:
@@ -180,28 +202,6 @@ components:
           - 'null'
         isPersonal:
           type: boolean
-      additionalProperties: false
-    WorkspaceUserDto:
-      type: object
-      properties:
-        id:
-          type: integer
-          format: int32
-        email:
-          type:
-          - string
-          - 'null'
-        fullName:
-          type:
-          - string
-          - 'null'
-        roleId:
-          type: integer
-          format: int32
-        roleName:
-          type:
-          - string
-          - 'null'
       additionalProperties: false
   securitySchemes:
     Access_Token:

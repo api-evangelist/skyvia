@@ -295,7 +295,7 @@ paths:
       x-operation-id-source: derived
 components:
   schemas:
-    EndpointRequestLogDtoHasMorePagingDto:
+    EndpointDtoHasMorePagingDto:
       type: object
       properties:
         data:
@@ -303,7 +303,7 @@ components:
           - array
           - 'null'
           items:
-            $ref: '#/components/schemas/EndpointRequestLogDto'
+            $ref: '#/components/schemas/EndpointDto'
         hasMore:
           type: boolean
       additionalProperties: false
@@ -334,6 +334,18 @@ components:
         modified:
           type: string
           format: date-time
+      additionalProperties: false
+    EndpointRequestLogDtoHasMorePagingDto:
+      type: object
+      properties:
+        data:
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/EndpointRequestLogDto'
+        hasMore:
+          type: boolean
       additionalProperties: false
     EndpointRequestLogDetailedDto:
       type: object
@@ -382,18 +394,6 @@ components:
           - string
           - 'null'
         external:
-          type: boolean
-      additionalProperties: false
-    EndpointDtoHasMorePagingDto:
-      type: object
-      properties:
-        data:
-          type:
-          - array
-          - 'null'
-          items:
-            $ref: '#/components/schemas/EndpointDto'
-        hasMore:
           type: boolean
       additionalProperties: false
     EndpointRequestLogDto:

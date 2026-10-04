@@ -188,26 +188,6 @@ paths:
       x-operation-id-source: derived
 components:
   schemas:
-    AccountInvitedUserDtoHasMorePagingDto:
-      type: object
-      properties:
-        data:
-          type:
-          - array
-          - 'null'
-          items:
-            $ref: '#/components/schemas/AccountInvitedUserDto'
-        hasMore:
-          type: boolean
-      additionalProperties: false
-    RemoveAccountUserRequestDto:
-      type: object
-      properties:
-        email:
-          type:
-          - string
-          - 'null'
-      additionalProperties: false
     InvitedUserStatusDto:
       type: object
       properties:
@@ -222,83 +202,6 @@ components:
         invitationId:
           type: integer
           format: int32
-      additionalProperties: false
-    AccountUserDto:
-      type: object
-      properties:
-        id:
-          type:
-          - integer
-          - 'null'
-          format: int32
-        email:
-          type:
-          - string
-          - 'null'
-        fullName:
-          type:
-          - string
-          - 'null'
-        type:
-          enum:
-          - Administrator
-          - Member
-          type: string
-        workspaces:
-          type:
-          - array
-          - 'null'
-          items:
-            $ref: '#/components/schemas/AccountWorkspaceUserDto'
-      additionalProperties: false
-    AccountWorkspaceUserDto:
-      type: object
-      properties:
-        workspaceId:
-          type: integer
-          format: int32
-        roleName:
-          type:
-          - string
-          - 'null'
-        roleId:
-          type: integer
-          format: int32
-      additionalProperties: false
-    InviteUserRequestDto:
-      required:
-      - email
-      - userType
-      type: object
-      properties:
-        email:
-          minLength: 1
-          type: string
-          example: johnDou@email.org
-        userType:
-          enum:
-          - Administrator
-          - Member
-          type: string
-          example: Member
-        workspaces:
-          type:
-          - array
-          - 'null'
-          items:
-            $ref: '#/components/schemas/InviteToWorkspaceDto'
-      additionalProperties: false
-    AccountUserDtoHasMorePagingDto:
-      type: object
-      properties:
-        data:
-          type:
-          - array
-          - 'null'
-          items:
-            $ref: '#/components/schemas/AccountUserDto'
-        hasMore:
-          type: boolean
       additionalProperties: false
     AccountInvitedUserDto:
       type: object
@@ -334,6 +237,29 @@ components:
           - string
           - 'null'
       additionalProperties: false
+    InviteUserRequestDto:
+      required:
+      - email
+      - userType
+      type: object
+      properties:
+        email:
+          minLength: 1
+          type: string
+          example: johnDou@email.org
+        userType:
+          enum:
+          - Administrator
+          - Member
+          type: string
+          example: Member
+        workspaces:
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/InviteToWorkspaceDto'
+      additionalProperties: false
     InviteToWorkspaceDto:
       required:
       - roleId
@@ -348,6 +274,80 @@ components:
           type: integer
           format: int32
           example: 3
+      additionalProperties: false
+    AccountUserDtoHasMorePagingDto:
+      type: object
+      properties:
+        data:
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/AccountUserDto'
+        hasMore:
+          type: boolean
+      additionalProperties: false
+    AccountWorkspaceUserDto:
+      type: object
+      properties:
+        workspaceId:
+          type: integer
+          format: int32
+        roleName:
+          type:
+          - string
+          - 'null'
+        roleId:
+          type: integer
+          format: int32
+      additionalProperties: false
+    RemoveAccountUserRequestDto:
+      type: object
+      properties:
+        email:
+          type:
+          - string
+          - 'null'
+      additionalProperties: false
+    AccountInvitedUserDtoHasMorePagingDto:
+      type: object
+      properties:
+        data:
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/AccountInvitedUserDto'
+        hasMore:
+          type: boolean
+      additionalProperties: false
+    AccountUserDto:
+      type: object
+      properties:
+        id:
+          type:
+          - integer
+          - 'null'
+          format: int32
+        email:
+          type:
+          - string
+          - 'null'
+        fullName:
+          type:
+          - string
+          - 'null'
+        type:
+          enum:
+          - Administrator
+          - Member
+          type: string
+        workspaces:
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/AccountWorkspaceUserDto'
       additionalProperties: false
   securitySchemes:
     Access_Token:
