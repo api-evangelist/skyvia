@@ -1,0 +1,12 @@
+{
+ "url": "https://api.skyvia.com/swagger/v1/swagger.json",
+ "requested_url": "https://api.skyvia.com/swagger/v1/swagger.json",
+ "status": 200,
+ "content_type": "application/json;charset=utf-8",
+ "bytes": 98026,
+ "sha256": "83ce0d46401348499f217140cf8b6c93162d048f9755e00e9abe1269c6c7585a",
+ "fetched_at": "2026-10-04",
+ "fetched_by": "APIEvangelist-Harvest/1.0 (+https://apievangelist.com)",
+ "match": "byte-identical",
+ "note": "Re-fetched from the provider by verify-openapi-sources.py; the archived file is byte-identical to what the provider serves."
+}
