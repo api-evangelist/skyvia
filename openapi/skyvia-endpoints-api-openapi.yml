@@ -307,45 +307,40 @@ components:
         hasMore:
           type: boolean
       additionalProperties: false
-    EndpointDto:
+    EndpointRequestLogDto:
       type: object
       properties:
-        id:
+        executionId:
+          type:
+          - string
+          - 'null'
+        date:
+          type: string
+          format: date-time
+        method:
+          enum:
+          - GET
+          - POST
+          - PUT
+          - DELETE
+          - PATCH
+          - HEAD
+          - OPTIONS
+          - TRACE
+          type: string
+        failed:
+          type: boolean
+        bytes:
           type: integer
           format: int32
-        name:
+        remoteIP:
           type:
           - string
           - 'null'
-        token:
+        url:
           type:
           - string
           - 'null'
-        active:
-          type: boolean
-        type:
-          enum:
-          - OData
-          - Sql
-          type: string
-        created:
-          type: string
-          format: date-time
-        modified:
-          type: string
-          format: date-time
-      additionalProperties: false
-    EndpointRequestLogDtoHasMorePagingDto:
-      type: object
-      properties:
-        data:
-          type:
-          - array
-          - 'null'
-          items:
-            $ref: '#/components/schemas/EndpointRequestLogDto'
-        hasMore:
-          type: boolean
       additionalProperties: false
     EndpointRequestLogDetailedDto:
       type: object
@@ -396,40 +391,45 @@ components:
         external:
           type: boolean
       additionalProperties: false
-    EndpointRequestLogDto:
+    EndpointDto:
       type: object
       properties:
-        executionId:
-          type:
-          - string
-          - 'null'
-        date:
-          type: string
-          format: date-time
-        method:
-          enum:
-          - GET
-          - POST
-          - PUT
-          - DELETE
-          - PATCH
-          - HEAD
-          - OPTIONS
-          - TRACE
-          type: string
-        failed:
-          type: boolean
-        bytes:
+        id:
           type: integer
           format: int32
-        remoteIP:
+        name:
           type:
           - string
           - 'null'
-        url:
+        token:
           type:
           - string
           - 'null'
+        active:
+          type: boolean
+        type:
+          enum:
+          - OData
+          - Sql
+          type: string
+        created:
+          type: string
+          format: date-time
+        modified:
+          type: string
+          format: date-time
+      additionalProperties: false
+    EndpointRequestLogDtoHasMorePagingDto:
+      type: object
+      properties:
+        data:
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/EndpointRequestLogDto'
+        hasMore:
+          type: boolean
       additionalProperties: false
   securitySchemes:
     Access_Token:

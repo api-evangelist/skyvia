@@ -188,6 +188,38 @@ paths:
       x-operation-id-source: derived
 components:
   schemas:
+    RemoveAccountUserRequestDto:
+      type: object
+      properties:
+        email:
+          type:
+          - string
+          - 'null'
+      additionalProperties: false
+    AccountUserDtoHasMorePagingDto:
+      type: object
+      properties:
+        data:
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/AccountUserDto'
+        hasMore:
+          type: boolean
+      additionalProperties: false
+    AccountInvitedUserDtoHasMorePagingDto:
+      type: object
+      properties:
+        data:
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/AccountInvitedUserDto'
+        hasMore:
+          type: boolean
+      additionalProperties: false
     InvitedUserStatusDto:
       type: object
       properties:
@@ -200,6 +232,20 @@ components:
           - string
           - 'null'
         invitationId:
+          type: integer
+          format: int32
+      additionalProperties: false
+    AccountWorkspaceUserDto:
+      type: object
+      properties:
+        workspaceId:
+          type: integer
+          format: int32
+        roleName:
+          type:
+          - string
+          - 'null'
+        roleId:
           type: integer
           format: int32
       additionalProperties: false
@@ -274,52 +320,6 @@ components:
           type: integer
           format: int32
           example: 3
-      additionalProperties: false
-    AccountUserDtoHasMorePagingDto:
-      type: object
-      properties:
-        data:
-          type:
-          - array
-          - 'null'
-          items:
-            $ref: '#/components/schemas/AccountUserDto'
-        hasMore:
-          type: boolean
-      additionalProperties: false
-    AccountWorkspaceUserDto:
-      type: object
-      properties:
-        workspaceId:
-          type: integer
-          format: int32
-        roleName:
-          type:
-          - string
-          - 'null'
-        roleId:
-          type: integer
-          format: int32
-      additionalProperties: false
-    RemoveAccountUserRequestDto:
-      type: object
-      properties:
-        email:
-          type:
-          - string
-          - 'null'
-      additionalProperties: false
-    AccountInvitedUserDtoHasMorePagingDto:
-      type: object
-      properties:
-        data:
-          type:
-          - array
-          - 'null'
-          items:
-            $ref: '#/components/schemas/AccountInvitedUserDto'
-        hasMore:
-          type: boolean
       additionalProperties: false
     AccountUserDto:
       type: object

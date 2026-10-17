@@ -119,20 +119,15 @@ paths:
       x-operation-id-source: derived
 components:
   schemas:
-    ConnectionDto:
+    ApiResult:
       type: object
       properties:
-        id:
-          type: integer
-          format: int32
-        name:
+        message:
           type:
           - string
           - 'null'
-        connector:
-          type:
-          - string
-          - 'null'
+        refresh:
+          type: boolean
       additionalProperties: false
     ConnectionDetailsDto:
       type: object
@@ -154,16 +149,6 @@ components:
           - Agent
           type: string
       additionalProperties: false
-    ApiResult:
-      type: object
-      properties:
-        message:
-          type:
-          - string
-          - 'null'
-        refresh:
-          type: boolean
-      additionalProperties: false
     ConnectionDtoHasMorePagingDto:
       type: object
       properties:
@@ -175,6 +160,21 @@ components:
             $ref: '#/components/schemas/ConnectionDto'
         hasMore:
           type: boolean
+      additionalProperties: false
+    ConnectionDto:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int32
+        name:
+          type:
+          - string
+          - 'null'
+        connector:
+          type:
+          - string
+          - 'null'
       additionalProperties: false
   securitySchemes:
     Access_Token:

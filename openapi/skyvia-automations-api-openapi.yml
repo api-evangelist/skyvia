@@ -319,16 +319,10 @@ paths:
       x-operation-id-source: derived
 components:
   schemas:
-    AutomationLogItemDtoHasMorePagingDto:
+    AutomationTriggerStateDto:
       type: object
       properties:
-        data:
-          type:
-          - array
-          - 'null'
-          items:
-            $ref: '#/components/schemas/AutomationLogItemDto'
-        hasMore:
+        enabled:
           type: boolean
       additionalProperties: false
     AutomationExecutionStateDto:
@@ -345,6 +339,18 @@ components:
           - string
           - 'null'
         testMode:
+          type: boolean
+      additionalProperties: false
+    AutomationLogItemDtoHasMorePagingDto:
+      type: object
+      properties:
+        data:
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/AutomationLogItemDto'
+        hasMore:
           type: boolean
       additionalProperties: false
     AutomationLogItemDto:
@@ -371,30 +377,19 @@ components:
         testMode:
           type: boolean
       additionalProperties: false
-    AutomationQueueStateDto:
+    AutomationStateDto:
       type: object
       properties:
-        queuedCount:
-          type: integer
-          format: int32
-      additionalProperties: false
-    AutomationTriggerStateDto:
-      type: object
-      properties:
-        enabled:
-          type: boolean
-      additionalProperties: false
-    AutomationDtoHasMorePagingDto:
-      type: object
-      properties:
-        data:
+        trigger:
+          $ref: '#/components/schemas/AutomationTriggerStateDto'
+        queue:
+          $ref: '#/components/schemas/AutomationQueueStateDto'
+        executing:
+          $ref: '#/components/schemas/AutomationExecutionStateDto'
+        testMode:
           type:
-          - array
+          - boolean
           - 'null'
-          items:
-            $ref: '#/components/schemas/AutomationDto'
-        hasMore:
-          type: boolean
       additionalProperties: false
     AutomationLogItemDetailsDto:
       type: object
@@ -438,20 +433,6 @@ components:
           - string
           - 'null'
       additionalProperties: false
-    AutomationStateDto:
-      type: object
-      properties:
-        trigger:
-          $ref: '#/components/schemas/AutomationTriggerStateDto'
-        queue:
-          $ref: '#/components/schemas/AutomationQueueStateDto'
-        executing:
-          $ref: '#/components/schemas/AutomationExecutionStateDto'
-        testMode:
-          type:
-          - boolean
-          - 'null'
-      additionalProperties: false
     AutomationDto:
       type: object
       properties:
@@ -475,6 +456,25 @@ components:
         modified:
           type: string
           format: date-time
+      additionalProperties: false
+    AutomationQueueStateDto:
+      type: object
+      properties:
+        queuedCount:
+          type: integer
+          format: int32
+      additionalProperties: false
+    AutomationDtoHasMorePagingDto:
+      type: object
+      properties:
+        data:
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/AutomationDto'
+        hasMore:
+          type: boolean
       additionalProperties: false
   securitySchemes:
     Access_Token:
