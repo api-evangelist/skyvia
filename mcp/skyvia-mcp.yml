@@ -39,15 +39,10 @@ authentication:
   ip_allow_list: true
   docs: https://docs.skyvia.com/connect/security-settings.html
 tools:
-- name: Instructions
-  category: null
-  description: Returns instructions for using the MCP Server.
-  input_properties: []
-  required: []
 - name: Objects
-  category: structure
   description: Requests the list and brief information about the endpoint objects (underlying cloud objects
     or database tables and views).
+  category: structure
   input_properties:
   - name: includeNonQueryable
     type: boolean
@@ -64,9 +59,14 @@ tools:
   required: []
   execution:
     taskSupport: optional
+- name: Instructions
+  description: Returns instructions for using the MCP Server.
+  category: null
+  input_properties: []
+  required: []
 - name: ObjectInfo
-  category: structure
   description: Requests detailed metadata information about the specified endpoint object.
+  category: structure
   input_properties:
   - name: objectName
     type: string
@@ -88,11 +88,11 @@ tools:
   execution:
     taskSupport: optional
 - name: Execute
-  category: data
   description: Executes the SQL code with SQL parameters, specified in the body parameter and returns
     the first page of queried data, if any, with result schema information. If there are more records
-    than fit on one page, you can query them using the get request to the next page resource and providing
+    than fit on one page, you can query them, using the get request to the next page resource and providing
     the token of the next page, returned together with the current page.
+  category: data
   input_properties:
   - name: body
     type: object
@@ -198,3 +198,4 @@ tool_quality:
   scored: false
   note: Facts from the saved tools/list capture (mcp_tool_quality.py); recorded, not scored. Checks learned
     from Glimind's agent-readiness audit.
+tools_count: 4
