@@ -1,7 +1,18 @@
-generated: '2026-10-14'
+generated: '2026-10-20'
 method: searched
+source:
+- https://github.com/marketplace?type=apps
+- https://zapier.com/apps/skyvia/integrations
+- https://n8n.io/integrations/skyvia/
+- https://composio.dev/toolkits/skyvia
+- https://monid.ai/tools/skyvia
 checked:
 - https://github.com/marketplace?type=apps
+- https://composio.dev/toolkits/skyvia
+- https://monid.ai/tools/skyvia
+- https://n8n.io/integrations/skyvia/
+- https://zapier.com/apps/skyvia/integrations
+summary: null
 marketplace_apps: []
 edges:
 - partner_name: GitHub Marketplace (apps)
@@ -19,5 +30,4 @@ edges:
   publisher_name: Skyvia
   detected_by: sweep-devtools.py
   detected: '2026-10-14'
-source:
-- https://github.com/marketplace?type=apps
+templates: []
