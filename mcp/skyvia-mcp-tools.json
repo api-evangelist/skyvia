@@ -1,0 +1,200 @@
+{
+  "endpoint": "https://mcp.skyvia.com/mcp",
+  "captured": "2026-10-20",
+  "method": "initialize + tools/list (anonymous, no tool called; roadmap#992)",
+  "protocol_version": "2024-11-05",
+  "server_info": {
+    "name": "Devart.Skyvia.Connect.Mcp",
+    "version": "1.0.9575.27520"
+  },
+  "result": {
+    "tools": [
+      {
+        "name": "Objects",
+        "description": "Requests the list and brief information about the endpoint objects (underlying cloud objects or database tables and views).",
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "includeNonQueryable": {
+              "description": "When set to true, objects that cannot be queried are included in the result. When false (default), only queryable objects are returned.",
+              "type": "boolean",
+              "default": false
+            },
+            "responseFormat": {
+              "description": "Parameter that specifies the desired format of the endpoint response. Default value is 'Csv'.",
+              "type": "string",
+              "enum": [
+                "Csv",
+                "Json",
+                "Markdown"
+              ],
+              "default": "Csv"
+            }
+          }
+        },
+        "execution": {
+          "taskSupport": "optional"
+        },
+        "_meta": {
+          "category": "structure"
+        }
+      },
+      {
+        "name": "Instructions",
+        "description": "Returns instructions for using the MCP Server.",
+        "inputSchema": {
+          "type": "object",
+          "properties": {}
+        }
+      },
+      {
+        "name": "ObjectInfo",
+        "description": "Requests detailed metadata information about the specified endpoint object.",
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "objectName": {
+              "type": "string"
+            },
+            "addChildRelations": {
+              "type": "boolean",
+              "default": false
+            },
+            "addParentRelations": {
+              "type": "boolean",
+              "default": false
+            },
+            "responseFormat": {
+              "description": "Parameter that specifies the desired format of the endpoint response. Default value is 'Csv'.",
+              "type": "string",
+              "enum": [
+                "Csv",
+                "Json",
+                "Markdown"
+              ],
+              "default": "Csv"
+            }
+          },
+          "required": [
+            "objectName"
+          ]
+        },
+        "execution": {
+          "taskSupport": "optional"
+        },
+        "_meta": {
+          "category": "structure"
+        }
+      },
+      {
+        "name": "Execute",
+        "description": "Executes the SQL code with SQL parameters, specified in the body parameter and returns the first page of queried data, if any, with result schema information. If there are more records than fit on one page, you can query them, using the get request to the next page resource and providing the token of the next page, returned together with the current page.",
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "body": {
+              "type": "object",
+              "properties": {
+                "sql": {
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                },
+                "parameters": {
+                  "type": [
+                    "array",
+                    "null"
+                  ],
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "name": {
+                        "type": [
+                          "string",
+                          "null"
+                        ]
+                      },
+                      "dbType": {
+                        "description": "Parameter type. The default value is String.",
+                        "type": "string",
+                        "enum": [
+                          "AnsiString",
+                          "Binary",
+                          "Byte",
+                          "Boolean",
+                          "Currency",
+                          "Date",
+                          "DateTime",
+                          "Decimal",
+                          "Double",
+                          "Guid",
+                          "Int16",
+                          "Int32",
+                          "Int64",
+                          "Object",
+                          "SByte",
+                          "Single",
+                          "String",
+                          "Time",
+                          "UInt16",
+                          "UInt32",
+                          "UInt64",
+                          "VarNumeric",
+                          "AnsiStringFixedLength",
+                          "StringFixedLength",
+                          "Xml",
+                          "DateTime2",
+                          "DateTimeOffset"
+                        ]
+                      },
+                      "value": true
+                    }
+                  }
+                },
+                "pageSize": {
+                  "description": "The maximal number of records per one page. The default value is 500.",
+                  "type": "integer"
+                },
+                "commandTimeout": {
+                  "description": "Command timeout in seconds.",
+                  "type": [
+                    "integer",
+                    "null"
+                  ]
+                },
+                "expireTimeout": {
+                  "description": "Result reader lifetime in seconds. The default value is 3600.",
+                  "type": "integer"
+                },
+                "schemaOnly": {
+                  "description": "If set to true, the server doesn't return the data. If the query is valid, it returns only the result schema. The default value is false.",
+                  "type": "boolean"
+                }
+              }
+            },
+            "responseFormat": {
+              "description": "Parameter that specifies the desired format of the endpoint response. Default value is 'Csv'.",
+              "type": "string",
+              "enum": [
+                "Csv",
+                "Json",
+                "Markdown"
+              ],
+              "default": "Csv"
+            }
+          },
+          "required": [
+            "body"
+          ]
+        },
+        "execution": {
+          "taskSupport": "optional"
+        },
+        "_meta": {
+          "category": "data"
+        }
+      }
+    ]
+  }
+}
